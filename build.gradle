@@ -1,0 +1,12 @@
+plugins {
+    id 'java'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'agentSym.Symulacja'
+    }
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
