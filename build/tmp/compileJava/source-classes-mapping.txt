@@ -1,6 +1,0 @@
-agentSym/agent/IAgent.java
- agentSym.agent.IAgent
-agentSym/Symulacja.java
- agentSym.Symulacja
-agentSym/siatka/ISiatka.java
- agentSym.siatka.ISiatka
