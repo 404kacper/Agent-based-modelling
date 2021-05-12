@@ -2,10 +2,18 @@ plugins {
     id 'java'
 }
 
+repositories {
+    mavenCentral()
+}
+
 jar {
     manifest {
-        attributes 'Main-Class': 'agentSym.Symulacja'
+        attributes 'Main-Class': 'agentSim.Simulation'
     }
+}
+
+dependencies {
+    implementation("com.google.guava:guava:30.1.1-jre")
 }
 
 group 'org.example'
