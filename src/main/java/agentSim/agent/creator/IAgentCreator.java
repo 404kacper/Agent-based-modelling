@@ -1,4 +1,4 @@
-package agentSim.agentCreator;
+package agentSim.agent.creator;
 
 public interface IAgentCreator {
 }
