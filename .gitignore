@@ -1,6 +1,7 @@
 # IDE variable directory
 .idea/
 
+# IntelliJ modules file
 programowanie_obiektowe.iml
 
 # Beginning of gradle.gitignore
