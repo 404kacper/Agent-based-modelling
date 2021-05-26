@@ -24,7 +24,7 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
-        MapCreator currentMap = new MapCreator(3, 3);
+        MapCreator currentMap = new MapCreator(5, 5);
         Simulation sim = new Simulation(currentMap, 10);
 //        Possibly a class that sums up everything that happend during these iterations? eg. amount of infections, healthy etc...
     }
