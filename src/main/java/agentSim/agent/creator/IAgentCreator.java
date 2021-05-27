@@ -6,6 +6,5 @@ import agentSim.map.IMap;
 import java.util.List;
 
 public interface IAgentCreator {
-    public List <IAgent> createAgents (IMap);
-
+    public List <IAgent> createAgents(IMap map);
 }

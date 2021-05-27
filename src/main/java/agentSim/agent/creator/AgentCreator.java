@@ -1,12 +1,12 @@
 package agentSim.agent.creator;
 
+import agentSim.agent.IAgent;
+import agentSim.map.IMap;
+
+import java.util.LinkedList;
 import java.util.List;
 
 public class AgentCreator implements IAgentCreator{
-    @Override
-    public List createAgents() {
-        return null;
-    }
     protected int noHealthy;
     protected int noIll;
     protected int noImmune;
@@ -15,7 +15,7 @@ public class AgentCreator implements IAgentCreator{
     protected int peopleRatio;
     protected int animalRatio;
 
-    public KreatorAgentow(int noHealthy, int noIll, int noImmune, int noPeople, int noAnimals, int peopleRatio, int animalRatio){
+    public AgentCreator(int noHealthy, int noIll, int noImmune, int noPeople, int noAnimals, int peopleRatio, int animalRatio){
       this.noHealthy = noHealthy;
       this.noIll = noIll;
       this.noImmune = noImmune;
@@ -23,5 +23,13 @@ public class AgentCreator implements IAgentCreator{
       this.noAnimals = noAnimals;
       this.peopleRatio = peopleRatio;
       this.animalRatio = animalRatio;
+    }
+
+    @Override
+    public List<IAgent> createAgents(IMap map) {
+        List <IAgent> agentList = new LinkedList<>();
+//        Implement rest (filling of agentList) when agent classes are completed
+
+        return agentList;
     }
 }
