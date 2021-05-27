@@ -8,7 +8,7 @@ public class Agent implements IAgent{
     public void move() {
 
     }
-
+    protected int healthCondition;
     @Override
     public IMap getMap() {
         return null;
