@@ -21,8 +21,8 @@ public class SimulationMap implements IMap {
 
 
     @Override
-    public IAgent getAgent(int position_x, int position_y) {
-        return agents[position_x][position_y];
+    public IAgent getAgent(int x_coord, int y_coord) {
+        return agents[x_coord][y_coord];
     }
 
     @Override
@@ -73,6 +73,7 @@ public class SimulationMap implements IMap {
     public String toString(){
         StringBuffer buff = new StringBuffer();
         for (int i = 0; i < agents.length; i++) {
+            buff.append("\n");
             for(int j = 0; j < agents[i].length; j++) {
                 if (agents[i][j] == null) {
                     buff.append("#");
