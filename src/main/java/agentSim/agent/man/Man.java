@@ -10,7 +10,7 @@ public class Man extends Agent {
     protected int healthCondition;
 
     public Man(IMap map) {
-
+        super(map);
     }
     public void move() {
 

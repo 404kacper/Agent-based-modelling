@@ -21,10 +21,17 @@ public class Simulation {
     map = mapCreator.createMap();
 
     rnd=new Random(seed);
-    agentList = agentCreator.createAgents(map);
+//        Double type value between min - max both included --> Math.floor(Math.random() * (max - min + 1)) + min
+        agentList = agentCreator.createAgents(map, (int)Math.floor(Math.random() * (2 - 1 + 1)) + 1);
 
-    for (int i = 0; i<agentList.size();i++)
-        while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getSize()), rnd.nextInt(map.getSize())));
+    for (int i = 0; i< agentList.size();i++)
+        //FIXME Current issue is with map.getSize();
+        // - Make it so getSize() function returns x and y dimensions
+        // - Either a getDimX() and getDimY() function or getSize() returning array and then extract values from the array
+        // - Then uncomment below line, see if app compiles
+        // - If it does continue working on AgentCreator so that it fills the map with Animal class objects (only animal objects for now)
+        // - And make sure they're printed accordingly to their healthCondition, printing is done with toString function
+//        while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getSize()), rnd.nextInt(map.getSize())));
     this.maxIter = maxIter;
     }
 

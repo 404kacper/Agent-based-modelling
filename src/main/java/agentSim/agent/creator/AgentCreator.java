@@ -1,6 +1,7 @@
 package agentSim.agent.creator;
 
 import agentSim.agent.IAgent;
+import agentSim.agent.animal.Animal;
 import agentSim.map.IMap;
 
 import java.util.LinkedList;
@@ -26,9 +27,12 @@ public class AgentCreator implements IAgentCreator{
     }
 
     @Override
-    public List<IAgent> createAgents(IMap map) {
+    public List<IAgent> createAgents(IMap map, int health) {
         List <IAgent> agentList = new LinkedList<>();
-//        Implement rest (filling of agentList) when agent classes are completed
+
+        for (int i=0; i<noAnimals; i++) {
+            agentList.add(new Animal(map, health));
+        }
 
         return agentList;
     }
