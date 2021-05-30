@@ -26,14 +26,19 @@ public class SimulationMap implements IMap {
     }
 
     @Override
-    public int getSize() {
+    public int getXDim() {
         return agents.length;
     }
 
     @Override
+    public int getYDim() {
+        return agents[0].length;
+    }
+
+    @Override
     public boolean placeAgent(IAgent agent, int x_coord, int y_coord) {
-//        pass agent object instead of String in end version of the app
-        Integer[] coordinates = getAgentPosition(agent);
+        int[] coordinates = getAgentPosition(agent);
+
 //        Check if the position is already occupied
         if (agents[x_coord][y_coord] != null) {
             return false;
@@ -43,26 +48,28 @@ public class SimulationMap implements IMap {
             agents[coordinates[0]][coordinates[1]] = null;
         }
 //        Uncomment this once agent class is implemented
-//        agent.setMap(this);
+        agent.setMap(this);
 
 //        Place agent
         agents[x_coord][y_coord] = agent;
+//        Remove all values before putting them - so they don't add up with each iteration of the Simulation and cause getAgentPosition to crash
+        agentsPositions.removeAll(agent);
         agentsPositions.putAll(agent, Ints.asList(x_coord,y_coord));
         return true;
     }
 
     @Override
-    public Integer[] getAgentPosition(IAgent agent) {
+    public int[] getAgentPosition(IAgent agent) {
 //        Collections are usually returned from guava structures
         Collection <Integer> view = agentsPositions.get(agent);
 //        Size of 2 for x and y coordinate
-        Integer[] position = new Integer[2];
+        int[] position = new int[2];
 //        Keep track of iterations in for each loop
         int counter = 0;
 //        Loop through collection
         for (Integer num : view) {
 //            Assign coordinate to array that will be returned
-            position[counter] = num;
+            position[counter] = num.intValue();
             counter++;
         }
         return position;

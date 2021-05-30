@@ -16,9 +16,10 @@ public class Animal extends Agent {
 //        this.contagious = contagious;
         this.healthCondition = health;
     }
-    public void move() {
-
-    }
+//    Uncommenting will stop moving the animal agents (priority over parent(agent) method)
+//    public void move() {
+//
+//    }
     public void infecting(){
 
     }
@@ -30,7 +31,6 @@ public class Animal extends Agent {
 
     @Override
     public String toString() {
-        System.out.println("executed");
         return healthCondition == 2 ? "A" : "a";
     }
 }

@@ -18,8 +18,9 @@ public class Agent extends AAgent implements IAgent {
     @Override
     public void move() {
     do {
-        int position_x = rnd.nextInt(map.getSize());
-        int position_y = rnd.nextInt(map.getSize());
+        // getSize has changed
+        int position_x = rnd.nextInt(map.getXDim());
+        int position_y = rnd.nextInt(map.getYDim());
         if (map.getAgent(position_x, position_y) == null) {
             map.placeAgent(this, position_x, position_y);
             break;

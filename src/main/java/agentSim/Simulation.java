@@ -21,40 +21,39 @@ public class Simulation {
     map = mapCreator.createMap();
 
     rnd=new Random(seed);
-//        Double type value between min - max both included --> Math.floor(Math.random() * (max - min + 1)) + min
+        //TODO next step:
+        // - Randomize the health values
+        // - Complete remaining animal functions
+        // - Implement agent diversity (finish remaining functions for the remaining agent classes)
+        //Double type value between min - max both included --> Math.floor(Math.random() * (max - min + 1)) + min
         agentList = agentCreator.createAgents(map, (int)Math.floor(Math.random() * (2 - 1 + 1)) + 1);
 
     for (int i = 0; i< agentList.size();i++)
-        //FIXME Current issue is with map.getSize();
-        // - Make it so getSize() function returns x and y dimensions
-        // - Either a getDimX() and getDimY() function or getSize() returning array and then extract values from the array
-        // - Then uncomment below line, see if app compiles
-        // - If it does continue working on AgentCreator so that it fills the map with Animal class objects (only animal objects for now)
-        // - And make sure they're printed accordingly to their healthCondition, printing is done with toString function
-//        while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getSize()), rnd.nextInt(map.getSize())));
+        while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim())));
     this.maxIter = maxIter;
     }
 
     public void runSimulation() {
         int iterations = maxIter;
+//        System.out.println("Iterations left: " + iterations);
         System.out.println(map.toString());
         while (--iterations>0) {
-//            Agent list is empty so nothing prints out for now - the map is full of empty cells (#) / agents classes are to be implemented next
             for (IAgent agent : agentList) {
 //                Move agents
                 agent.move();
-//                Print out map after each move
-                System.out.println(map.toString());
             }
+//            System.out.println("Iterations left: " + iterations);
+//            Print out map after each iteration
+            System.out.println(map.toString());
         }
     }
 
     public static void main(String[] args) {
-        MapCreator currentMap = new MapCreator(5, 5);
+        MapCreator currentMap = new MapCreator(4, 5);
 //        Meaningless numbers just to get the simulation running
-        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,1,1,1);
+        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,5,1,1);
 //        Seed could be current time if needed
-        Simulation sim = new Simulation(currentMap, currentAgents,1, 10);
+        Simulation sim = new Simulation(currentMap, currentAgents,1, 4);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
