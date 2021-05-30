@@ -21,12 +21,7 @@ public class Simulation {
     map = mapCreator.createMap();
 
     rnd=new Random(seed);
-        //TODO next step:
-        // - Randomize the health values
-        // - Complete remaining animal functions
-        // - Implement agent diversity (finish remaining functions for the remaining agent classes)
-        //Double type value between min - max both included --> Math.floor(Math.random() * (max - min + 1)) + min
-        agentList = agentCreator.createAgents(map, (int)Math.floor(Math.random() * (2 - 1 + 1)) + 1);
+    agentList = agentCreator.createAgents(map, rnd);
 
     for (int i = 0; i< agentList.size();i++)
         while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim())));
@@ -35,14 +30,16 @@ public class Simulation {
 
     public void runSimulation() {
         int iterations = maxIter;
-//        System.out.println("Iterations left: " + iterations);
+        System.out.println("Iterations left: " + iterations);
         System.out.println(map.toString());
         while (--iterations>0) {
             for (IAgent agent : agentList) {
 //                Move agents
                 agent.move();
+                agent.getNeighbours(2);
             }
-//            System.out.println("Iterations left: " + iterations);
+            System.out.println("\n");
+            System.out.println("Iterations left: " + iterations);
 //            Print out map after each iteration
             System.out.println(map.toString());
         }
@@ -51,9 +48,9 @@ public class Simulation {
     public static void main(String[] args) {
         MapCreator currentMap = new MapCreator(4, 5);
 //        Meaningless numbers just to get the simulation running
-        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,5,1,1);
+        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,1,1);
 //        Seed could be current time if needed
-        Simulation sim = new Simulation(currentMap, currentAgents,1, 4);
+        Simulation sim = new Simulation(currentMap, currentAgents,0, 4);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }

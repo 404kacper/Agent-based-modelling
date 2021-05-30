@@ -80,10 +80,12 @@ public class SimulationMap implements IMap {
     public String toString(){
         StringBuffer buff = new StringBuffer();
         for (int i = 0; i < agents.length; i++) {
-            buff.append("\n");
+            if (i != 0) {
+                buff.append("\n");
+            }
             for(int j = 0; j < agents[i].length; j++) {
                 if (agents[i][j] == null) {
-                    buff.append("#");
+                    buff.append("# ");
                 } else {
                     buff.append(agents[i][j].toString());
                 }

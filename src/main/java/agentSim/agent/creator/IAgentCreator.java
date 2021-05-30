@@ -4,7 +4,8 @@ import agentSim.agent.IAgent;
 import agentSim.map.IMap;
 
 import java.util.List;
+import java.util.Random;
 
 public interface IAgentCreator {
-    public List <IAgent> createAgents(IMap map, int health);
+    public List <IAgent> createAgents(IMap map, Random random);
 }

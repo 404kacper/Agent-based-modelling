@@ -1,8 +1,9 @@
 package agentSim.agent.man;
 
+import agentSim.agent.Agent;
 import agentSim.map.IMap;
 
-public class Medic extends Man{
+public class Medic extends Agent {
     protected double contagious;
     protected int healthCondition;
 
@@ -13,7 +14,7 @@ public class Medic extends Man{
     public void vaccine(){
 
     }
-    public Medic(IMap map) {
-        super(map);
+    public Medic(IMap map, int health) {
+        super(map, health);
     }
 }
