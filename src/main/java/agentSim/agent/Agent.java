@@ -19,16 +19,16 @@ public class Agent extends AAgent implements IAgent {
     }
 
     public void getNeighbours(int fieldOfView) {
-        int currX = map.getAgentPosition(this)[0];
-        int currY = map.getAgentPosition(this)[1];
-        int tmp = currX - fieldOfView;
-        int  minPosX = tmp >= 0 ? tmp : 0;
-        tmp = currX + fieldOfView;
-        int maxPosX = tmp >= map.getXDim() ? (map.getXDim()-1) : tmp;
+        int currR = map.getAgentPosition(this)[0];
+        int currC = map.getAgentPosition(this)[1];
+        int tmp = currR - fieldOfView;
+        int  minRow = tmp >= 0 ? tmp : 0;
+        tmp = currR + fieldOfView;
+        int maxRow = tmp >= map.getXDim() ? (map.getXDim()-1) : tmp;
 
 
-        System.out.println("Current X position: " + currX + "\nCurrent Y position: " + currY);
-        System.out.println("Max X pos is: " + maxPosX + "\nMin X pos is: " + minPosX);
+        System.out.println("Current row: " + currR + "\nCurrent col: " + currC);
+        System.out.println("Min row: " + currR + "\nMax X col: " + currC);
     }
 
     @Override

@@ -35,8 +35,8 @@ public class Simulation {
         while (--iterations>0) {
             for (IAgent agent : agentList) {
 //                Move agents
+                agent.getNeighbours(1);
                 agent.move();
-                agent.getNeighbours(2);
             }
             System.out.println("\n");
             System.out.println("Iterations left: " + iterations);

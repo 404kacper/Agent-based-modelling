@@ -24,7 +24,6 @@ public class AgentCreator implements IAgentCreator{
       this.noPeople = noPeople;
       this.noAnimals = noAnimals;
       this.peopleRatio = peopleRatio;
-      this.animalRatio = animalRatio;
     }
 
     @Override

@@ -21,8 +21,8 @@ public class SimulationMap implements IMap {
 
 
     @Override
-    public IAgent getAgent(int x_coord, int y_coord) {
-        return agents[x_coord][y_coord];
+    public IAgent getAgent(int row, int col) {
+        return agents[row][col];
     }
 
     @Override
@@ -36,11 +36,11 @@ public class SimulationMap implements IMap {
     }
 
     @Override
-    public boolean placeAgent(IAgent agent, int x_coord, int y_coord) {
+    public boolean placeAgent(IAgent agent, int row, int col) {
         int[] coordinates = getAgentPosition(agent);
 
 //        Check if the position is already occupied
-        if (agents[x_coord][y_coord] != null) {
+        if (agents[row][col] != null) {
             return false;
         }
 //        Check if coordinates are correct
@@ -51,10 +51,10 @@ public class SimulationMap implements IMap {
         agent.setMap(this);
 
 //        Place agent
-        agents[x_coord][y_coord] = agent;
+        agents[row][col] = agent;
 //        Remove all values before putting them - so they don't add up with each iteration of the Simulation and cause getAgentPosition to crash
         agentsPositions.removeAll(agent);
-        agentsPositions.putAll(agent, Ints.asList(x_coord,y_coord));
+        agentsPositions.putAll(agent, Ints.asList(row,col));
         return true;
     }
 
