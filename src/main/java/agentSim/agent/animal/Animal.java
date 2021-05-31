@@ -14,8 +14,4 @@ public class Animal extends Agent {
 //        this.recoveryRatio = recovery;
 //        this.contagious = contagious;
     }
-
-    public void infecting(){
-
-    }
 }

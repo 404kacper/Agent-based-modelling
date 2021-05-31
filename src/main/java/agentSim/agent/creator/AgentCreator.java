@@ -33,7 +33,7 @@ public class AgentCreator implements IAgentCreator{
         // - Implement logic for the remaining variables that is : noHealthy, noIll, noImmune, noPeople, peopleRatio
 
         for (int i=0; i<noAnimals; i++) {
-            agentList.add(new Animal(map, random.nextInt(25)+65));
+            agentList.add(new Animal(map, random.nextInt(2)));
         }
 
         return agentList;
