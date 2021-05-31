@@ -32,11 +32,15 @@ public class Simulation {
         int iterations = maxIter;
         System.out.println("Iterations left: " + iterations);
         System.out.println(map.toString());
+
+//        The interactions inside such loop will be only one sided - eg agent1 infects agent2 but agent2 doesnt infect agent1
+//        Because agent1 moves before agent2 has a chance to infect him
         while (--iterations>0) {
             for (IAgent agent : agentList) {
 //                Move agents
+//                System.out.println("Current agent: " + agent);
                 agent.getNeighbours(1);
-                agent.move();
+//                agent.move();
             }
             System.out.println("\n");
             System.out.println("Iterations left: " + iterations);
@@ -48,9 +52,9 @@ public class Simulation {
     public static void main(String[] args) {
         MapCreator currentMap = new MapCreator(4, 5);
 //        Meaningless numbers just to get the simulation running
-        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,1,1);
+        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,3,1);
 //        Seed could be current time if needed
-        Simulation sim = new Simulation(currentMap, currentAgents,0, 4);
+        Simulation sim = new Simulation(currentMap, currentAgents,10, 2);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }

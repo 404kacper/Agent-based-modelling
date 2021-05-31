@@ -15,7 +15,6 @@ public class AgentCreator implements IAgentCreator{
     protected int noPeople;
     protected int noAnimals;
     protected int peopleRatio;
-    protected int animalRatio;
 
     public AgentCreator(int noHealthy, int noIll, int noImmune, int noPeople, int noAnimals, int peopleRatio){
       this.noHealthy = noHealthy;
@@ -34,7 +33,7 @@ public class AgentCreator implements IAgentCreator{
         // - Implement logic for the remaining variables that is : noHealthy, noIll, noImmune, noPeople, peopleRatio
 
         for (int i=0; i<noAnimals; i++) {
-            agentList.add(new Animal(map, random.nextInt(3)));
+            agentList.add(new Animal(map, random.nextInt(25)+65));
         }
 
         return agentList;
