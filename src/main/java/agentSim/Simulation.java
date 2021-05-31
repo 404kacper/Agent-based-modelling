@@ -25,11 +25,11 @@ public class Simulation {
 
     for (int i = 0; i< agentList.size();i++)
         while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim())));
-    this.maxIter = maxIter;
     }
 
     public void runSimulation() {
         int iterations = maxIter;
+
         System.out.println("Iterations left: " + iterations);
         System.out.println(map.toString());
 
@@ -74,10 +74,11 @@ public class Simulation {
 
         MapCreator currentMap = new MapCreator(10, 10);
 //        Meaningless numbers just to get the simulation running
+
         IAgentCreator currentAgents = new AgentCreator(1,1,1,1,20,1);
 
         Simulation sim = new Simulation(currentMap, currentAgents,1, 8);
-        sim.runSimulation();
+
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
 
