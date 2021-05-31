@@ -25,6 +25,7 @@ public class Simulation {
 
     for (int i = 0; i< agentList.size();i++)
         while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim())));
+    this.maxIter=maxIter;
     }
 
     public void runSimulation() {
@@ -43,7 +44,7 @@ public class Simulation {
             }
             for (IAgent agent : agentList) {
 //                Move agents
-//                agent.move();
+                agent.move();
             }
             System.out.println("\n");
             System.out.println("Iterations left: " + iterations);
@@ -78,7 +79,7 @@ public class Simulation {
         IAgentCreator currentAgents = new AgentCreator(1,1,1,1,20,1);
 
         Simulation sim = new Simulation(currentMap, currentAgents,1, 8);
-
+        sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
 
