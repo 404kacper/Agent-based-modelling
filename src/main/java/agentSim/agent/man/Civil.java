@@ -1,4 +1,16 @@
 package agentSim.agent.man;
 
-public class Civil {
+import agentSim.agent.Agent;
+import agentSim.map.IMap;
+
+public class Civil extends Agent {
+    protected double contagious;
+    protected int healthCondition;
+
+    public void infecting(){
+
+    }
+    public Civil(IMap map, int health) {
+        super(map, health);
+    }
 }

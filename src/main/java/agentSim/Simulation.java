@@ -21,34 +21,64 @@ public class Simulation {
     map = mapCreator.createMap();
 
     rnd=new Random(seed);
-    agentList = agentCreator.createAgents(map);
+    agentList = agentCreator.createAgents(map, rnd);
 
-    for (int i = 0; i<agentList.size();i++)
-        while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getSize()), rnd.nextInt(map.getSize())));
-    this.maxIter = maxIter;
+    for (int i = 0; i< agentList.size();i++)
+        while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim())));
     }
 
     public void runSimulation() {
         int iterations = maxIter;
+
+        System.out.println("Iterations left: " + iterations);
         System.out.println(map.toString());
+
         while (--iterations>0) {
-//            Agent list is empty so nothing prints out for now - the map is full of empty cells (#) / agents classes are to be implemented next
+//            Reason for two loops is so that interactions between agents are mutual eg. agent1 can infect agent2 and vice-versa
+            for (IAgent agent : agentList) {
+//                Infect agents only for infected agents
+                if (agent.getHealth() == 1) {
+                    agent.infect(1);
+                }
+            }
             for (IAgent agent : agentList) {
 //                Move agents
-                agent.move();
-//                Print out map after each move
-                System.out.println(map.toString());
+//                agent.move();
             }
+            System.out.println("\n");
+            System.out.println("Iterations left: " + iterations);
+//            Print out map after each iteration
+            System.out.println(map.toString());
         }
     }
 
     public static void main(String[] args) {
-        MapCreator currentMap = new MapCreator(5, 5);
+        //FIXME bug for map size width: 4 height: 5 seed: 7 noAnimals: 3
+        // - only 2 animals are printed out instead of 3 as declared in creator
+        // - the bug persists probably for other seeds
+        // - the issue is with non-square matrices
+        // - most likely there is some logical issue in one of 2d array loops inside the app that prevents 3rd animal from being put onto the map
+        // - therefore for now maps should only be square matrices
+        // - keep in mind that above seed might not work anymore as app changes however the bug will persists in non square maps
+
+        // Notatki do pierwszej podstawowej wersji programu:
+        // Parametry symulacji nie są wprowadzane przez konsolę a przez funkcję main
+        // Następujące paraemtry nie zostały jeszcze zaimplementowane:
+        // -  noHealthy, noIll, noImmune, noPeople i peopleRatio
+        // Następujące klasy nie zostały jeszczę zaimplementowane
+        // - Civil i Medic
+        // Brakujące funkcjonalności to:
+        // - Zdrowienie, uodparnianie się, tracenie odporności,
+        // Co zostało zaimplementowane:
+        // - Ruch agentów po mapie, wzajemne zarażanie się i parametr fieldOfView(w metodzie Agent.getNeighbours)
+
+        MapCreator currentMap = new MapCreator(10, 10);
 //        Meaningless numbers just to get the simulation running
-        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,1,1,1);
-//        Seed could be current time if needed
-        Simulation sim = new Simulation(currentMap, currentAgents,1, 10);
-        sim.runSimulation();
+
+        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,20,1);
+
+        Simulation sim = new Simulation(currentMap, currentAgents,1, 8);
+
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
 
