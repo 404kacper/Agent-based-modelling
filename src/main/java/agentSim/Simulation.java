@@ -39,7 +39,7 @@ public class Simulation {
             for (IAgent agent : agentList) {
 //                Infect agents only for infected agents
                 if (agent.getHealth() == 1) {
-                    agent.infect(1);
+                    agent.infect(1, 2);
                 }
             }
             for (IAgent agent : agentList) {
@@ -61,17 +61,6 @@ public class Simulation {
         // - most likely there is some logical issue in one of 2d array loops inside the app that prevents 3rd animal from being put onto the map
         // - therefore for now maps should only be square matrices
         // - keep in mind that above seed might not work anymore as app changes however the bug will persists in non square maps
-
-        // Notatki do pierwszej podstawowej wersji programu:
-        // Parametry symulacji nie są wprowadzane przez konsolę a przez funkcję main
-        // Następujące paraemtry nie zostały jeszcze zaimplementowane:
-        // -  noHealthy, noIll, noImmune, noPeople i peopleRatio
-        // Następujące klasy nie zostały jeszczę zaimplementowane
-        // - Civil i Medic
-        // Brakujące funkcjonalności to:
-        // - Zdrowienie, uodparnianie się, tracenie odporności,
-        // Co zostało zaimplementowane:
-        // - Ruch agentów po mapie, wzajemne zarażanie się i parametr fieldOfView(w metodzie Agent.getNeighbours)
 
         MapCreator currentMap = new MapCreator(10, 10);
 //        Meaningless numbers just to get the simulation running

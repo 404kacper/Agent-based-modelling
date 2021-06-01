@@ -85,7 +85,7 @@ public class SimulationMap implements IMap {
             }
             for(int j = 0; j < agents[i].length; j++) {
                 if (agents[i][j] == null) {
-                    buff.append("# ");
+                    buff.append("## ");
                 } else {
                     buff.append(agents[i][j].toString());
                 }

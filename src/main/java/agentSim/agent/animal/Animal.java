@@ -14,4 +14,13 @@ public class Animal extends Agent {
 //        this.recoveryRatio = recovery;
 //        this.contagious = contagious;
     }
+    @Override
+    public String toString() {
+        return switch (healthCondition) {
+            case 0 -> TEXT_GREEN+"hA "+TEXT_RESET;
+            case 1 -> TEXT_RED+"iA "+TEXT_RESET;
+            case 2 -> TEXT_BLUE+"rA "+TEXT_RESET;
+            default -> TEXT_YELLOW+"?A "+TEXT_RESET;
+        };
+    }
 }

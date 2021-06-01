@@ -24,32 +24,20 @@ public class Agent extends AAgent implements IAgent, IColors {
         this.healthCondition = health;
     }
 
-    public Multimap<IAgent, Integer> getNeighbours(int fieldOfView) {
-        int currR = map.getAgentPosition(this)[0];
-        int currC = map.getAgentPosition(this)[1];
-        int rowLimit = map.getXDim()-1;
-        int colLimit = map.getYDim()-1;
-
-//        Multimap to store agent and their neighbour locations
-        Multimap<IAgent, Integer> positions = ArrayListMultimap.create();
-
-            for (int x = max(0, currR-fieldOfView); x <= Math.min(currR+fieldOfView, rowLimit); x++) {
-                for (int y = max(0, currC-fieldOfView); y <= min(currC+fieldOfView, colLimit); y++) {
-//                    Check if the x and y aren't coordinates of the agent
-                        if (x != currR || y != currC) {
-//                            Check if neighbour is not empty
-                            if (map.getAgent(x,y) != null) {
-//                                Store positions in multiMap
-                                positions.putAll(this, Ints.asList(x,y));
-                            }
-                        }
-                    }
-                }
-                return positions;
-        }
+    @Override
+    public void move() {
+        do {
+            int position_x = rnd.nextInt(map.getXDim());
+            int position_y = rnd.nextInt(map.getYDim());
+            if (map.getAgent(position_x, position_y) == null) {
+                map.placeAgent(this, position_x, position_y);
+                break;
+            }
+        } while(true);
+    }
 
     @Override
-    public void infect(int fieldOfView) {
+    public void infect(int fieldOfView, int duration) {
         Multimap<IAgent, Integer> neighbours = this.getNeighbours(fieldOfView);
         int row = 0;
         int col;
@@ -80,6 +68,35 @@ public class Agent extends AAgent implements IAgent, IColors {
     }
 
     @Override
+    public void recover() {
+
+    }
+
+    public Multimap<IAgent, Integer> getNeighbours(int fieldOfView) {
+        int currR = map.getAgentPosition(this)[0];
+        int currC = map.getAgentPosition(this)[1];
+        int rowLimit = map.getXDim()-1;
+        int colLimit = map.getYDim()-1;
+
+//        Multimap to store agent and their neighbour locations
+        Multimap<IAgent, Integer> positions = ArrayListMultimap.create();
+
+        for (int x = max(0, currR-fieldOfView); x <= Math.min(currR+fieldOfView, rowLimit); x++) {
+            for (int y = max(0, currC-fieldOfView); y <= min(currC+fieldOfView, colLimit); y++) {
+//                    Check if the x and y aren't coordinates of the agent
+                if (x != currR || y != currC) {
+//                            Check if neighbour is not empty
+                    if (map.getAgent(x,y) != null) {
+//                                Store positions in multiMap
+                        positions.putAll(this, Ints.asList(x,y));
+                    }
+                }
+            }
+        }
+        return positions;
+    }
+
+    @Override
     public void setHealth(int healthStatus) {
         this.healthCondition = healthStatus;
     }
@@ -89,17 +106,6 @@ public class Agent extends AAgent implements IAgent, IColors {
         return this.healthCondition;
     }
 
-    @Override
-    public void move() {
-    do {
-        int position_x = rnd.nextInt(map.getXDim());
-        int position_y = rnd.nextInt(map.getYDim());
-        if (map.getAgent(position_x, position_y) == null) {
-            map.placeAgent(this, position_x, position_y);
-            break;
-        }
-     } while(true);
-    }
 
     @Override
     public String toString() {
