@@ -11,10 +11,10 @@ public class Medic extends Agent {
 
         return new int[0];
     }
-    public void vaccine(){
+    public void vaccine() {
 
     }
-    public Medic(IMap map, int health) {
-        super(map, health);
+    public Medic(IMap map, int health, int infDuration, int resDuration) {
+        super(map, health, infDuration, resDuration);
     }
 }

@@ -12,4 +12,5 @@ public interface IAgent {
     public void setHealth(int healthStatus);
     public IMap getMap();
     public void setMap(IMap map);
+    public void setInfectionDuration(int infectionDuration);
 }

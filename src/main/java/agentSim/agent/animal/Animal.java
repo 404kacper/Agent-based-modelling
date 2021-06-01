@@ -8,12 +8,13 @@ public class Animal extends Agent {
 //    protected double recoveryRatio;
 //    protected double contagious;
 
-    public Animal(IMap map, int health) {
-        super(map, health);
+    public Animal(IMap map, int health, int infDuration, int resDuration) {
+        super(map, health, infDuration, resDuration);
 //        this.speedRatio = speed;
 //        this.recoveryRatio = recovery;
 //        this.contagious = contagious;
     }
+
     @Override
     public String toString() {
         return switch (healthCondition) {
