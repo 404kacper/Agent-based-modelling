@@ -13,15 +13,22 @@ import static com.google.common.primitives.Ints.min;
 public class Agent extends AAgent implements IAgent, IColors {
 
     protected Random rnd;
-//    !!! Current seed isn't the same as the one being passed in Simulation class
-    protected long seed=0;
+    protected long seed;
     protected int healthCondition;
+    protected int infectionDuration;
+    protected int resistanceDuration;
 
 
-    public Agent(IMap map, int health) {
+    public Agent(IMap map, int health, int infDuration, int resDuration) {
         super(map);
+//        !!! Current seed isn't the same as the one being passed in Simulation class
+        this.seed = 0;
         rnd = new Random(seed);
         this.healthCondition = health;
+//        If generated agent is ill then set duration for infection, if it isn't then keep it at 0
+        this.infectionDuration = (healthCondition == 1) ? infDuration : 0 ;
+//        Same as above but for resistant agents
+        this.resistanceDuration = (healthCondition == 2) ? resDuration : 0 ;
     }
 
     @Override
@@ -54,6 +61,8 @@ public class Agent extends AAgent implements IAgent, IColors {
 //                    If target agent is healthy then infect
                     if (toBeInfected.getHealth() == 0) {
                         toBeInfected.setHealth(1);
+//                        Set infection duration for infected agents
+                        toBeInfected.setInfectionDuration(duration);
                         amount++;
                     }
                 } else {
@@ -69,7 +78,30 @@ public class Agent extends AAgent implements IAgent, IColors {
 
     @Override
     public void recover() {
-
+//        Part for recovering from infection
+        if (infectionDuration > 0 ) {
+            infectionDuration--;
+//            Once infection duration is 0 then set the agent to be healthy
+//            healthCondition == 1 is there to ensure only ill agents can recover
+            if (infectionDuration == 0 && healthCondition == 1) {
+                healthCondition = 0;
+            }
+//            Prevents infectionDuration from having negative values (just in case)
+        } else if (infectionDuration < 0) {
+            infectionDuration = 0;
+        }
+//        Part for losing resistance
+        if (resistanceDuration> 0 ) {
+            resistanceDuration--;
+//            Once infection duration is 0 then set the agent to be healthy
+//            healthCondition == 2 is there to ensure only resistant agents can recover
+            if (resistanceDuration == 0 && healthCondition == 2) {
+                healthCondition = 0;
+            }
+//            Prevents infectionDuration from having negative values (just in case)
+        } else if (resistanceDuration < 0) {
+            resistanceDuration = 0;
+        }
     }
 
     public Multimap<IAgent, Integer> getNeighbours(int fieldOfView) {
@@ -104,6 +136,11 @@ public class Agent extends AAgent implements IAgent, IColors {
     @Override
     public int getHealth() {
         return this.healthCondition;
+    }
+
+    @Override
+    public void setInfectionDuration(int infectionDuration) {
+        this.infectionDuration = infectionDuration;
     }
 
 

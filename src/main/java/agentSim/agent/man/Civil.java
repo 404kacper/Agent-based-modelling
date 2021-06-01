@@ -10,7 +10,7 @@ public class Civil extends Agent {
     public void infecting(){
 
     }
-    public Civil(IMap map, int health) {
-        super(map, health);
+    public Civil(IMap map, int health, int infDuration, int resDuration) {
+        super(map, health, infDuration, resDuration);
     }
 }

@@ -31,24 +31,30 @@ public class Simulation {
     public void runSimulation() {
         int iterations = maxIter;
 
+//        Print initial state of the map
         System.out.println("Iterations left: " + iterations);
         System.out.println(map.toString());
 
         while (--iterations>0) {
-//            Reason for two loops is so that interactions between agents are mutual eg. agent1 can infect agent2 and vice-versa
+//            Reason for three loops is so that interactions between agents are mutual eg. agent1 can infect agent2 and vice-versa
+//            Agents should move only after they were able to interact with each other
             for (IAgent agent : agentList) {
-//                Infect agents only for infected agents
+//                Recover agents that are both resistant and infected
+                agent.recover();
+            }
+            for (IAgent agent : agentList) {
+//                Execute infect agents only for infected agents
                 if (agent.getHealth() == 1) {
-                    agent.infect(1, 2);
+//                    The infection duration can be different from the one in AgentCreator
+                    agent.infect(1, 4);
                 }
             }
             for (IAgent agent : agentList) {
-//                Move agents
                 agent.move();
             }
+//            Print out map after each iteration
             System.out.println("\n");
             System.out.println("Iterations left: " + iterations);
-//            Print out map after each iteration
             System.out.println(map.toString());
         }
     }
@@ -67,7 +73,7 @@ public class Simulation {
 
         IAgentCreator currentAgents = new AgentCreator(1,1,1,1,20,1);
 
-        Simulation sim = new Simulation(currentMap, currentAgents,1, 8);
+        Simulation sim = new Simulation(currentMap, currentAgents,6, 20);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
