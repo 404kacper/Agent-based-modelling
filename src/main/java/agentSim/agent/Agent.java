@@ -91,14 +91,13 @@ public class Agent extends AAgent implements IAgent, IColors {
             infectionDuration = 0;
         }
 //        Part for losing resistance
-        if (resistanceDuration> 0 ) {
+        if (resistanceDuration > 0 ) {
             resistanceDuration--;
-//            Once infection duration is 0 then set the agent to be healthy
+//            Once resistance duration is 0 then set the agent to be healthy
 //            healthCondition == 2 is there to ensure only resistant agents can recover
             if (resistanceDuration == 0 && healthCondition == 2) {
                 healthCondition = 0;
             }
-//            Prevents infectionDuration from having negative values (just in case)
         } else if (resistanceDuration < 0) {
             resistanceDuration = 0;
         }
