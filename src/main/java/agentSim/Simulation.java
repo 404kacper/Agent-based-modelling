@@ -52,7 +52,7 @@ public class Simulation {
                 }
             }
             for (IAgent agent : agentList) {
-                agent.move(2, agent);
+                agent.move(1, agent);
             }
 //            Print out map after each iteration
             System.out.println("\n");
@@ -69,6 +69,11 @@ public class Simulation {
         // - most likely there is some logical issue in one of 2d array loops inside the app that prevents 3rd animal from being put onto the map
         // - therefore for now maps should only be square matrices
         // - keep in mind that above seed might not work anymore as app changes however the bug will persists in non square maps
+
+        //TODO ideas:
+        // - testing for:
+        // - hashCodes of classes - making sure they stay unchanged during the course of simulation
+        // - amount of agents - shouldn't change throughout the animation
 
         MapCreator currentMap = new MapCreator(5, 5);
 //        Meaningless numbers just to get the simulation running
