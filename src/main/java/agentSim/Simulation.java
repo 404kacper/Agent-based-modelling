@@ -52,7 +52,7 @@ public class Simulation {
                 }
             }
             for (IAgent agent : agentList) {
-                agent.move(2);
+                agent.move(2, agent);
             }
 //            Print out map after each iteration
             System.out.println("\n");
@@ -70,7 +70,7 @@ public class Simulation {
         // - therefore for now maps should only be square matrices
         // - keep in mind that above seed might not work anymore as app changes however the bug will persists in non square maps
 
-        MapCreator currentMap = new MapCreator(10, 10);
+        MapCreator currentMap = new MapCreator(5, 5);
 //        Meaningless numbers just to get the simulation running
 
         IAgentCreator currentAgents = new AgentCreator(1,1,1,1,10,1);

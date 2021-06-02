@@ -32,9 +32,11 @@ public class Agent extends AAgent implements IAgent, IColors {
     }
 
     @Override
-    public void move(int speed) {
-        int currR = map.getAgentPosition(this)[0];
-        int currC = map.getAgentPosition(this)[1];
+    public void move(int speed, IAgent currentAgent) {
+        int initialRow =map.getAgentPosition(this)[0];
+        int initialColumn =map.getAgentPosition(this)[1];
+        int currR = initialRow;
+        int currC = initialColumn;
 
         int rowLimit = map.getXDim()-1;
         int colLimit = map.getYDim()-1;
@@ -83,12 +85,14 @@ public class Agent extends AAgent implements IAgent, IColors {
                     currR = Math.min(currR+distance, rowLimit);
                     currC = Math.max(0, currC-distance);
                     break;
-//            Stay in place - keep the current values and move to the placement part of the loop
+//            Stay in place - keep the initial values and move to the placement part of the loop
                 case 9:
+                    currR = initialRow;
+                    currC = initialColumn;
                     break;
             }
 //            Break loop if the neighbour cell is empty or is itself (that way infinite loop will be avoided in case all neighbours are taken)
-            if (map.getAgent(currR,currC) == null || map.getAgent(currR,currC) == this) {
+            if (map.getAgent(currR,currC) == null || map.getAgent(currR,currC) == currentAgent) {
 //                New function to place agents was required in order to account for case when agent is surrounded only by agents and is unable to move
 //                In such case the function should keep looping until the moment it generates number 9 and keeps the agent in its place
                 map.placeAgentInclusive(this, currR, currC);
