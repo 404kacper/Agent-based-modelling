@@ -23,8 +23,10 @@ public class Simulation {
     rnd=new Random(seed);
     agentList = agentCreator.createAgents(map, rnd);
 
+//    Initialize map with all of the agents in list
     for (int i = 0; i< agentList.size();i++)
         while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim())));
+
     this.maxIter=maxIter;
     }
 
@@ -50,7 +52,7 @@ public class Simulation {
                 }
             }
             for (IAgent agent : agentList) {
-                agent.move();
+                agent.move(1, agent);
             }
 //            Print out map after each iteration
             System.out.println("\n");
@@ -68,12 +70,17 @@ public class Simulation {
         // - therefore for now maps should only be square matrices
         // - keep in mind that above seed might not work anymore as app changes however the bug will persists in non square maps
 
-        MapCreator currentMap = new MapCreator(10, 10);
+        //TODO ideas:
+        // - testing for:
+        // - hashCodes of classes - making sure they stay unchanged during the course of simulation
+        // - amount of agents - shouldn't change throughout the animation
+
+        MapCreator currentMap = new MapCreator(5, 5);
 //        Meaningless numbers just to get the simulation running
 
-        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,20,1);
+        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,10,1);
 
-        Simulation sim = new Simulation(currentMap, currentAgents,6, 20);
+        Simulation sim = new Simulation(currentMap, currentAgents,6, 10);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
