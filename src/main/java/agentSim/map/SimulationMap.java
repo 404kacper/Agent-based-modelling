@@ -47,7 +47,7 @@ public class SimulationMap implements IMap {
         if (coordinates[0] >= 0 || coordinates[1] >= 0) {
             agents[coordinates[0]][coordinates[1]] = null;
         }
-//        Uncomment this once agent class is implemented
+
         agent.setMap(this);
 
 //        Place agent
@@ -56,6 +56,21 @@ public class SimulationMap implements IMap {
         agentsPositions.removeAll(agent);
         agentsPositions.putAll(agent, Ints.asList(row,col));
         return true;
+    }
+
+    @Override
+    public void placeAgentInclusive(IAgent agent, int row, int col) {
+        int[] coordinates = getAgentPosition(agent);
+//        Check if coordinates are correct
+        if (coordinates[0] >= 0 || coordinates[1] >= 0) {
+            agents[coordinates[0]][coordinates[1]] = null;
+        }
+        agent.setMap(this);
+//        Place agent
+        agents[row][col] = agent;
+//        Remove all values before putting them - so they don't add up with each iteration of the Simulation and cause getAgentPosition to crash
+        agentsPositions.removeAll(agent);
+        agentsPositions.putAll(agent, Ints.asList(row,col));
     }
 
     @Override

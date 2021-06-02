@@ -32,16 +32,80 @@ public class Agent extends AAgent implements IAgent, IColors {
     }
 
     @Override
-    public void move() {
+    public void move(int speed) {
+        int currR = map.getAgentPosition(this)[0];
+        int currC = map.getAgentPosition(this)[1];
+
+        int rowLimit = map.getXDim()-1;
+        int colLimit = map.getYDim()-1;
+
+        int distance = speed;
+
         do {
-            int position_x = rnd.nextInt(map.getXDim());
-            int position_y = rnd.nextInt(map.getYDim());
-            if (map.getAgent(position_x, position_y) == null) {
-                map.placeAgent(this, position_x, position_y);
+//        Exclusive range - number between 0-7 and +1 to fulfill condition of 8 neighbour directions
+//            Currently the numbers are an even distribution however it can be easily changed
+//            with swapping the generated num variable to double and adjusting case conditions to match desired probabilities
+            int num = rnd.nextInt(9)+1;
+            switch (num) {
+//            Move down
+                case 1:
+                    currR = Math.max(0, currR-distance);
+                    break;
+//            Move up
+                case 2:
+                    currR = Math.min(currR+distance, rowLimit);
+                    break;
+//            Move left
+                case 3:
+                    currC = Math.max(0, currC-distance);
+                    break;
+//            Move right
+                case 4:
+                    currC = Math.min(currC+distance, colLimit);
+                    break;
+//            Move down right
+                case 5:
+                    currR = Math.max(0, currR-distance);
+                    currC = Math.min(currC+distance, colLimit);
+                    break;
+//            Move down left
+                case 6:
+                    currR = Math.max(0, currR-distance);
+                    currC = Math.max(0, currC-distance);
+                    break;
+//            Move up right
+                case 7:
+                    currR = Math.min(currR+distance, rowLimit);
+                    currC = Math.min(currC+distance, colLimit);
+                    break;
+//            Move up left
+                case 8:
+                    currR = Math.min(currR+distance, rowLimit);
+                    currC = Math.max(0, currC-distance);
+                    break;
+//            Stay in place - keep the current values and move to the placement part of the loop
+                case 9:
+                    break;
+            }
+//            Break loop if the neighbour cell is empty or is itself (that way infinite loop will be avoided in case all neighbours are taken)
+            if (map.getAgent(currR,currC) == null || map.getAgent(currR,currC) == this) {
+//                New function to place agents was required in order to account for case when agent is surrounded only by agents and is unable to move
+//                In such case the function should keep looping until the moment it generates number 9 and keeps the agent in its place
+                map.placeAgentInclusive(this, currR, currC);
                 break;
             }
-        } while(true);
+        } while (true);
     }
+
+//            Old function for moving the agent
+//        do {
+//            int position_x = rnd.nextInt(map.getXDim());
+//            int position_y = rnd.nextInt(map.getYDim());
+//            if (map.getAgent(position_x, position_y) == null) {
+//                map.placeAgent(this, position_x, position_y);
+//                break;
+//            }
+//        } while(true);
 
     @Override
     public void infect(int fieldOfView, int duration) {
@@ -103,6 +167,7 @@ public class Agent extends AAgent implements IAgent, IColors {
         }
     }
 
+    @Override
     public Multimap<IAgent, Integer> getNeighbours(int fieldOfView) {
         int currR = map.getAgentPosition(this)[0];
         int currC = map.getAgentPosition(this)[1];
