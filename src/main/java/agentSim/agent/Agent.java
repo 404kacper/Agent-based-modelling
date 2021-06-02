@@ -99,7 +99,6 @@ public class Agent extends AAgent implements IAgent, IColors {
                 break;
             }
         } while (true);
-    }
 
 //            Old function for moving the agent
 //        do {
@@ -110,6 +109,8 @@ public class Agent extends AAgent implements IAgent, IColors {
 //                break;
 //            }
 //        } while(true);
+
+    }
 
     @Override
     public void infect(int fieldOfView, int duration) {

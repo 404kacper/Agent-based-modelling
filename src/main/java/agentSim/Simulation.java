@@ -71,9 +71,18 @@ public class Simulation {
         // - keep in mind that above seed might not work anymore as app changes however the bug will persists in non square maps
 
         //TODO ideas:
-        // - testing for:
+        // A new way of printing is necessary:
+        // - either restructure the app to be a window app in JavaFX
+        // - or rewrite the printing in runSimulation to be reflective of every change that happens during an iteration
+        // - eg. agent is infected - update the map or agent moves - update the map
+        // - one more thing for printing is to keep track of how many agents for each of the class are on the map during given iteration
+        // Testing for:
         // - hashCodes of classes - making sure they stay unchanged during the course of simulation
         // - amount of agents - shouldn't change throughout the animation
+        // - ...
+        // Change to infection method:
+        // - make infection probability based, then make the probability of such infection to be dependant on distance (higher distance less prob for infection)
+        // - add death after infectionIteration hits 0
 
         MapCreator currentMap = new MapCreator(5, 5);
 //        Meaningless numbers just to get the simulation running
