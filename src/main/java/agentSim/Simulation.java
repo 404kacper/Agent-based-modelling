@@ -52,7 +52,7 @@ public class Simulation {
                 }
             }
             for (IAgent agent : agentList) {
-                agent.move(1, agent);
+                agent.move(1);
             }
 //            Print out map after each iteration
             System.out.println("\n");

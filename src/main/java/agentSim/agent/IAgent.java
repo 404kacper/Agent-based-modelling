@@ -4,7 +4,7 @@ import agentSim.map.IMap;
 import com.google.common.collect.Multimap;
 
 public interface IAgent {
-    public void move(int speed, IAgent currentAgent);
+    public void move(int speed);
     public void infect(int fieldOfView, int duration);
     public void recover();
     public Multimap<IAgent, Integer> getNeighbours(int fieldOfView);
