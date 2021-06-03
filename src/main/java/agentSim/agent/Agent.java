@@ -18,7 +18,6 @@ public class Agent extends AAgent implements IAgent, IColors {
     protected int infectionDuration;
     protected int resistanceDuration;
 
-
     public Agent(IMap map, int health, int infDuration, int resDuration) {
         super(map);
 //        !!! Current seed isn't the same as the one being passed in Simulation class
@@ -118,7 +117,6 @@ public class Agent extends AAgent implements IAgent, IColors {
         int row = 0;
         int col;
         int i = 0;
-        int amount = 0;
         IAgent toBeInfected;
 
 //        Two coordinates are stored repetitively so just iterate over even and uneven values from neighbours
@@ -132,17 +130,12 @@ public class Agent extends AAgent implements IAgent, IColors {
                         toBeInfected.setHealth(1);
 //                        Set infection duration for infected agents
                         toBeInfected.setInfectionDuration(duration);
-                        amount++;
                     }
                 } else {
                     row = value;
                 }
                 i++;
             }
-//        Print how many agents were infected
-        if (amount > 0) {
-            System.out.println("Infected : " + amount + " agent/s");
-        }
     }
 
     @Override
@@ -210,6 +203,11 @@ public class Agent extends AAgent implements IAgent, IColors {
     @Override
     public void setInfectionDuration(int infectionDuration) {
         this.infectionDuration = infectionDuration;
+    }
+
+    @Override
+    public void setResistanceDuration(int resistanceDuration) {
+        this.resistanceDuration = resistanceDuration;
     }
 
 
