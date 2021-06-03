@@ -3,6 +3,7 @@ package agentSim;
 import agentSim.agent.IAgent;
 import agentSim.agent.creator.AgentCreator;
 import agentSim.agent.creator.IAgentCreator;
+import agentSim.agent.man.Medic;
 import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
 import agentSim.map.creator.MapCreator;
@@ -50,6 +51,14 @@ public class Simulation {
 //                    The infection duration can be different from the one in AgentCreator
                     agent.infect(1, 4);
                 }
+//                Execute vaccinate only for medics
+                if (agent instanceof Medic) {
+//                    The infection duration can be different from the one in AgentCreator
+//                    Down-casting object although in a safe way since instanceof check is done
+//                    Vaccinate could also be empty function in agent class although that would be confusing
+//                    Since vaccinate isn't common for all agents, going further infection could be removed from agent
+                    ((Medic) agent).vaccinate(1,1);
+                }
             }
             for (IAgent agent : agentList) {
                 agent.move(1);
@@ -85,11 +94,10 @@ public class Simulation {
         // - add death after infectionIteration hits 0
 
         MapCreator currentMap = new MapCreator(5, 5);
-//        Meaningless numbers just to get the simulation running
 
         IAgentCreator currentAgents = new AgentCreator(1,1,1,1,10,1);
 
-        Simulation sim = new Simulation(currentMap, currentAgents,6, 10);
+        Simulation sim = new Simulation(currentMap, currentAgents,7, 10);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }

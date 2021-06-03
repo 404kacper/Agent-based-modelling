@@ -13,4 +13,5 @@ public interface IAgent {
     public IMap getMap();
     public void setMap(IMap map);
     public void setInfectionDuration(int infectionDuration);
+    public void setResistanceDuration(int resistanceDuration);
 }
