@@ -10,7 +10,7 @@ import java.util.Random;
 import static com.google.common.primitives.Ints.max;
 import static com.google.common.primitives.Ints.min;
 
-public class Agent extends AAgent implements IAgent, IColors {
+public abstract class Agent extends AAgent implements IAgent, IColors {
 
     protected Random rnd;
     protected long seed;
@@ -199,6 +199,10 @@ public class Agent extends AAgent implements IAgent, IColors {
     public int getHealth() {
         return this.healthCondition;
     }
+
+    //@Override
+    //public abstract int moveRatio();
+
 
     @Override
     public void setInfectionDuration(int infectionDuration) {

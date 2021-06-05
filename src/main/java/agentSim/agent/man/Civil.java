@@ -8,7 +8,9 @@ public class Civil extends Agent {
     public Civil(IMap map, int health, int infDuration, int resDuration) {
         super(map, health, infDuration, resDuration);
     }
-
+    public void move(){
+        move(1);
+    }
     @Override
     public String toString() {
         return switch (healthCondition) {
