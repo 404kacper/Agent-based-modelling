@@ -8,6 +8,7 @@ import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
 import agentSim.map.creator.MapCreator;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Random;
 
@@ -22,7 +23,11 @@ public class Simulation {
     map = mapCreator.createMap();
 
     rnd=new Random(seed);
-    agentList = agentCreator.createAgents(map, rnd);
+        try {
+            agentList = agentCreator.createAgents(map, rnd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //    Initialize map with all of the agents in list
     for (int i = 0; i< agentList.size();i++)
@@ -43,13 +48,13 @@ public class Simulation {
 //            Agents should move only after they were able to interact with each other
             for (IAgent agent : agentList) {
 //                Recover agents that are both resistant and infected
-                agent.recover();
+//                agent.recover();
             }
             for (IAgent agent : agentList) {
 //                Execute infect agents only for infected agents
                 if (agent.getHealth() == 1) {
 //                    The infection duration can be different from the one in AgentCreator
-                    agent.infect(1, 4);
+//                    agent.infect(1, 4);
                 }
 //                Execute vaccinate only for medics
                 if (agent instanceof Medic) {
@@ -57,7 +62,7 @@ public class Simulation {
 //                    Down-casting object although in a safe way since instanceof check is done
 //                    Vaccinate could also be empty function in agent class although that would be confusing
 //                    Since vaccinate isn't common for all agents, going further infection could be removed from agent
-                    ((Medic) agent).vaccinate(1,1);
+//                    ((Medic) agent).vaccinate(1,1);
                 }
             }
             for (IAgent agent : agentList) {
@@ -95,9 +100,14 @@ public class Simulation {
 
         MapCreator currentMap = new MapCreator(5, 5);
 
-        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,10,1);
+        IAgentCreator currentAgents = new AgentCreator(3,3,3,6,3,0);
+//        Div by 12 is what gives me the right result
+//        3,3,3,6,3,0
+//        IAgentCreator currentAgents = new AgentCreator(2,2,2,3,3,0);
 
-        Simulation sim = new Simulation(currentMap, currentAgents,7, 10);
+
+
+        Simulation sim = new Simulation(currentMap, currentAgents,7, 2);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
