@@ -58,11 +58,9 @@ public class AgentCreator implements IAgentCreator {
 //        Add remaining agents
         int j = 0;
         for (int i = 0; i<noAnimals; i++, j++) {
-            System.out.println("Adding health status for animal: " + agentStatus[j]);
             agentList.add(new Animal(map, agentStatus[j], agentStatus[j]==1 ? 2:0, agentStatus[j]==2 ? 3:0));
         }
         for (int i = 0; i<noCivil; i++, j++) {
-            System.out.println("Adding health status for civil: " + agentStatus[j]);
             agentList.add(new Civil(map, agentStatus[j], agentStatus[j]==1 ? 2:0, agentStatus[j]==2 ? 3:0));
         }
 
