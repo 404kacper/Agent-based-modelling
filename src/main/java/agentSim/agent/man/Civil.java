@@ -4,8 +4,6 @@ import agentSim.agent.Agent;
 import agentSim.map.IMap;
 
 public class Civil extends Agent {
-    protected double contagious;
-    protected int healthCondition;
 
     public Civil(IMap map, int health, int infDuration, int resDuration) {
         super(map, health, infDuration, resDuration);
