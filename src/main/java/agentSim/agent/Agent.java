@@ -25,9 +25,9 @@ public class Agent extends AAgent implements IAgent, IColors {
         rnd = new Random(seed);
         this.healthCondition = health;
 //        If generated agent is ill then set duration for infection, if it isn't then keep it at 0
-        this.infectionDuration = (healthCondition == 1) ? infDuration : 0 ;
+        this.infectionDuration = infDuration;
 //        Same as above but for resistant agents
-        this.resistanceDuration = (healthCondition == 2) ? resDuration : 0 ;
+        this.resistanceDuration = resDuration;
     }
 
     @Override
