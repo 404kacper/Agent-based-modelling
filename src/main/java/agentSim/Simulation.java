@@ -1,14 +1,15 @@
 package agentSim;
 
 import agentSim.agent.IAgent;
+import agentSim.agent.animal.Animal;
 import agentSim.agent.creator.AgentCreator;
 import agentSim.agent.creator.IAgentCreator;
+import agentSim.agent.man.Civil;
 import agentSim.agent.man.Medic;
 import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
 import agentSim.map.creator.MapCreator;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Random;
 
@@ -66,7 +67,15 @@ public class Simulation {
                 }
             }
             for (IAgent agent : agentList) {
-                agent.move(1);
+                if (agent instanceof Civil) {
+                    ((Civil) agent).move();
+                }
+                if (agent instanceof Medic) {
+                    ((Medic) agent).move();
+                }
+                if (agent instanceof Animal) {
+                    ((Animal) agent).move();
+                }
             }
 //            Print out map after each iteration
             System.out.println("\n");

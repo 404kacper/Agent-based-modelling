@@ -14,6 +14,9 @@ public class Animal extends Agent {
 //        this.recoveryRatio = recovery;
 //        this.contagious = contagious;
     }
+    public void move(){
+       move(2);
+    }
 
     @Override
     public String toString() {
