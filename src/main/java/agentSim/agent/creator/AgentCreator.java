@@ -32,12 +32,18 @@ public class AgentCreator implements IAgentCreator {
     @Override
     public List<IAgent> createAgents(IMap map, Random random) throws Exception{
         List <IAgent> agentList = new LinkedList<>();
-        int agentsAmount = 0;
-        int healthyAgents = 0;
-        int illAgents = 0;
-        int immuneAgents = 0;
-        int maxAgents = noMedics+noAnimals+noCivil;
 
+        int maxAgents = noMedics+noAnimals+noCivil;
+        double sumTheRatio = noHealthy+noIll+noImmune;
+        double animalPart = noAnimals/sumTheRatio;
+        double ratioHealthyAnimal = noHealthy*animalPart;
+        double ratioIllAnimal = noIll*animalPart;
+        double ratioImmuneAnimal = noImmune*animalPart;
+
+        double civilPart = noCivil/sumTheRatio;
+        double ratioHealthyCivil = noHealthy*civilPart;
+        double ratioIllCivil = noIll*civilPart;
+        double ratioImmuneCivil = noImmune*civilPart;
 
         if (noHealthy+noIll+noImmune != noCivil+noAnimals+noMedics) {
             throw new Exception("Number of agents must be equal to the sum of their health states.");
@@ -45,43 +51,15 @@ public class AgentCreator implements IAgentCreator {
             throw new Exception("Number of medics must be greater or equal to number of immune agents");
         }
 
-        while (agentsAmount < maxAgents) {
-//            Add all possible healthy agents
-            if (healthyAgents < noHealthy) {
-                agentList.add(new Animal(map, 0, 0, 0));
-                agentsAmount++;
-                healthyAgents++;
-                System.out.println(healthyAgents);
-            }
-            if (healthyAgents < noHealthy) {
-                agentList.add(new Civil(map, 0, 0, 0));
-                agentsAmount++;
-                healthyAgents++;
-                System.out.println(healthyAgents);
-            }
-//            Add all possible ill agents
-            if (illAgents < noIll) {
-                agentList.add(new Animal(map, 1, 2, 0));
-                agentsAmount++;
-                illAgents++;
-            }
-            if (illAgents < noIll) {
-                agentList.add(new Civil(map, 1, 2, 0));
-                agentsAmount++;
-                illAgents++;
-            }
-            if (immuneAgents < noImmune) {
-                agentList.add(new Animal(map, 2, 0, 2));
-                agentsAmount++;
-                immuneAgents++;
-            }
-            if (immuneAgents < noImmune) {
-                agentList.add(new Civil(map, 2, 0, 2));
-                agentsAmount++;
-                immuneAgents++;
-            }
-        }
+//        The only issue is when ratios of agent health states is 1:1:1
+//        - for example for ratios like 18:18:18 and 26 civilians 28 animals will give 27 agents for both animals and civilians (+/- 1 from expected numbers)
+//        - another example 7:7:7 and 1 civil and 20 animals will give 0 agents for civilians and 21 agents for animals (+/- 1 from expected numbers)
+//        - another example 14:14:14 and 38 civilians and 4 animals will give 39 agents for civilians and 3 agents for animals (+/- 1 from expected numbers)
 
+        System.out.println("Ratio number for animals:\n healthy - " + ratioHealthyAnimal + " ill - " + ratioIllAnimal + " immune - " + ratioImmuneAnimal);
+        System.out.println("Rounded ratio number for animals:\n healthy - " + Math.round(ratioHealthyAnimal) + " ill - " + Math.round(ratioIllAnimal) + " immune - " + Math.round(ratioImmuneAnimal));
+        System.out.println("Ratio number for civilians:\n healthy - " + ratioHealthyCivil + " ill - " + ratioIllCivil + " immune - " + ratioImmuneCivil);
+        System.out.println("Rounded ratio number for civilians:\n healthy - " + Math.round(ratioHealthyCivil) + " ill - " + Math.round(ratioIllCivil) + " immune - " + Math.round(ratioImmuneCivil));
 
         return agentList;
     }

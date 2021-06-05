@@ -100,7 +100,7 @@ public class Simulation {
 
         MapCreator currentMap = new MapCreator(5, 5);
 
-        IAgentCreator currentAgents = new AgentCreator(3,3,3,6,3,0);
+        IAgentCreator currentAgents = new AgentCreator(1,1,1,2,1,0);
 //        Div by 12 is what gives me the right result
 //        3,3,3,6,3,0
 //        IAgentCreator currentAgents = new AgentCreator(2,2,2,3,3,0);
