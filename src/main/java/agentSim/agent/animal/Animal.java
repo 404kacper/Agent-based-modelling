@@ -17,6 +17,7 @@ public class Animal extends Agent {
     public void move(){
        move(2);
     }
+
     @Override
     public String toString() {
         return switch (healthCondition) {
