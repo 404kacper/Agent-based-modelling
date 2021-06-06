@@ -37,15 +37,10 @@ public class SimulationMap implements IMap {
 
     @Override
     public boolean placeAgent(IAgent agent, int row, int col) {
-        int[] coordinates = getAgentPosition(agent);
 
 //        Check if the position is already occupied
         if (agents[row][col] != null) {
             return false;
-        }
-//        Check if coordinates are correct
-        if (coordinates[0] >= 0 || coordinates[1] >= 0) {
-            agents[coordinates[0]][coordinates[1]] = null;
         }
 
         agent.setMap(this);

@@ -10,9 +10,17 @@ public class Medic extends Agent {
     public Medic(IMap map, int health, int infDuration, int resDuration) {
         super(map, health, infDuration, resDuration);
     }
+
+    @Override
+    public void infect() throws Exception {
+        throw new Exception(this+ "object of hash code: "+ this.hashCode() +" is unable to invoke infection method. \n Medic objects shouldn't be allowed to access infection method.");
+    }
+
+    @Override
     public void move(){
         move(1);
     }
+
     public void vaccinate(int fieldOfView, int duration) {
         Multimap<IAgent, Integer> neighbours = this.getNeighbours(fieldOfView);
         int row = 0;

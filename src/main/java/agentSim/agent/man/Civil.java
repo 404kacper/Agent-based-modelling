@@ -8,6 +8,13 @@ public class Civil extends Agent {
     public Civil(IMap map, int health, int infDuration, int resDuration) {
         super(map, health, infDuration, resDuration);
     }
+
+//    Specific infection implementation for Civil agents
+    @Override
+    public void infect() {
+        infect(1,4, 0.5);
+    }
+//    Specific move implementation for Civil agents
     public void move(){
         move(1);
     }

@@ -8,6 +8,13 @@ public class Animal extends Agent {
     public Animal(IMap map, int health, int infDuration, int resDuration) {
         super(map, health, infDuration, resDuration);
     }
+//    Specific infection implementation for Animal agents
+    @Override
+    public void infect() {
+        infect(1,4, 0.5);
+    }
+//    Specific move implementation for Animal agents
+    @Override
     public void move(){
         move(2);
     }

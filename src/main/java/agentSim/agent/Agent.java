@@ -89,11 +89,11 @@ public abstract class Agent extends AAgent implements IColors {
             }
 //            Break loop if the neighbour cell is empty or is itself (that way infinite loop will be avoided in case all neighbours are taken)
             if (map.getAgent(currR,currC) == null || map.getAgent(currR,currC) == this) {
-                if (currR == initialRow && currC == initialColumn) {
-                    System.out.println(this + " stays in place");
-                } else {
-                    System.out.println(this + " has moved");
-                }
+//                if (currR == initialRow && currC == initialColumn) {
+//                    System.out.println(this + " stays in place");
+//                } else {
+//                    System.out.println(this + " has moved");
+//                }
 //                New function to place agents was required in order to account for case when agent is surrounded only by agents and is unable to move
 //                In such case the function should keep looping until the moment it generates number 9 and keeps the agent in its place
                 map.placeAgentInclusive(this, currR, currC);
@@ -113,12 +113,12 @@ public abstract class Agent extends AAgent implements IColors {
 
     }
 
-    @Override
-    public void infect(int fieldOfView, int duration) {
+    public void infect(int fieldOfView, int duration, double probability) {
         Multimap<IAgent, Integer> neighbours = this.getNeighbours(fieldOfView);
         int row = 0;
         int col;
         int i = 0;
+        double genProb = rnd.nextDouble();
         IAgent toBeInfected;
 
 //        Two coordinates are stored repetitively so just iterate over even and uneven values from neighbours
@@ -127,8 +127,9 @@ public abstract class Agent extends AAgent implements IColors {
                 if ( i % 2 != 0) {
                     col = value;
                     toBeInfected = map.getAgent(row, col);
-//                    If target agent is healthy then infect
-                    if (toBeInfected.getHealth() == 0) {
+//                    If target agent is healthy then infect and prob is right
+//                    Quick prob description 1 - being 100% 0 - being 0 %
+                    if (toBeInfected.getHealth() == 0 && genProb <= probability) {
                         toBeInfected.setHealth(1);
 //                        Set infection duration for infected agents
                         toBeInfected.setInfectionDuration(duration);

@@ -22,6 +22,7 @@ public class Simulation {
     map = mapCreator.createMap();
 
     rnd=new Random(seed);
+//    Catch the exception defined in AgentCreator class
         try {
             agentList = agentCreator.createAgents(map, rnd);
         } catch (Exception e) {
@@ -52,10 +53,15 @@ public class Simulation {
                 agent.recover();
             }
             for (IAgent agent : agentList) {
-//                Execute infect agents only for infected agents
+//                Execute infect only for infected agents
                 if (agent.getHealth() == 1) {
-//                    The infection duration can be different from the one in AgentCreator
-                    agent.infect(1, 4);
+//                    Catch the exception defined in medic class
+                    try {
+                        agent.infect();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
 //                Execute vaccinate only for medics
                 if (agent instanceof Medic) {
@@ -101,7 +107,7 @@ public class Simulation {
 
         MapCreator currentMap = new MapCreator(5, 5);
 
-        IAgentCreator currentAgents = new AgentCreator(2,3,6,4,5,2);
+        IAgentCreator currentAgents = new AgentCreator(5,5,15,5,5,15);
 
         Simulation sim = new Simulation(currentMap, currentAgents,7, 4);
         sim.runSimulation();
