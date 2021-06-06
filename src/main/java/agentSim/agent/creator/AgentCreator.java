@@ -5,8 +5,6 @@ import agentSim.agent.animal.Animal;
 import agentSim.agent.man.Civil;
 import agentSim.agent.man.Medic;
 import agentSim.map.IMap;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.min;
 
 import java.util.*;
 

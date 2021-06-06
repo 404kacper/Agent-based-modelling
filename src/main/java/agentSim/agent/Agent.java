@@ -10,7 +10,7 @@ import java.util.Random;
 import static com.google.common.primitives.Ints.max;
 import static com.google.common.primitives.Ints.min;
 
-public abstract class Agent extends AAgent implements IAgent, IColors {
+public abstract class Agent extends AAgent implements IColors {
 
     protected Random rnd;
     protected long seed;
@@ -30,8 +30,7 @@ public abstract class Agent extends AAgent implements IAgent, IColors {
         this.resistanceDuration = resDuration;
     }
 
-    @Override
-    public void move(int speed) {
+    public void move(int distance) {
         int initialRow =map.getAgentPosition(this)[0];
         int initialColumn =map.getAgentPosition(this)[1];
         int currR = initialRow;
@@ -39,8 +38,6 @@ public abstract class Agent extends AAgent implements IAgent, IColors {
 
         int rowLimit = map.getXDim()-1;
         int colLimit = map.getYDim()-1;
-
-        int distance = speed;
 
         do {
 //        Exclusive range - number between 0-7 and +1 to fulfill condition of 8 neighbour directions
@@ -50,39 +47,39 @@ public abstract class Agent extends AAgent implements IAgent, IColors {
             switch (num) {
 //            Move down
                 case 1:
-                    currR = Math.max(0, currR-distance);
+                    currR = Math.max(0, currR- distance);
                     break;
 //            Move up
                 case 2:
-                    currR = Math.min(currR+distance, rowLimit);
+                    currR = Math.min(currR+ distance, rowLimit);
                     break;
 //            Move left
                 case 3:
-                    currC = Math.max(0, currC-distance);
+                    currC = Math.max(0, currC- distance);
                     break;
 //            Move right
                 case 4:
-                    currC = Math.min(currC+distance, colLimit);
+                    currC = Math.min(currC+ distance, colLimit);
                     break;
 //            Move down right
                 case 5:
-                    currR = Math.max(0, currR-distance);
-                    currC = Math.min(currC+distance, colLimit);
+                    currR = Math.max(0, currR- distance);
+                    currC = Math.min(currC+ distance, colLimit);
                     break;
 //            Move down left
                 case 6:
-                    currR = Math.max(0, currR-distance);
-                    currC = Math.max(0, currC-distance);
+                    currR = Math.max(0, currR- distance);
+                    currC = Math.max(0, currC- distance);
                     break;
 //            Move up right
                 case 7:
-                    currR = Math.min(currR+distance, rowLimit);
-                    currC = Math.min(currC+distance, colLimit);
+                    currR = Math.min(currR+ distance, rowLimit);
+                    currC = Math.min(currC+ distance, colLimit);
                     break;
 //            Move up left
                 case 8:
-                    currR = Math.min(currR+distance, rowLimit);
-                    currC = Math.max(0, currC-distance);
+                    currR = Math.min(currR+ distance, rowLimit);
+                    currC = Math.max(0, currC- distance);
                     break;
 //            Stay in place - keep the initial values and move to the placement part of the loop
                 case 9:
@@ -92,6 +89,11 @@ public abstract class Agent extends AAgent implements IAgent, IColors {
             }
 //            Break loop if the neighbour cell is empty or is itself (that way infinite loop will be avoided in case all neighbours are taken)
             if (map.getAgent(currR,currC) == null || map.getAgent(currR,currC) == this) {
+                if (currR == initialRow && currC == initialColumn) {
+                    System.out.println(this + " stays in place");
+                } else {
+                    System.out.println(this + " has moved");
+                }
 //                New function to place agents was required in order to account for case when agent is surrounded only by agents and is unable to move
 //                In such case the function should keep looping until the moment it generates number 9 and keeps the agent in its place
                 map.placeAgentInclusive(this, currR, currC);
@@ -138,7 +140,6 @@ public abstract class Agent extends AAgent implements IAgent, IColors {
             }
     }
 
-    @Override
     public void recover() {
 //        Part for recovering from infection
         if (infectionDuration > 0 ) {
@@ -165,7 +166,6 @@ public abstract class Agent extends AAgent implements IAgent, IColors {
         }
     }
 
-    @Override
     public Multimap<IAgent, Integer> getNeighbours(int fieldOfView) {
         int currR = map.getAgentPosition(this)[0];
         int currC = map.getAgentPosition(this)[1];
@@ -190,26 +190,18 @@ public abstract class Agent extends AAgent implements IAgent, IColors {
         return positions;
     }
 
-    @Override
     public void setHealth(int healthStatus) {
         this.healthCondition = healthStatus;
     }
 
-    @Override
     public int getHealth() {
         return this.healthCondition;
     }
 
-    //@Override
-    //public abstract int moveRatio();
-
-
-    @Override
     public void setInfectionDuration(int infectionDuration) {
         this.infectionDuration = infectionDuration;
     }
 
-    @Override
     public void setResistanceDuration(int resistanceDuration) {
         this.resistanceDuration = resistanceDuration;
     }

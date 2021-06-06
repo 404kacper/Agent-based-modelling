@@ -1,10 +1,8 @@
 package agentSim;
 
 import agentSim.agent.IAgent;
-import agentSim.agent.animal.Animal;
 import agentSim.agent.creator.AgentCreator;
 import agentSim.agent.creator.IAgentCreator;
-import agentSim.agent.man.Civil;
 import agentSim.agent.man.Medic;
 import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
@@ -31,8 +29,10 @@ public class Simulation {
         }
 
 //    Initialize map with all of the agents in list
-    for (int i = 0; i< agentList.size();i++)
-        while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim())));
+        for (IAgent agent : agentList)
+            while (true) {
+                if (map.placeAgent(agent, rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim()))) break;
+            }
 
     this.maxIter=maxIter;
     }
@@ -67,15 +67,7 @@ public class Simulation {
                 }
             }
             for (IAgent agent : agentList) {
-                if (agent instanceof Civil) {
-                    ((Civil) agent).move();
-                }
-                if (agent instanceof Medic) {
-                    ((Medic) agent).move();
-                }
-                if (agent instanceof Animal) {
-                    ((Animal) agent).move();
-                }
+                agent.move();
             }
 //            Print out map after each iteration
             System.out.println("\n");

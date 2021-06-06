@@ -41,10 +41,11 @@ public class Medic extends Agent {
 
     @Override
     public String toString() {
-        return switch (healthCondition) {
-            case 2 -> TEXT_CYAN+"M "+TEXT_RESET;
-            default -> TEXT_YELLOW+"?M "+TEXT_RESET;
-        };
+        if (healthCondition == 2) {
+            return TEXT_CYAN+"M "+TEXT_RESET;
+        } else {
+            return TEXT_YELLOW+"?M "+TEXT_RESET;
+        }
     }
 
 }

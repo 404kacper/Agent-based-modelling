@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Random;
 
 public interface IAgentCreator {
-    public List <IAgent> createAgents(IMap map, Random random) throws Exception;
+    List <IAgent> createAgents(IMap map, Random random) throws Exception;
 }
