@@ -8,8 +8,8 @@ public class MapCreator implements IMapCreator {
     int height;
 
     public MapCreator(int width, int height) {
-        this.width = width;
-        this.height = height;
+        this.width = height;
+        this.height = width;
     }
 
     @Override

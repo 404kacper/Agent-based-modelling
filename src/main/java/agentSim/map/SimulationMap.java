@@ -35,24 +35,21 @@ public class SimulationMap implements IMap {
         return agents[0].length;
     }
 
+
+// This method is meant to be used only during initial placement of agents
     @Override
     public boolean placeAgent(IAgent agent, int row, int col) {
-        int[] coordinates = getAgentPosition(agent);
 
 //        Check if the position is already occupied
         if (agents[row][col] != null) {
             return false;
-        }
-//        Check if coordinates are correct
-        if (coordinates[0] >= 0 || coordinates[1] >= 0) {
-            agents[coordinates[0]][coordinates[1]] = null;
         }
 
         agent.setMap(this);
 
 //        Place agent
         agents[row][col] = agent;
-//        Remove all values before putting them - so they don't add up with each iteration of the Simulation and cause getAgentPosition to crash
+//        Remove all values before putting them - just in case
         agentsPositions.removeAll(agent);
         agentsPositions.putAll(agent, Ints.asList(row,col));
         return true;
@@ -61,16 +58,16 @@ public class SimulationMap implements IMap {
     @Override
     public void placeAgentInclusive(IAgent agent, int row, int col) {
         int[] coordinates = getAgentPosition(agent);
-//        Check if coordinates are correct
+//        Remove the previous position from agents array
         if (coordinates[0] >= 0 || coordinates[1] >= 0) {
             agents[coordinates[0]][coordinates[1]] = null;
         }
         agent.setMap(this);
 //        Place agent
         agents[row][col] = agent;
-//        Remove all values before putting them - so they don't add up with each iteration of the Simulation and cause getAgentPosition to crash
-        agentsPositions.removeAll(agent);
-        agentsPositions.putAll(agent, Ints.asList(row,col));
+//        Replace all values for given agent during move
+        agentsPositions.replaceValues(agent, Ints.asList(row,col));
+
     }
 
     @Override
@@ -84,7 +81,7 @@ public class SimulationMap implements IMap {
 //        Loop through collection
         for (Integer num : view) {
 //            Assign coordinate to array that will be returned
-            position[counter] = num.intValue();
+            position[counter] = num;
             counter++;
         }
         return position;
