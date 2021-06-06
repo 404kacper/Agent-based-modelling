@@ -46,6 +46,7 @@ public class Simulation {
         System.out.println(map.toString());
 
         while (--iterations>0) {
+            System.out.println("AgentsList order: " + agentList);
 //            Reason for three loops is so that interactions between agents are mutual eg. agent1 can infect agent2 and vice-versa
 //            Agents should move only after they were able to interact with each other
             for (IAgent agent : agentList) {
@@ -58,6 +59,7 @@ public class Simulation {
 //                    Catch the exception defined in medic class
                     try {
                         agent.infect();
+                        System.out.println("AgentsList order: " + agentList);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -73,7 +75,7 @@ public class Simulation {
                 }
             }
             for (IAgent agent : agentList) {
-                agent.move();
+//                agent.move();
             }
 //            Print out map after each iteration
             System.out.println("\n");
@@ -83,14 +85,6 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
-        //FIXME bug for map size width: 4 height: 5 seed: 7 noAnimals: 3
-        // - only 2 animals are printed out instead of 3 as declared in creator
-        // - the bug persists probably for other seeds
-        // - the issue is with non-square matrices
-        // - most likely there is some logical issue in one of 2d array loops inside the app that prevents 3rd animal from being put onto the map
-        // - therefore for now maps should only be square matrices
-        // - keep in mind that above seed might not work anymore as app changes however the bug will persists in non square maps
-
         //TODO ideas:
         // A new way of printing is necessary:
         // - either restructure the app to be a window app in JavaFX
@@ -104,12 +98,21 @@ public class Simulation {
         // Change to infection method:
         // - make infection probability based, then make the probability of such infection to be dependant on distance (higher distance less prob for infection)
         // - add death after infectionIteration hits 0
+        // Changes to error checking:
+        // - check for situation when map size is smaller than the amount of agents (infinite loop in Simulation)
+        // Another bugfix:
+        // - order of retrieval from agentsList should matter - currently there is an issue with infect method
+        // - the infect method infects more agents than it should due to the nature of unordered objects retrieval from agentsList
+        // - multimap should be either sorted or method for infections should change and retrieve objects from agents array
+        // - how the multimap should be sorted is up to debate
+        // - keep in mind that infection gets it's neighbour values from agentsList using getNeighbour
+        // - so there would be a lot of changing in order to adapt to new infection method that uses agents array
 
-        MapCreator currentMap = new MapCreator(5, 5);
+        MapCreator currentMap = new MapCreator(4, 4);
 
-        IAgentCreator currentAgents = new AgentCreator(5,5,15,5,5,15);
+        IAgentCreator currentAgents = new AgentCreator(15,1,0,11,5,0);
 
-        Simulation sim = new Simulation(currentMap, currentAgents,7, 4);
+        Simulation sim = new Simulation(currentMap, currentAgents,7, 2);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }

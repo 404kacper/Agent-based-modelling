@@ -14,6 +14,7 @@ public abstract class Agent extends AAgent implements IColors {
 
     protected Random rnd;
     protected long seed;
+    static long seedInfections;
     protected int healthCondition;
     protected int infectionDuration;
     protected int resistanceDuration;
@@ -28,6 +29,9 @@ public abstract class Agent extends AAgent implements IColors {
         this.infectionDuration = infDuration;
 //        Same as above but for resistant agents
         this.resistanceDuration = resDuration;
+        seedInfections = 0;
+        //    Uncomment this to get completely random series of probabilities for infections
+//        seedInfections = System.currentTimeMillis();
     }
 
     public void move(int distance) {
@@ -89,11 +93,6 @@ public abstract class Agent extends AAgent implements IColors {
             }
 //            Break loop if the neighbour cell is empty or is itself (that way infinite loop will be avoided in case all neighbours are taken)
             if (map.getAgent(currR,currC) == null || map.getAgent(currR,currC) == this) {
-//                if (currR == initialRow && currC == initialColumn) {
-//                    System.out.println(this + " stays in place");
-//                } else {
-//                    System.out.println(this + " has moved");
-//                }
 //                New function to place agents was required in order to account for case when agent is surrounded only by agents and is unable to move
 //                In such case the function should keep looping until the moment it generates number 9 and keeps the agent in its place
                 map.placeAgentInclusive(this, currR, currC);
@@ -118,17 +117,28 @@ public abstract class Agent extends AAgent implements IColors {
         int row = 0;
         int col;
         int i = 0;
-        double genProb = rnd.nextDouble();
+//        New random object for generating infection probabilities
+        Random ran = new Random(seedInfections);
+//        Change the seed to generate different numbers for another object
+        seedInfections++;
         IAgent toBeInfected;
+
+//        for (int i = 0; )
 
 //        Two coordinates are stored repetitively so just iterate over even and uneven values from neighbours
         for (Integer value : neighbours.values()) {
     //            When i is uneven both row and col for one agent are known
                 if ( i % 2 != 0) {
+//                    rand.nextInt((max - min) + 1) + min;
+//                    Max being 100*field of view and min being 0
+//                    Multiplied by field of view to lower the chance of infection over long distances
+                    double genProb = ran.nextInt((100*fieldOfView)+1);
+//                    System.out.println("genProb: " + genProb + " prob: " + probability);
                     col = value;
                     toBeInfected = map.getAgent(row, col);
 //                    If target agent is healthy then infect and prob is right
-//                    Quick prob description 1 - being 100% 0 - being 0 %
+//                    Quick prob description 100 - being 100% 0 - being 0 %
+//                    But that's only for fov of 1, for bigger fov to calculate 100% of infection the prob number must be multiplied by fov
                     if (toBeInfected.getHealth() == 0 && genProb <= probability) {
                         toBeInfected.setHealth(1);
 //                        Set infection duration for infected agents
@@ -141,19 +151,7 @@ public abstract class Agent extends AAgent implements IColors {
             }
     }
 
-    public void recover() {
-//        Part for recovering from infection
-        if (infectionDuration > 0 ) {
-            infectionDuration--;
-//            Once infection duration is 0 then set the agent to be healthy
-//            healthCondition == 1 is there to ensure only ill agents can recover
-            if (infectionDuration == 0 && healthCondition == 1) {
-                healthCondition = 0;
-            }
-//            Prevents infectionDuration from having negative values (just in case)
-        } else if (infectionDuration < 0) {
-            infectionDuration = 0;
-        }
+    public void recover(int resistanceDurationAfterDisease) {
 //        Part for losing resistance
         if (resistanceDuration > 0 ) {
             resistanceDuration--;
@@ -164,6 +162,20 @@ public abstract class Agent extends AAgent implements IColors {
             }
         } else if (resistanceDuration < 0) {
             resistanceDuration = 0;
+        }
+
+//        Part for recovering from infection
+        if (infectionDuration > 0 ) {
+            infectionDuration--;
+//            Once infection duration is 0 then set the agent to be immune
+//            healthCondition == 1 is there to ensure only ill agents can recover
+            if (infectionDuration == 0 && healthCondition == 1) {
+                healthCondition = 2;
+                resistanceDuration = resistanceDurationAfterDisease;
+            }
+//            Prevents infectionDuration from having negative values (just in case)
+        } else if (infectionDuration < 0) {
+            infectionDuration = 0;
         }
     }
 
@@ -182,7 +194,7 @@ public abstract class Agent extends AAgent implements IColors {
                 if (x != currR || y != currC) {
 //                            Check if neighbour is not empty
                     if (map.getAgent(x,y) != null) {
-//                                Store positions in multiMap
+//                                Accumulate positions in multiMap
                         positions.putAll(this, Ints.asList(x,y));
                     }
                 }

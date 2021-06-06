@@ -11,11 +11,19 @@ public class Medic extends Agent {
         super(map, health, infDuration, resDuration);
     }
 
+//    Specific recover implementation for Medic agents
+    @Override
+    public void recover() {
+//        Empty since medic agents shouldn't lose their resistance nor shouldn't get infected
+    }
+
+//    Specific infect implementation for Medic agents
     @Override
     public void infect() throws Exception {
         throw new Exception(this+ "object of hash code: "+ this.hashCode() +" is unable to invoke infection method. \n Medic objects shouldn't be allowed to access infection method.");
     }
 
+//    Specific move implementation for Medic agents
     @Override
     public void move(){
         move(1);

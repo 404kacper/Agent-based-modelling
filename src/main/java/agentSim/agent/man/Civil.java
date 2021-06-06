@@ -9,11 +9,18 @@ public class Civil extends Agent {
         super(map, health, infDuration, resDuration);
     }
 
+//    Specific recover implementation for Civil agents
+    @Override
+    public void recover() {
+        recover(3);
+    }
+
 //    Specific infection implementation for Civil agents
     @Override
     public void infect() {
-        infect(1,4, 0.5);
+        infect(1,4, 100);
     }
+
 //    Specific move implementation for Civil agents
     public void move(){
         move(1);
