@@ -15,7 +15,7 @@ public abstract class Agent extends AAgent implements IColors {
     protected Random rnd;
     protected long seed;
     static long seedInfections;
-    protected int healthCondition;
+    public int healthCondition;
     protected int infectionDuration;
     protected int resistanceDuration;
 
@@ -122,8 +122,6 @@ public abstract class Agent extends AAgent implements IColors {
 //        Change the seed to generate different numbers for another object
         seedInfections++;
         IAgent toBeInfected;
-
-//        for (int i = 0; )
 
 //        Two coordinates are stored repetitively so just iterate over even and uneven values from neighbours
         for (Integer value : neighbours.values()) {

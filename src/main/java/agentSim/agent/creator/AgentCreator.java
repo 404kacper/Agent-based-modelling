@@ -29,11 +29,6 @@ public class AgentCreator implements IAgentCreator {
     public List<IAgent> createAgents(IMap map, Random random) throws Exception{
         List <IAgent> agentList = new LinkedList<>();
 
-//        Add medics first
-        for (int i = 0; i <noMedics; i++) {
-            agentList.add(new Medic(map, 2, 0, Integer.MAX_VALUE));
-        }
-
         int remImmune = noImmune - noMedics;
 
 //        Throw exception for invalid input
@@ -51,15 +46,20 @@ public class AgentCreator implements IAgentCreator {
         Arrays.fill(agentStatus, noHealthy , noHealthy+noIll, 1);
         Arrays.fill(agentStatus, noHealthy+noIll , noHealthy+noIll+remImmune, 2);
 
-        Collections.shuffle(Arrays.asList(agentStatus));
+//        Collections.shuffle(Arrays.asList(agentStatus));
 
-//        Add remaining agents
+//        Add agents aside from medics
         int j = 0;
         for (int i = 0; i<noAnimals; i++, j++) {
-            agentList.add(new Animal(map, agentStatus[j], agentStatus[j]==1 ? 2:0, agentStatus[j]==2 ? 3:0));
+            agentList.add(new Animal(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0));
         }
         for (int i = 0; i<noCivil; i++, j++) {
-            agentList.add(new Civil(map, agentStatus[j], agentStatus[j]==1 ? 2:0, agentStatus[j]==2 ? 3:0));
+            agentList.add(new Civil(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0));
+        }
+
+//        Add medics last
+        for (int i = 0; i <noMedics; i++) {
+            agentList.add(new Medic(map, 2, 0, Integer.MAX_VALUE));
         }
 
         return agentList;

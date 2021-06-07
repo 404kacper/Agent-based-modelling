@@ -8,8 +8,7 @@ import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
 import agentSim.map.creator.MapCreator;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Simulation {
     private IMap map;
@@ -46,7 +45,6 @@ public class Simulation {
         System.out.println(map.toString());
 
         while (--iterations>0) {
-            System.out.println("AgentsList order: " + agentList);
 //            Reason for three loops is so that interactions between agents are mutual eg. agent1 can infect agent2 and vice-versa
 //            Agents should move only after they were able to interact with each other
             for (IAgent agent : agentList) {
@@ -59,7 +57,11 @@ public class Simulation {
 //                    Catch the exception defined in medic class
                     try {
                         agent.infect();
-                        System.out.println("AgentsList order: " + agentList);
+//                        List must be sorted after each infection to provide proper object fetching for further iterations
+//                        If the list isn't sorted infection won't function properly - it will spread more than it should
+//                        Keep in mind that agents are fetched differently from agentList than they are from [][]agents 2d array
+                        Collections.sort(agentList, new SortByHealth());
+//                        System.out.println("AgentsList order after infection: " + agentList);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -71,7 +73,7 @@ public class Simulation {
 //                    Down-casting object although in a safe way since instanceof check is done
 //                    Vaccinate could also be empty function in agent class although that would be confusing
 //                    Since vaccinate isn't common for all agents, going further infection could be removed from agent
-                    ((Medic) agent).vaccinate(1,1);
+                    ((Medic) agent).vaccinate(1,2);
                 }
             }
             for (IAgent agent : agentList) {
@@ -96,23 +98,20 @@ public class Simulation {
         // - amount of agents - shouldn't change throughout the animation
         // - ...
         // Change to infection method:
-        // - make infection probability based, then make the probability of such infection to be dependant on distance (higher distance less prob for infection)
         // - add death after infectionIteration hits 0
         // Changes to error checking:
         // - check for situation when map size is smaller than the amount of agents (infinite loop in Simulation)
-        // Another bugfix:
-        // - order of retrieval from agentsList should matter - currently there is an issue with infect method
-        // - the infect method infects more agents than it should due to the nature of unordered objects retrieval from agentsList
-        // - multimap should be either sorted or method for infections should change and retrieve objects from agents array
-        // - how the multimap should be sorted is up to debate
-        // - keep in mind that infection gets it's neighbour values from agentsList using getNeighbour
-        // - so there would be a lot of changing in order to adapt to new infection method that uses agents array
 
-        MapCreator currentMap = new MapCreator(4, 4);
+        //TODO app logic:
+        // Possibly a logical flaw since infections are invoked before vaccinations:
+        // - changing healthCondition to be 1 - for immune and 2 - for ill would invert the situation
+        // - however that flaw is up to debate as of now and might not even be considered flaw
 
-        IAgentCreator currentAgents = new AgentCreator(15,1,0,11,5,0);
+        MapCreator currentMap = new MapCreator(6, 6);
 
-        Simulation sim = new Simulation(currentMap, currentAgents,7, 2);
+        IAgentCreator currentAgents = new AgentCreator(32,1,3,16,17,3);
+
+        Simulation sim = new Simulation(currentMap, currentAgents,7, 10);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
