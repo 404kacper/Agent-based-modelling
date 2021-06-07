@@ -106,6 +106,9 @@ public class Simulation {
         // Possibly a logical flaw since infections are invoked before vaccinations:
         // - changing healthCondition to be 1 - for immune and 2 - for ill would invert the situation
         // - however that flaw is up to debate as of now and might not even be considered flaw
+        // Probability based infections:
+        // - adjust the logic of infections so that 100 means 100 % and not 100%*fieldOfView for guaranteed infections
+
 
         MapCreator currentMap = new MapCreator(6, 6);
 
