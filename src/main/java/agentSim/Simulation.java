@@ -49,7 +49,7 @@ public class Simulation {
 //            Agents should move only after they were able to interact with each other
             for (IAgent agent : agentList) {
 //                Recover agents that are both resistant and infected
-                agent.recover();
+//                agent.recover();
             }
             for (IAgent agent : agentList) {
 //                Execute infect only for infected agents
@@ -57,10 +57,10 @@ public class Simulation {
 //                    Catch the exception defined in medic class
                     try {
                         agent.infect();
+                        Collections.sort(agentList, new SortByHealth());
 //                        List must be sorted after each infection to provide proper object fetching for further iterations
 //                        If the list isn't sorted infection won't function properly - it will spread more than it should
 //                        Keep in mind that agents are fetched differently from agentList than they are from [][]agents 2d array
-                        Collections.sort(agentList, new SortByHealth());
 //                        System.out.println("AgentsList order after infection: " + agentList);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -103,18 +103,15 @@ public class Simulation {
         // - check for situation when map size is smaller than the amount of agents (infinite loop in Simulation)
 
         //TODO app logic:
-        // Possibly a logical flaw since infections are invoked before vaccinations:
-        // - changing healthCondition to be 1 - for immune and 2 - for ill would invert the situation
-        // - however that flaw is up to debate as of now and might not even be considered flaw
         // Probability based infections:
         // - adjust the logic of infections so that 100 means 100 % and not 100%*fieldOfView for guaranteed infections
 
 
-        MapCreator currentMap = new MapCreator(6, 6);
+        MapCreator currentMap = new MapCreator(4, 4);
 
-        IAgentCreator currentAgents = new AgentCreator(32,1,3,16,17,3);
+        IAgentCreator currentAgents = new AgentCreator(15,1,0,16,0,0);
 
-        Simulation sim = new Simulation(currentMap, currentAgents,7, 10);
+        Simulation sim = new Simulation(currentMap, currentAgents,54, 2);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
