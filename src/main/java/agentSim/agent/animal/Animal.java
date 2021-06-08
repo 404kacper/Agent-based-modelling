@@ -18,7 +18,7 @@ public class Animal extends Agent {
 //    Specific infection implementation for Animal agents
     @Override
     public void infect() {
-        infect(1,3, 50);
+        infect(1,3, 1);
     }
 //    Specific move implementation for Animal agents
     @Override

@@ -18,7 +18,7 @@ public class Civil extends Agent {
 //    Specific infection implementation for Civil agents
     @Override
     public void infect() {
-        infect(2,3, 50);
+        infect(2,3, 1);
     }
 
 //    Specific move implementation for Civil agents

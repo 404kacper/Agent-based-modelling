@@ -5,7 +5,9 @@ import agentSim.map.IMap;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.primitives.Ints;
+
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.google.common.primitives.Ints.max;
 import static com.google.common.primitives.Ints.min;
@@ -14,7 +16,6 @@ public abstract class Agent extends AAgent implements IColors {
 
     protected Random rnd;
     protected long seed;
-    static long seedInfections;
     public int healthCondition;
     protected int infectionDuration;
     protected int resistanceDuration;
@@ -29,61 +30,60 @@ public abstract class Agent extends AAgent implements IColors {
         this.infectionDuration = infDuration;
 //        Same as above but for resistant agents
         this.resistanceDuration = resDuration;
-        seedInfections = 0;
         //    Uncomment this to get completely random series of probabilities for infections
 //        seedInfections = System.currentTimeMillis();
     }
 
     public void move(int distance) {
-        int initialRow =map.getAgentPosition(this)[0];
-        int initialColumn =map.getAgentPosition(this)[1];
+        int initialRow = map.getAgentPosition(this)[0];
+        int initialColumn = map.getAgentPosition(this)[1];
         int currR = initialRow;
         int currC = initialColumn;
 
-        int rowLimit = map.getXDim()-1;
-        int colLimit = map.getYDim()-1;
+        int rowLimit = map.getXDim() - 1;
+        int colLimit = map.getYDim() - 1;
 
         do {
 //        Exclusive range - number between 0-7 and +1 to fulfill condition of 8 neighbour directions
 //            Currently the numbers are an even distribution however it can be easily changed
 //            with swapping the generated num variable to double and adjusting case conditions to match desired probabilities
-            int num = rnd.nextInt(9)+1;
+            int num = rnd.nextInt(9) + 1;
             switch (num) {
 //            Move down
                 case 1:
-                    currR = Math.max(0, currR- distance);
+                    currR = Math.max(0, currR - distance);
                     break;
 //            Move up
                 case 2:
-                    currR = Math.min(currR+ distance, rowLimit);
+                    currR = Math.min(currR + distance, rowLimit);
                     break;
 //            Move left
                 case 3:
-                    currC = Math.max(0, currC- distance);
+                    currC = Math.max(0, currC - distance);
                     break;
 //            Move right
                 case 4:
-                    currC = Math.min(currC+ distance, colLimit);
+                    currC = Math.min(currC + distance, colLimit);
                     break;
 //            Move down right
                 case 5:
-                    currR = Math.max(0, currR- distance);
-                    currC = Math.min(currC+ distance, colLimit);
+                    currR = Math.max(0, currR - distance);
+                    currC = Math.min(currC + distance, colLimit);
                     break;
 //            Move down left
                 case 6:
-                    currR = Math.max(0, currR- distance);
-                    currC = Math.max(0, currC- distance);
+                    currR = Math.max(0, currR - distance);
+                    currC = Math.max(0, currC - distance);
                     break;
 //            Move up right
                 case 7:
-                    currR = Math.min(currR+ distance, rowLimit);
-                    currC = Math.min(currC+ distance, colLimit);
+                    currR = Math.min(currR + distance, rowLimit);
+                    currC = Math.min(currC + distance, colLimit);
                     break;
 //            Move up left
                 case 8:
-                    currR = Math.min(currR+ distance, rowLimit);
-                    currC = Math.max(0, currC- distance);
+                    currR = Math.min(currR + distance, rowLimit);
+                    currC = Math.max(0, currC - distance);
                     break;
 //            Stay in place - keep the initial values and move to the placement part of the loop
                 case 9:
@@ -92,7 +92,7 @@ public abstract class Agent extends AAgent implements IColors {
                     break;
             }
 //            Break loop if the neighbour cell is empty or is itself (that way infinite loop will be avoided in case all neighbours are taken)
-            if (map.getAgent(currR,currC) == null || map.getAgent(currR,currC) == this) {
+            if (map.getAgent(currR, currC) == null || map.getAgent(currR, currC) == this) {
 //                New function to place agents was required in order to account for case when agent is surrounded only by agents and is unable to move
 //                In such case the function should keep looping until the moment it generates number 9 and keeps the agent in its place
                 map.placeAgentInclusive(this, currR, currC);
@@ -112,32 +112,33 @@ public abstract class Agent extends AAgent implements IColors {
 
     }
 
-    public void infect(int fieldOfView, int duration, double probability) {
-        Multimap<IAgent, Integer> neighbours = this.getNeighbours(fieldOfView);
+    public void infect(int fieldOfView, int duration, double agentDependantProb) {
+//        Load all neighbour values to multimap in rings - to allow for accurate range of infections
+        IAgent toBeInfected;
         int row = 0;
         int col;
         int i = 0;
-//        New random object for generating infection probabilities
-        Random ran = new Random(seedInfections);
-//        Change the seed to generate different numbers for another object
-        seedInfections++;
-        IAgent toBeInfected;
+        double distancePenalty;
 
-//        Two coordinates are stored repetitively so just iterate over even and uneven values from neighbours
-        for (Integer value : neighbours.values()) {
-    //            When i is uneven both row and col for one agent are known
-                if ( i % 2 != 0) {
-//                    rand.nextInt((max - min) + 1) + min;
-//                    Max being 100*field of view and min being 0
-//                    Multiplied by field of view to lower the chance of infection over long distances
-                    double genProb = ran.nextInt((100*fieldOfView)+1);
-//                    System.out.println("genProb: " + genProb + " prob: " + probability);
+        while (fieldOfView >= 1) {
+            Multimap<IAgent, Integer> neighboursRing = this.getNeighboursRing(fieldOfView);
+
+            if (fieldOfView == 2) {
+                distancePenalty = 2;
+            } else if (fieldOfView < 2) {
+                distancePenalty = Math.sqrt(2);
+            } else {
+                distancePenalty = Math.pow(fieldOfView, 2);
+            }
+
+            //        Two coordinates are stored repetitively so just iterate over even and uneven values from neighbours
+            for (Integer value : neighboursRing.values()) {
+                //            When i is uneven both row and col for one agent are known
+                if (i % 2 != 0) {
+                    double genProb = ThreadLocalRandom.current().nextDouble();
                     col = value;
                     toBeInfected = map.getAgent(row, col);
-//                    If target agent is healthy then infect and prob is right
-//                    Quick prob description 100 - being 100% 0 - being 0 %
-//                    But that's only for fov of 1, for bigger fov to calculate 100% of infection the prob number must be multiplied by fov
-                    if (toBeInfected.getHealth() == 0 && genProb <= probability) {
+                    if (toBeInfected.getHealth() == 0 && genProb <= agentDependantProb / distancePenalty) {
                         toBeInfected.setHealth(1);
 //                        Set infection duration for infected agents
                         toBeInfected.setInfectionDuration(duration);
@@ -147,11 +148,15 @@ public abstract class Agent extends AAgent implements IColors {
                 }
                 i++;
             }
+            fieldOfView--;
+        }
+
+
     }
 
     public void recover(int resistanceDurationAfterDisease) {
 //        Part for losing resistance
-        if (resistanceDuration > 0 ) {
+        if (resistanceDuration > 0) {
             resistanceDuration--;
 //            Once resistance duration is 0 then set the agent to be healthy
 //            healthCondition == 2 is there to ensure only resistant agents can recover
@@ -163,7 +168,7 @@ public abstract class Agent extends AAgent implements IColors {
         }
 
 //        Part for recovering from infection
-        if (infectionDuration > 0 ) {
+        if (infectionDuration > 0) {
             infectionDuration--;
 //            Once infection duration is 0 then set the agent to be immune
 //            healthCondition == 1 is there to ensure only ill agents can recover
@@ -180,24 +185,67 @@ public abstract class Agent extends AAgent implements IColors {
     public Multimap<IAgent, Integer> getNeighbours(int fieldOfView) {
         int currR = map.getAgentPosition(this)[0];
         int currC = map.getAgentPosition(this)[1];
-        int rowLimit = map.getXDim()-1;
-        int colLimit = map.getYDim()-1;
+        int rowLimit = map.getXDim() - 1;
+        int colLimit = map.getYDim() - 1;
 
 //        Multimap to store agent and their neighbour locations
         Multimap<IAgent, Integer> positions = ArrayListMultimap.create();
 
-        for (int x = max(0, currR-fieldOfView); x <= Math.min(currR+fieldOfView, rowLimit); x++) {
-            for (int y = max(0, currC-fieldOfView); y <= min(currC+fieldOfView, colLimit); y++) {
+        for (int x = max(0, currR - fieldOfView); x <= Math.min(currR + fieldOfView, rowLimit); x++) {
+            for (int y = max(0, currC - fieldOfView); y <= min(currC + fieldOfView, colLimit); y++) {
 //                    Check if the x and y aren't coordinates of the agent
                 if (x != currR || y != currC) {
 //                            Check if neighbour is not empty
-                    if (map.getAgent(x,y) != null) {
+                    if (map.getAgent(x, y) != null) {
 //                                Accumulate positions in multiMap
-                        positions.putAll(this, Ints.asList(x,y));
+                        positions.putAll(this, Ints.asList(x, y));
                     }
                 }
             }
         }
+        System.out.println(positions);
+        return positions;
+    }
+
+    //    Stores agents with respect to their distance away from agent
+    public Multimap<IAgent, Integer> getNeighboursRing(int fieldOfView) {
+        int currR = map.getAgentPosition(this)[0];
+        int currC = map.getAgentPosition(this)[1];
+        int rowLimit = map.getXDim() - 1;
+        int colLimit = map.getYDim() - 1;
+        IAgent currentAgent;
+
+//        Multimap to store agent and their neighbour locations
+        Multimap<IAgent, Integer> positions = ArrayListMultimap.create();
+
+        for (int x = max(0, currR - fieldOfView); x <= Math.min(currR + fieldOfView, rowLimit); x++) {
+            for (int y = max(0, currC - fieldOfView); y <= min(currC + fieldOfView, colLimit); y++) {
+                currentAgent = map.getAgent(x, y);
+//                    Check if the x and y aren't coordinates of the agent
+                if (x != currR || y != currC) {
+//                            Check if neighbour is not empty
+                    if (map.getAgent(x, y) != null) {
+//                                Accumulate positions in multiMap
+                        positions.putAll(currentAgent, Ints.asList(x, y));
+                    }
+                }
+            }
+        }
+        fieldOfView--;
+        for (int x = max(0, currR - fieldOfView); x <= Math.min(currR + fieldOfView, rowLimit); x++) {
+            for (int y = max(0, currC - fieldOfView); y <= min(currC + fieldOfView, colLimit); y++) {
+                currentAgent = map.getAgent(x, y);
+//                    Check if the x and y aren't coordinates of the agent
+                if (x != currR || y != currC) {
+//                            Check if neighbour is not empty
+                    if (map.getAgent(x, y) != null) {
+//                                Remove positions that aren't part of the ring
+                        positions.removeAll(currentAgent);
+                    }
+                }
+            }
+        }
+
         return positions;
     }
 
@@ -221,10 +269,10 @@ public abstract class Agent extends AAgent implements IColors {
     @Override
     public String toString() {
         return switch (healthCondition) {
-            case 0 -> TEXT_GREEN+"h "+TEXT_RESET;
-            case 1 -> TEXT_RED+"i "+TEXT_RESET;
-            case 2 -> TEXT_BLUE+"r "+TEXT_RESET;
-            default -> TEXT_YELLOW+"? "+TEXT_RESET;
+            case 0 -> TEXT_GREEN + "h " + TEXT_RESET;
+            case 1 -> TEXT_RED + "i " + TEXT_RESET;
+            case 2 -> TEXT_BLUE + "r " + TEXT_RESET;
+            default -> TEXT_YELLOW + "? " + TEXT_RESET;
         };
     }
 }
