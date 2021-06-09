@@ -111,9 +111,9 @@ public class Simulation {
 
         MapCreator currentMap = new MapCreator(4, 4);
 
-        IAgentCreator currentAgents = new AgentCreator(15,1,0,16,0,0);
+        IAgentCreator currentAgents = new AgentCreator(1,0,0,1,0,0);
 
-        Simulation sim = new Simulation(currentMap, currentAgents,54, 2);
+        Simulation sim = new Simulation(currentMap, currentAgents,54, 10);
         sim.runSimulation();
 //        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
     }
