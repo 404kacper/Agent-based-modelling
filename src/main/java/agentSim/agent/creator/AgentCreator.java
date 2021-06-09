@@ -51,15 +51,15 @@ public class AgentCreator implements IAgentCreator {
 //        Add agents aside from medics
         int j = 0;
         for (int i = 0; i<noAnimals; i++, j++) {
-            agentList.add(new Animal(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0));
+            agentList.add(new Animal(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0, 0.5));
         }
         for (int i = 0; i<noCivil; i++, j++) {
-            agentList.add(new Civil(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0));
+            agentList.add(new Civil(map, agentStatus[j], agentStatus[j]==1 ? 1:0, agentStatus[j]==2 ? 3:0, 0.5));
         }
 
 //        Add medics last
         for (int i = 0; i <noMedics; i++) {
-            agentList.add(new Medic(map, 2, 0, Integer.MAX_VALUE));
+            agentList.add(new Medic(map, 2, 0, Integer.MAX_VALUE, 0));
         }
 
         return agentList;

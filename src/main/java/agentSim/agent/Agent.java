@@ -19,8 +19,9 @@ public abstract class Agent extends AAgent implements IColors {
     public int healthCondition;
     protected int infectionDuration;
     protected int resistanceDuration;
+    protected double deathProb;
 
-    public Agent(IMap map, int health, int infDuration, int resDuration) {
+    public Agent(IMap map, int health, int infDuration, int resDuration, double deathProb) {
         super(map);
 //        !!! Current seed isn't the same as the one being passed in Simulation class
         this.seed = 0;
@@ -30,6 +31,7 @@ public abstract class Agent extends AAgent implements IColors {
         this.infectionDuration = infDuration;
 //        Same as above but for resistant agents
         this.resistanceDuration = resDuration;
+        this.deathProb = deathProb;
         //    Uncomment this to get completely random series of probabilities for infections
 //        seedInfections = System.currentTimeMillis();
     }
@@ -154,7 +156,7 @@ public abstract class Agent extends AAgent implements IColors {
 
     }
 
-    public void recover(int resistanceDurationAfterDisease) {
+    public boolean recover(int resistanceDurationAfterDisease) {
 //        Part for losing resistance
         if (resistanceDuration > 0) {
             resistanceDuration--;
@@ -162,9 +164,11 @@ public abstract class Agent extends AAgent implements IColors {
 //            healthCondition == 2 is there to ensure only resistant agents can recover
             if (resistanceDuration == 0 && healthCondition == 2) {
                 healthCondition = 0;
+                return false;
             }
         } else if (resistanceDuration < 0) {
             resistanceDuration = 0;
+            return false;
         }
 
 //        Part for recovering from infection
@@ -175,11 +179,14 @@ public abstract class Agent extends AAgent implements IColors {
             if (infectionDuration == 0 && healthCondition == 1) {
                 healthCondition = 2;
                 resistanceDuration = resistanceDurationAfterDisease;
+                return true;
             }
 //            Prevents infectionDuration from having negative values (just in case)
         } else if (infectionDuration < 0) {
             infectionDuration = 0;
+            return false;
         }
+        return false;
     }
 
     public Multimap<IAgent, Integer> getNeighbours(int fieldOfView) {
@@ -263,6 +270,10 @@ public abstract class Agent extends AAgent implements IColors {
 
     public void setResistanceDuration(int resistanceDuration) {
         this.resistanceDuration = resistanceDuration;
+    }
+
+    public double getDeathProb() {
+        return deathProb;
     }
 
 

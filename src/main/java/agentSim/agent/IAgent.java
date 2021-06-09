@@ -6,8 +6,9 @@ public interface IAgent {
     void move();
     int getHealth();
     void infect() throws Exception;
-    void recover();
+    boolean recover();
     void setResistanceDuration(int resistanceDuration);
+    public double getDeathProb();
     void setInfectionDuration(int duration);
     void setHealth(int healthStatus);
     void displayObjectCounter();

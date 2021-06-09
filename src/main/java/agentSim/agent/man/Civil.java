@@ -5,20 +5,20 @@ import agentSim.map.IMap;
 
 public class Civil extends Agent {
 
-    public Civil(IMap map, int health, int infDuration, int resDuration) {
-        super(map, health, infDuration, resDuration);
+    public Civil(IMap map, int health, int infDuration, int resDuration, double deathProb) {
+        super(map, health, infDuration, resDuration, deathProb);
     }
 
 //    Specific recover implementation for Civil agents
     @Override
-    public void recover() {
-        recover(3);
+    public boolean recover() {
+        return recover(3);
     }
 
 //    Specific infection implementation for Civil agents
     @Override
     public void infect() {
-        infect(2,3, 1);
+        infect(1,2, 1);
     }
 
 //    Specific move implementation for Civil agents

@@ -7,14 +7,15 @@ import com.google.common.collect.Multimap;
 
 public class Medic extends Agent {
 
-    public Medic(IMap map, int health, int infDuration, int resDuration) {
-        super(map, health, infDuration, resDuration);
+    public Medic(IMap map, int health, int infDuration, int resDuration, double deathProb) {
+        super(map, health, infDuration, resDuration, deathProb);
     }
 
 //    Specific recover implementation for Medic agents
     @Override
-    public void recover() {
+    public boolean recover() {
 //        Empty since medic agents shouldn't lose their resistance nor shouldn't get infected
+        return false;
     }
 
 //    Specific infect implementation for Medic agents
