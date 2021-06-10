@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Random;
 
 public class AgentCreatorTest {
+
     @Test
     @DisplayName("Should Create Agent")
     public void shouldCreateAgent() {
-//        Variables necessary to create agent list
         IAgentCreator currentAgentsCreator = new AgentCreator(1,0,0,0,1,0);
         MapCreator currentMapCreator = new MapCreator(4, 4);
         IMap currentMap = currentMapCreator.createMap();
@@ -30,14 +30,13 @@ public class AgentCreatorTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        Assertions.
+//        Assertions
         Assertions.assertEquals(1, agentList.size());
     }
 
     @Test
     @DisplayName("Should Create Three Agents With Distinct Health States")
     public void shouldCreateThreeAgents() {
-//        Variables necessary to create agent list
         IAgentCreator currentAgentsCreator = new AgentCreator(1,1,1,1,1,1);
         MapCreator currentMapCreator = new MapCreator(4, 4);
         IMap currentMap = currentMapCreator.createMap();
@@ -50,7 +49,7 @@ public class AgentCreatorTest {
             e.printStackTrace();
         }
 
-//        Assertions.
+//        Assertions
 //        Healthy animal
         Assertions.assertEquals(Animal.class, agentList.get(0).getClass());
         Assertions.assertEquals(0, agentList.get(0).getHealth());
@@ -67,7 +66,6 @@ public class AgentCreatorTest {
     @Test
     @DisplayName("Should Create Ill and Immune Agents Without Medics")
     public void shouldCreateTwoAgents() {
-//        Variables necessary to create agent list
         IAgentCreator currentAgentsCreator = new AgentCreator(0,1,1,1,1,0);
         MapCreator currentMapCreator = new MapCreator(4, 4);
         IMap currentMap = currentMapCreator.createMap();
@@ -80,7 +78,7 @@ public class AgentCreatorTest {
             e.printStackTrace();
         }
 
-//        Assertions.
+//        Assertions
 //        Ill animal
         Assertions.assertEquals(Animal.class, agentList.get(0).getClass());
         Assertions.assertEquals(1, agentList.get(0).getHealth());
@@ -93,13 +91,12 @@ public class AgentCreatorTest {
     @Test
     @DisplayName("Should Throw Exception")
     public void shouldThrowException() {
-//        Variables necessary to create agent list
         IAgentCreator currentAgentsCreator = new AgentCreator(0,0,0,0,1,0);
         MapCreator currentMapCreator = new MapCreator(4, 4);
         IMap currentMap = currentMapCreator.createMap();
-        Random rnd = new Random();
+        Random rnd = new Random(0);
 
-//        Assertions.
+//        Assertions
         Assertions.assertThrows(Exception.class, () -> {
             currentAgentsCreator.createAgents(currentMap, rnd);
         });

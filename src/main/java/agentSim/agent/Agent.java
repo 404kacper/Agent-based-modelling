@@ -210,7 +210,6 @@ public abstract class Agent extends AAgent implements IColors {
                 }
             }
         }
-        System.out.println(positions);
         return positions;
     }
 

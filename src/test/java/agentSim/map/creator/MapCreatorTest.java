@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 public class MapCreatorTest {
     @Test
-    @DisplayName("Should create map")
+    @DisplayName("Should Create Map")
     public void testMapCreator(){
 //          Variables necessary to create agent list
         SimulationMap map = new SimulationMap(4,4);
