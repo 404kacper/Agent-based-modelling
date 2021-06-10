@@ -97,21 +97,13 @@ public class Simulation {
         // - or rewrite the printing in runSimulation to be reflective of every change that happens during an iteration
         // - eg. agent is infected - update the map or agent moves - update the map
         // - one more thing for printing is to keep track of how many agents for each of the class are on the map during given iteration
-        // Testing for:
-        // - hashCodes of classes - making sure they stay unchanged during the course of simulation
-        // - amount of agents - shouldn't change throughout the animation
-        // - ...
         // Changes to error checking:
         // - check for situation when map size is smaller than the amount of agents (infinite loop in Simulation)
-
-        //TODO app logic:
-        // Probability based infections:
-        // - adjust the logic of infections so that 100 means 100 % and not 100%*fieldOfView for guaranteed infections
 
 
         MapCreator currentMap = new MapCreator(4, 4);
 
-        IAgentCreator currentAgents = new AgentCreator(1,0,0,1,0,0);
+        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,1,1);
 
         Simulation sim = new Simulation(currentMap, currentAgents,54, 10);
         sim.runSimulation();

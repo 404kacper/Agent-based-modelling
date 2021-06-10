@@ -46,8 +46,6 @@ public class AgentCreator implements IAgentCreator {
         Arrays.fill(agentStatus, noHealthy , noHealthy+noIll, 1);
         Arrays.fill(agentStatus, noHealthy+noIll , noHealthy+noIll+remImmune, 2);
 
-//        Collections.shuffle(Arrays.asList(agentStatus));
-
 //        Add agents aside from medics
         int j = 0;
         for (int i = 0; i<noAnimals; i++, j++) {
