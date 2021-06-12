@@ -7,7 +7,7 @@ import agentSim.agent.man.Medic;
 import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
 import agentSim.map.creator.MapCreator;
-import gui.TestGui;
+import gui.AppGui;
 
 import java.util.*;
 import java.util.List;
@@ -100,6 +100,6 @@ public class Simulation {
         Simulation sim = new Simulation(currentMap, currentAgents,54, 10);
         sim.runSimulation();
 
-        TestGui newGui = new TestGui();
+        AppGui newGui = new AppGui();
     }
 }

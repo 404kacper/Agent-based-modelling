@@ -19,7 +19,7 @@ jar {
     jar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-mainClassName= "gui.TestGui";
+mainClassName= "gui.AppGui";
 
 javafx {
     version = "16"
