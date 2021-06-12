@@ -22,8 +22,8 @@ jar {
 mainClassName= "gui.TestGui";
 
 javafx {
-    version = "15.0.1"
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.base' ]
+    version = "16"
+    modules = [ 'javafx.controls', 'javafx.fxml']
 }
 
 dependencies {
