@@ -7,8 +7,10 @@ import agentSim.agent.man.Medic;
 import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
 import agentSim.map.creator.MapCreator;
+import gui.TestGui;
 
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulation {
@@ -91,23 +93,13 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
-        //TODO ideas:
-        // A new way of printing is necessary:
-        // - either restructure the app to be a window app in JavaFX
-        // - or rewrite the printing in runSimulation to be reflective of every change that happens during an iteration
-        // - eg. agent is infected - update the map or agent moves - update the map
-        // - one more thing for printing is to keep track of how many agents for each of the class are on the map during given iteration
-        // Changes to error checking:
-        // - check for situation when map size is smaller than the amount of agents (infinite loop in Simulation)
-
-
         MapCreator currentMap = new MapCreator(4, 4);
 
         IAgentCreator currentAgents = new AgentCreator(1,1,1,1,1,1);
 
         Simulation sim = new Simulation(currentMap, currentAgents,54, 10);
         sim.runSimulation();
-//        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
-    }
 
+        TestGui newGui = new TestGui();
+    }
 }
