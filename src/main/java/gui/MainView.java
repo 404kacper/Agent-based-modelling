@@ -50,7 +50,7 @@ public class MainView extends VBox {
         g.setFill(Color.BLACK);
         for (int x = 0; x < this.simulationMap.getXDim(); x++) {
             for (int y = 0; y < this.simulationMap.getYDim(); y++) {
-                g.fillRect(x,y, 1,1);
+//                g.fillRect(x,y, 1,1);
             }
         }
 

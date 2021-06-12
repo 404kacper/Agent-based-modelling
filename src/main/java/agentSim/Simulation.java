@@ -24,20 +24,75 @@ public class Simulation {
     map = mapCreator.createMap();
 
     rnd=new Random(seed);
-//    Catch the exception defined in AgentCreator class
+    initializeSimulation(agentCreator, map, rnd);
+
+    this.maxIter=maxIter;
+    }
+
+    public void initializeSimulation(IAgentCreator agentCreator, IMap map, Random rnd) {
+        //    Catch the exception defined in AgentCreator class
         try {
             agentList = agentCreator.createAgents(map, rnd);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//    Initialize map with all of the agents in list
+        //    Initialize map with all of the agents in list
         for (IAgent agent : agentList)
             while (true) {
                 if (map.placeAgent(agent, rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim()))) break;
             }
+    }
 
-    this.maxIter=maxIter;
+    public void runSimulationOld() {
+        int iterations = maxIter;
+
+//        Print initial state of the map
+        System.out.println("Iterations left: " + iterations);
+        System.out.println(map.toString());
+
+        while (--iterations>0) {
+//            Recover agents and remove infected - dead agents
+            Iterator <IAgent> listIterator = agentList.iterator();
+            while (listIterator.hasNext()){
+                IAgent agent = listIterator.next();
+                double genProb = ThreadLocalRandom.current().nextDouble();
+//                Initial iteration is omitted to allow agents to interact with each other
+                if (iterations != maxIter-1) {
+                    if (genProb <= agent.getDeathProb()) {
+                        if (agent.recover()) {
+                            map.removeAgent(agent);
+                            listIterator.remove();
+                        }
+                    } else {
+                        agent.recover();
+                    }
+                }
+            }
+            for (IAgent agent : agentList) {
+//                Execute infect only for infected agents
+                if (agent.getHealth() == 1) {
+//                    Catch the exception defined in medic class
+                    try {
+                        agent.infect();
+                        Collections.sort(agentList, new SortByHealth());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+//                Execute vaccinate only for medics
+                if (agent instanceof Medic) {
+                    ((Medic) agent).vaccinate(1,2);
+                }
+            }
+            for (IAgent agent : agentList) {
+                agent.move();
+            }
+//            Print out map after each iteration
+            System.out.println("\n");
+            System.out.println("Iterations left: " + iterations);
+            System.out.println(map.toString());
+        }
     }
 
     public void runSimulation() {
@@ -99,7 +154,5 @@ public class Simulation {
 
         Simulation sim = new Simulation(currentMap, currentAgents,54, 10);
         sim.runSimulation();
-
-        AppGui newGui = new AppGui();
     }
 }
