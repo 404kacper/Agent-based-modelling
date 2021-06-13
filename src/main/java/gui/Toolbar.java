@@ -1,5 +1,6 @@
 package gui;
 
+import agentSim.Simulation;
 import agentSim.map.IMap;
 import gui.viewModel.MapViewModel;
 import javafx.event.ActionEvent;
@@ -7,15 +8,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 
 public class Toolbar extends ToolBar {
-    private MainView mainView;
     private MapViewModel mapViewModel;
 
     private Simulator simulator;
 
-    public Toolbar(MainView mainView, MapViewModel mapViewModel) {
-        this.mainView = mainView;
+    public Toolbar(Simulation sim, MapViewModel mapViewModel) {
         this.mapViewModel = mapViewModel;
-        this.simulator = new Simulator(this.mapViewModel, mainView.getSim());
+        this.simulator = new Simulator(this.mapViewModel, sim);
         Button step = new Button("step");
         step.setOnAction(this::handleStep);
         Button stop = new Button("stop");
@@ -36,7 +35,6 @@ public class Toolbar extends ToolBar {
 
     private void handleStep(ActionEvent actionEvent) {
         System.out.println("step pressed");
-        this.mainView.getSim().runSimulationStep();
         this.simulator.doStep();
     }
 

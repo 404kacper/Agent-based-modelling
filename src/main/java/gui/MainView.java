@@ -2,14 +2,12 @@ package gui;
 
 import agentSim.Simulation;
 import agentSim.agent.IAgent;
-import agentSim.agent.creator.AgentCreator;
-import agentSim.agent.creator.IAgentCreator;
 import agentSim.map.IMap;
-import agentSim.map.creator.MapCreator;
 import gui.viewModel.MapViewModel;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -24,24 +22,23 @@ public class MainView extends VBox {
     private Canvas canvas;
 
     private Affine affine;
-    private IMap simulationMap;
 
     private Simulation sim;
 
     private MapViewModel mapViewModel;
 
 
-    public MainView(MapViewModel mapViewModel , Simulation sim, IMap simMap) {
+    public MainView(MapViewModel mapViewModel , Simulation sim) {
         this.mapViewModel = mapViewModel;
         this.sim = sim;
-        this.simulationMap = simMap;
 
         this.mapViewModel.listenToMap(this::onMapChanged);
 
-        Toolbar toolbar = new Toolbar(this, mapViewModel);
+        Toolbar toolbar = new Toolbar(sim, mapViewModel);
 
         this.infoBar = new InfoBar();
         this.infoBar.setCursorPosition(0,0);
+        this.infoBar.setCounterFormat(0,0, 0, 0, 0, 0);
 
         Pane spacer = new Pane();
         spacer.setMinSize(0,0);
@@ -60,6 +57,13 @@ public class MainView extends VBox {
 
     private void onMapChanged(IMap map) {
         draw(map);
+        int animalCount = sim.getAgentCounter().getAnimalNo();
+        int civilCount =  sim.getAgentCounter().getCivilNo();
+        int medicCount = sim.getAgentCounter().getMedicNo();
+        int illCount = sim.getAgentCounter().getIllNo();
+        int immuneCount = sim.getAgentCounter().getImmNo();
+        int healthyCount = sim.getAgentCounter().getHealthyNo();
+        this.infoBar.setCounterFormat(animalCount,civilCount, medicCount, illCount, immuneCount, healthyCount);
     }
 
     private void handleMoved(MouseEvent mouseEvent) {

@@ -32,7 +32,7 @@ public class AppGui extends Application {
         IAgentCreator currentAgents = new AgentCreator(24,3,3,27,0,3);
         Simulation simulation = new Simulation(mapCreator,currentAgents,0, 10);
 
-        MainView mainView = new MainView(mapViewModel, simulation, simulation.getSimulationMap());
+        MainView mainView = new MainView(mapViewModel, simulation);
 
         Scene scene = new Scene(mainView, 640, 480);
 

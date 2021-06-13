@@ -3,6 +3,7 @@ package agentSim;
 import agentSim.agent.IAgent;
 import agentSim.agent.creator.IAgentCreator;
 import agentSim.agent.man.Medic;
+import agentSim.counter.AgentCounter;
 import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
 
@@ -16,18 +17,18 @@ public class Simulation {
     private Random rnd;
     private int maxIter;
     private int currentIteration;
-
+    private AgentCounter agentCounter;
     private List<IAgent> agentList;
 
-//    Implement IAgentCreator once agents are added to the project structure
-    public Simulation(IMapCreator mapCreator, IAgentCreator agentCreator, long seed, int maxIter){
-    map = mapCreator.createMap();
-    rnd=new Random(seed);
+    //    Implement IAgentCreator once agents are added to the project structure
+    public Simulation(IMapCreator mapCreator, IAgentCreator agentCreator, long seed, int maxIter) {
+        map = mapCreator.createMap();
+        rnd = new Random(seed);
+        initializeSimulation(agentCreator, map, rnd);
+        agentCounter = new AgentCounter();
 
-    initializeSimulation(agentCreator, map, rnd);
-
-    this.currentIteration = maxIter;
-    this.maxIter=maxIter;
+        this.currentIteration = maxIter;
+        this.maxIter = maxIter;
     }
 
     public void initializeSimulation(IAgentCreator agentCreator, IMap map, Random rnd) {
@@ -47,18 +48,26 @@ public class Simulation {
     public void runSimulationStep() {
         System.out.println("Before : \n" + map);
         if (currentIteration > 0) {
+            agentCounter.restCount();
             recoverAgents(currentIteration);
             interact();
             moveAgents();
+            countAgents();
             --currentIteration;
             System.out.println("After : \n" + map);
         }
     }
 
+    public void countAgents() {
+        for (IAgent agent : agentList) {
+            agentCounter.count(agent);
+        }
+    }
+
     public void recoverAgents(int iterations) {
         //            Recover agents and remove infected - dead agents
-        Iterator <IAgent> listIterator = agentList.iterator();
-        while (listIterator.hasNext()){
+        Iterator<IAgent> listIterator = agentList.iterator();
+        while (listIterator.hasNext()) {
             IAgent agent = listIterator.next();
             double genProb = ThreadLocalRandom.current().nextDouble();
 //                Initial iteration is omitted to allow agents to interact with each other
@@ -90,7 +99,7 @@ public class Simulation {
             }
 //                Execute vaccinate only for medics
             if (agent instanceof Medic) {
-                ((Medic) agent).vaccinate(1,2);
+                ((Medic) agent).vaccinate(1, 2);
             }
         }
     }
@@ -105,8 +114,7 @@ public class Simulation {
         return map;
     }
 
-
-    public List<IAgent> getAgentList() {
-        return agentList;
+    public AgentCounter getAgentCounter() {
+        return agentCounter;
     }
 }
