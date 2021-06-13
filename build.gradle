@@ -11,15 +11,15 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'agentSim.Simulation'
+        attributes 'Main-Class': 'gui.AppGui'
     }
     from {
+        exclude '**/module-info.class'
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    jar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-mainClassName= "gui.AppGui";
+mainClassName= "gui.AppGui"
 
 javafx {
     version = "16"
@@ -41,5 +41,4 @@ test {
         events "passed", "skipped", "failed"
     }
 }
-group 'org.example'
-version '0.9.1'
+version '1.0.1'

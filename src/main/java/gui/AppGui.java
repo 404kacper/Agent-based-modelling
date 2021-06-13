@@ -27,7 +27,7 @@ public class AppGui extends Application {
     @Override
     public void start(Stage stage) {
         InputView inputView = new InputView();
-        sceneInput = new Scene(inputView, 300, 400);
+        sceneInput = new Scene(inputView);
         stage.setScene(sceneInput);
         stage.show();
 
