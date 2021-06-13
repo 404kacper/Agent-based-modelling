@@ -26,26 +26,19 @@ public class MainView extends VBox {
     private Affine affine;
     private IMap simulationMap;
 
-    private Simulation simulation;
+    private Simulation sim;
 
     private MapViewModel mapViewModel;
 
 
-    public MainView(MapViewModel mapViewModel , MapCreator initialMap, IMap simMap) {
+    public MainView(MapViewModel mapViewModel , Simulation sim, IMap simMap) {
         this.mapViewModel = mapViewModel;
+        this.sim = sim;
         this.simulationMap = simMap;
 
         this.mapViewModel.listenToMap(this::onMapChanged);
 
-        IAgentCreator currentAgents = new AgentCreator(24,3,3,27,0,3);
-
-        Simulation sim = new Simulation(initialMap, currentAgents,2, 100);
-
-        simulation = sim;
-
-        simulationMap = sim.getSimulationMap();
-
-        Toolbar toolbar = new Toolbar(this, this.mapViewModel);
+        Toolbar toolbar = new Toolbar(this, mapViewModel);
 
         this.infoBar = new InfoBar();
         this.infoBar.setCursorPosition(0,0);
@@ -65,8 +58,8 @@ public class MainView extends VBox {
         this.affine.appendScale(400/10f, 400/10f);
     }
 
-    private void onMapChanged(IMap iMap) {
-        draw();
+    private void onMapChanged(IMap map) {
+        draw(map);
     }
 
     private void handleMoved(MouseEvent mouseEvent) {
@@ -88,7 +81,7 @@ public class MainView extends VBox {
 
     }
 
-    public void draw() {
+    public void draw(IMap map) {
         GraphicsContext g = this.canvas.getGraphicsContext2D();
         g.setTransform(this.affine);
 
@@ -96,13 +89,13 @@ public class MainView extends VBox {
         g.fillRect(0,0,400,400);
 
         g.setStroke(Color.GRAY);
-        drawSimulation(this.simulationMap);
+        this.drawSimulation(map);
         g.setLineWidth(0.05f);
-        for (int x = 0; x <= this.simulationMap.getXDim(); x++) {
+        for (int x = 0; x <= map.getXDim(); x++) {
             g.strokeLine(x, 0,x,10);
         }
 
-        for (int y = 0; y <= this.simulationMap.getYDim(); y++) {
+        for (int y = 0; y <= map.getYDim(); y++) {
             g.strokeLine(0,y, 10,y);
         }
     }
@@ -136,7 +129,8 @@ public class MainView extends VBox {
 
     }
 
-    public Simulation getSimulation() {
-        return simulation;
+
+    public Simulation getSim() {
+        return sim;
     }
 }

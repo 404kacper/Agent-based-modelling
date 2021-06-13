@@ -16,6 +16,7 @@ public class Simulation {
     private Random rnd;
     private int maxIter;
     private int currentIteration;
+
     private List<IAgent> agentList;
 
 //    Implement IAgentCreator once agents are added to the project structure
@@ -102,5 +103,10 @@ public class Simulation {
 
     public IMap getSimulationMap() {
         return map;
+    }
+
+
+    public List<IAgent> getAgentList() {
+        return agentList;
     }
 }
