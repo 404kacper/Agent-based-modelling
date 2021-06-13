@@ -25,16 +25,17 @@ public class SceneController {
     }
 
     public void switchToSceneSimulationScene(ActionEvent event) {
+        System.out.println(Data.inputText);
         MapViewModel mapViewModel = new MapViewModel();
-
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         MapCreator mapCreator = new MapCreator(10, 10);
         IAgentCreator currentAgents = new AgentCreator(24,3,3,27,0,3);
-        Simulation simulation = new Simulation(mapCreator,currentAgents,0, 10);
+        Simulation simulation = new Simulation(mapCreator,currentAgents,0, Integer.parseInt(Data.inputText));
         MainView mainView = new MainView(mapViewModel, simulation);
         Scene scene = new Scene(mainView, 640, 480);
 //        Set initial state of simulation map
         mapViewModel.setMapModel(simulation.getSimulationMap());
+
         stage.setScene(scene);
         stage.show();
     }

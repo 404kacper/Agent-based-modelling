@@ -3,6 +3,7 @@ package gui;
 import agentSim.Simulation;
 import agentSim.agent.IAgent;
 import agentSim.map.IMap;
+import gui.controlers.Data;
 import gui.viewModel.MapViewModel;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
