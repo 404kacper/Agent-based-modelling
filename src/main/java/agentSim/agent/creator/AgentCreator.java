@@ -52,7 +52,7 @@ public class AgentCreator implements IAgentCreator {
             agentList.add(new Animal(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0, 0.5));
         }
         for (int i = 0; i<noCivil; i++, j++) {
-            agentList.add(new Civil(map, agentStatus[j], agentStatus[j]==1 ? 1:0, agentStatus[j]==2 ? 3:0, 0.5));
+            agentList.add(new Civil(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0, 0.5));
         }
 
 //        Add medics last

@@ -1,5 +1,8 @@
 package gui;
 
+import agentSim.map.IMap;
+import agentSim.map.creator.MapCreator;
+import gui.viewModel.MapViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -16,16 +19,26 @@ public class AppGui extends Application {
 
     @Override
     public void start(Stage stage) {
-        MainView mainView = new MainView();
+        MapViewModel mapViewModel = new MapViewModel();
+
+        MapCreator mapCreator = new MapCreator(10, 10);
+        IMap map = mapCreator.createMap();
+        MainView mainView = new MainView(mapViewModel, mapCreator, map);
+
         Scene scene = new Scene(mainView, 640, 480);
 
+        stage.setScene(scene);
+        stage.show();
+
+        mapViewModel.setMapModel(map);
+
+        customizeStage(stage);
+    }
+
+    public void customizeStage(Stage stage) {
         stage.setTitle("Demo app");
 
         Image icon = new Image("https://image.flaticon.com/icons/png/512/1909/1909848.png");
         stage.getIcons().add(icon);
-
-        stage.setScene(scene);
-        stage.show();
-        mainView.draw();
     }
 }

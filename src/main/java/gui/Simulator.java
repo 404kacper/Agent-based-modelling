@@ -1,27 +1,27 @@
 package gui;
 
 import agentSim.Simulation;
+import gui.viewModel.MapViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.util.Duration;
 
 public class Simulator {
 
     private Timeline timeline;
-    private MainView mainView;
+    private MapViewModel mapViewModel;
     private Simulation simulation;
 
-    public Simulator(MainView mainView, Simulation simulation) {
-        this.mainView = mainView;
+    public Simulator(MapViewModel mapView, Simulation simulation) {
+        this.mapViewModel = mapView;
         this.simulation = simulation;
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(500), this::doStep));
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(500), event -> this.doStep()));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
     }
 
-    private void doStep(ActionEvent actionEvent) {
+    public void doStep() {
         this.simulation.runSimulationStep();
-        this.mainView.draw();
+        this.mapViewModel.setMapModel(this.simulation.getSimulationMap());
     }
 
     public void start() {

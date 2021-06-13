@@ -1,14 +1,20 @@
 package gui;
 
+import gui.viewModel.MapViewModel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 
 public class Toolbar extends ToolBar {
     private MainView mainView;
+    private MapViewModel mapViewModel;
 
-    public Toolbar(MainView mainView) {
+    private Simulator simulator;
+
+    public Toolbar(MainView mainView, MapViewModel mapViewModel) {
         this.mainView = mainView;
+        this.mapViewModel = mapViewModel;
+        this.simulator = new Simulator(this.mapViewModel, mainView.getSimulation());
         Button step = new Button("step");
         step.setOnAction(this::handleStep);
         Button stop = new Button("stop");
@@ -20,17 +26,17 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleStart(ActionEvent actionEvent) {
-        this.mainView.getSimulator().start();
+        this.simulator.start();
     }
 
     private void handleStop(ActionEvent actionEvent) {
-        this.mainView.getSimulator().stop();
+        this.simulator.stop();
     }
 
     private void handleStep(ActionEvent actionEvent) {
         System.out.println("step pressed");
         this.mainView.getSimulation().runSimulationStep();
-        this.mainView.draw();
+        this.simulator.doStep();
     }
 
 }
