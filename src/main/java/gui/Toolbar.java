@@ -2,6 +2,7 @@ package gui;
 
 import agentSim.Simulation;
 import agentSim.map.IMap;
+import gui.controlers.SceneController;
 import gui.viewModel.MapViewModel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -22,7 +23,14 @@ public class Toolbar extends ToolBar {
         Button start = new Button("start");
         start.setOnAction(this::handleStart);
 
-        this.getItems().addAll(step, start, stop);
+        Button inputSwitch = new Button("go to input");
+        SceneController sc = new SceneController();
+        inputSwitch.setOnAction(event ->  {
+            sc.switchToScene1(event);
+            handleStop(event);
+        });
+
+        this.getItems().addAll(step, start, stop, inputSwitch);
     }
 
     private void handleStart(ActionEvent actionEvent) {
