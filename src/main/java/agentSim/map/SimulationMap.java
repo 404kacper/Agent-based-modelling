@@ -5,18 +5,18 @@ import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
 
 import java.util.Collection;
-
+import java.util.List;
 
 
 public class SimulationMap implements IMap {
 
     private IAgent[][] agents;
-//    Documentation for this structure: https://github.com/google/guava/wiki & explanation: https://github.com/google/guava/wiki/NewCollectionTypesExplained
+    //    Documentation for this structure: https://github.com/google/guava/wiki & explanation: https://github.com/google/guava/wiki/NewCollectionTypesExplained
     private Multimap<IAgent, Integer> agentsPositions;
 
     public SimulationMap(int width, int height) {
-    agents = new IAgent[width][height];
-    agentsPositions = ArrayListMultimap.create();
+        agents = new IAgent[width][height];
+        agentsPositions = ArrayListMultimap.create();
     }
 
 
@@ -35,33 +35,62 @@ public class SimulationMap implements IMap {
         return agents[0].length;
     }
 
+
+    // This method is meant to be used only during initial placement of agents
     @Override
     public boolean placeAgent(IAgent agent, int row, int col) {
-        int[] coordinates = getAgentPosition(agent);
 
 //        Check if the position is already occupied
         if (agents[row][col] != null) {
             return false;
         }
-//        Check if coordinates are correct
-        if (coordinates[0] >= 0 || coordinates[1] >= 0) {
-            agents[coordinates[0]][coordinates[1]] = null;
-        }
-//        Uncomment this once agent class is implemented
+
         agent.setMap(this);
 
 //        Place agent
         agents[row][col] = agent;
-//        Remove all values before putting them - so they don't add up with each iteration of the Simulation and cause getAgentPosition to crash
+//        Remove all values before putting them - just in case
         agentsPositions.removeAll(agent);
-        agentsPositions.putAll(agent, Ints.asList(row,col));
+        agentsPositions.putAll(agent, Ints.asList(row, col));
         return true;
+    }
+
+    @Override
+    public void removeAgent(IAgent agent) {
+//        List<IAgent> updatedList =
+//        Remove agent from the array
+        for (int x = 0; x < agents.length; x++) {
+            for (int y = 0; y < agents[x].length; y++) {
+                if (agents[x][y] == agent) {
+                    agents[x][y] = null;
+                }
+            }
+        }
+
+//        Remove agent from multimap
+        agentsPositions.removeAll(agent);
+//        Remove agent from simulation list
+    }
+
+    @Override
+    public void placeAgentInclusive(IAgent agent, int row, int col) {
+        int[] coordinates = getAgentPosition(agent);
+//        Remove the previous position from agents array
+        if (coordinates[0] >= 0 || coordinates[1] >= 0) {
+            agents[coordinates[0]][coordinates[1]] = null;
+        }
+        agent.setMap(this);
+//        Place agent
+        agents[row][col] = agent;
+//        Replace all values for given agent during move
+        agentsPositions.replaceValues(agent, Ints.asList(row, col));
+
     }
 
     @Override
     public int[] getAgentPosition(IAgent agent) {
 //        Collections are usually returned from guava structures
-        Collection <Integer> view = agentsPositions.get(agent);
+        Collection<Integer> view = agentsPositions.get(agent);
 //        Size of 2 for x and y coordinate
         int[] position = new int[2];
 //        Keep track of iterations in for each loop
@@ -69,21 +98,21 @@ public class SimulationMap implements IMap {
 //        Loop through collection
         for (Integer num : view) {
 //            Assign coordinate to array that will be returned
-            position[counter] = num.intValue();
+            position[counter] = num;
             counter++;
         }
         return position;
     }
 
-//    Prints out map
+    //    Prints out map
     @Override
-    public String toString(){
+    public String toString() {
         StringBuffer buff = new StringBuffer();
         for (int i = 0; i < agents.length; i++) {
             if (i != 0) {
                 buff.append("\n");
             }
-            for(int j = 0; j < agents[i].length; j++) {
+            for (int j = 0; j < agents[i].length; j++) {
                 if (agents[i][j] == null) {
                     buff.append("# ");
                 } else {

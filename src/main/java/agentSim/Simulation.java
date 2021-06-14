@@ -1,86 +1,142 @@
 package agentSim;
 
 import agentSim.agent.IAgent;
-import agentSim.agent.creator.AgentCreator;
+import agentSim.agent.animal.Animal;
 import agentSim.agent.creator.IAgentCreator;
+import agentSim.agent.man.Civil;
+import agentSim.agent.man.Medic;
+import agentSim.counter.AgentCounter;
+import agentSim.customizer.SimulationCustomizer;
 import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
-import agentSim.map.creator.MapCreator;
 
+import java.util.*;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulation {
+
     private IMap map;
     private Random rnd;
     private int maxIter;
+    private int currentIteration;
+    private AgentCounter agentCounter;
+    private SimulationCustomizer simulationCustomizer;
     private List<IAgent> agentList;
 
-//    Implement IAgentCreator once agents are added to the project structure
-    public Simulation(IMapCreator mapCreator, IAgentCreator agentCreator, long seed, int maxIter){
-    map = mapCreator.createMap();
-
-    rnd=new Random(seed);
-    agentList = agentCreator.createAgents(map, rnd);
-
-    for (int i = 0; i< agentList.size();i++)
-        while(!map.placeAgent(agentList.get(i), rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim())));
-    this.maxIter=maxIter;
+    //    Implement IAgentCreator once agents are added to the project structure
+    public Simulation(IMapCreator mapCreator, IAgentCreator agentCreator, SimulationCustomizer simCust, long seed, int maxIter) {
+        map = mapCreator.createMap();
+        rnd = new Random(seed);
+        simulationCustomizer = simCust;
+        initializeSimulation(agentCreator, map, rnd);
+        agentCounter = new AgentCounter();
+        this.currentIteration = 0;
+        this.maxIter = maxIter;
     }
 
-    public void runSimulation() {
-        int iterations = maxIter;
-
-        System.out.println("Iterations left: " + iterations);
-        System.out.println(map.toString());
-
-        while (--iterations>0) {
-//            Reason for two loops is so that interactions between agents are mutual eg. agent1 can infect agent2 and vice-versa
-            for (IAgent agent : agentList) {
-//                Infect agents only for infected agents
-                if (agent.getHealth() == 1) {
-                    agent.infect(1);
-                }
+    public void initializeSimulation(IAgentCreator agentCreator, IMap map, Random rnd) {
+        //    Catch the exception defined in AgentCreator class
+        try {
+            agentList = agentCreator.createAgents(map, rnd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //    Initialize map with all of the agents in list
+        for (IAgent agent : agentList) {
+            while (true) {
+                if (map.placeAgent(agent, rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim()))) break;
             }
-            for (IAgent agent : agentList) {
-//                Move agents
-                agent.move();
-            }
-            System.out.println("\n");
-            System.out.println("Iterations left: " + iterations);
-//            Print out map after each iteration
-            System.out.println(map.toString());
+            setAgentsMoveDistance(agent, simulationCustomizer.getCivilSpeed(), simulationCustomizer.getMedicSpeed(), simulationCustomizer.getAnimalSpeed());
         }
     }
 
-    public static void main(String[] args) {
-        //FIXME bug for map size width: 4 height: 5 seed: 7 noAnimals: 3
-        // - only 2 animals are printed out instead of 3 as declared in creator
-        // - the bug persists probably for other seeds
-        // - the issue is with non-square matrices
-        // - most likely there is some logical issue in one of 2d array loops inside the app that prevents 3rd animal from being put onto the map
-        // - therefore for now maps should only be square matrices
-        // - keep in mind that above seed might not work anymore as app changes however the bug will persists in non square maps
-
-        // Notatki do pierwszej podstawowej wersji programu:
-        // Parametry symulacji nie są wprowadzane przez konsolę a przez funkcję main
-        // Następujące paraemtry nie zostały jeszcze zaimplementowane:
-        // -  noHealthy, noIll, noImmune, noPeople i peopleRatio
-        // Następujące klasy nie zostały jeszczę zaimplementowane
-        // - Civil i Medic
-        // Brakujące funkcjonalności to:
-        // - Zdrowienie, uodparnianie się, tracenie odporności,
-        // Co zostało zaimplementowane:
-        // - Ruch agentów po mapie, wzajemne zarażanie się i parametr fieldOfView(w metodzie Agent.getNeighbours)
-
-        MapCreator currentMap = new MapCreator(10, 10);
-//        Meaningless numbers just to get the simulation running
-
-        IAgentCreator currentAgents = new AgentCreator(1,1,1,1,20,1);
-
-        Simulation sim = new Simulation(currentMap, currentAgents,1, 8);
-        sim.runSimulation();
-//        Possibly a class that sums up everything that happened during these iterations? eg. amount of infections, healthy etc...
+    public void runSimulationStep() {
+        System.out.println("Before : \n" + map);
+        if (currentIteration < this.maxIter) {
+            agentCounter.restCount();
+            recoverAgents(currentIteration);
+            interact();
+            moveAgents();
+            countAgents();
+            ++currentIteration;
+            System.out.println("After : \n" + map);
+        }
     }
 
+    public void countAgents() {
+        for (IAgent agent : agentList) {
+            agentCounter.count(agent);
+        }
+    }
+
+    public void recoverAgents(int iterations) {
+        //            Recover agents and remove infected - dead agents
+        Iterator<IAgent> listIterator = agentList.iterator();
+        while (listIterator.hasNext()) {
+            IAgent agent = listIterator.next();
+            double genProb = ThreadLocalRandom.current().nextDouble();
+//                Initial iteration is omitted to allow agents to interact with each other
+            if (iterations != 0) {
+                if (genProb <= agent.getDeathProb()) {
+                    if (agent.recover()) {
+                        map.removeAgent(agent);
+                        listIterator.remove();
+                    }
+                } else {
+                    agent.recover();
+                }
+            }
+        }
+    }
+
+    public void interact() {
+        for (IAgent agent : agentList) {
+//                Execute infect only for infected agents
+            if (agent.getHealth() == 1) {
+//                    Catch the exception defined in medic class
+                try {
+                    agent.infect();
+                    Collections.sort(agentList, new SortByHealth());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+//                Execute vaccinate only for medics
+            if (agent instanceof Medic) {
+                ((Medic) agent).vaccinate();
+            }
+        }
+    }
+
+    public void moveAgents() {
+        for (IAgent agent : agentList) {
+            agent.move();
+        }
+    }
+
+    public void setAgentsMoveDistance(IAgent agent, int civilSpeed, int medicSpeed, int animalSpeed) {
+        if (agent instanceof Civil) {
+            ((Civil) agent).setCivilSpeed(civilSpeed);
+        }
+        if (agent instanceof Medic) {
+            ((Medic) agent).setMedicSpeed(medicSpeed);
+        }
+        if (agent instanceof Animal) {
+            ((Animal) agent).setAnimalSpeed(animalSpeed);
+        }
+    }
+
+    public IMap getSimulationMap() {
+        return map;
+    }
+
+    public AgentCounter getAgentCounter() {
+        return agentCounter;
+    }
+
+    public int getCurrentIteration() {
+        return currentIteration;
+    }
 }

@@ -4,11 +4,16 @@ import agentSim.map.IMap;
 import com.google.common.collect.Multimap;
 
 public interface IAgent {
-    public void move();
-    public Multimap<IAgent, Integer> getNeighbours(int fieldOfView);
-    public void infect(int fieldOfView);
-    public IMap getMap();
-    public void setMap(IMap map);
-    public void setHealth(int healthStatus);
-    public int getHealth();
+    void move();
+    int getHealth();
+    void infect() throws Exception;
+    boolean recover();
+    void setResistanceDuration(int resistanceDuration);
+    Multimap<IAgent, Integer> getNeighboursRing(int fieldOfView);
+    public double getDeathProb();
+    void setInfectionDuration(int duration);
+    void setHealth(int healthStatus);
+    void displayObjectCounter();
+    IMap getMap();
+    void setMap(IMap map);
 }
