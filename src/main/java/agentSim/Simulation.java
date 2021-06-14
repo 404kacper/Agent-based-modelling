@@ -1,9 +1,12 @@
 package agentSim;
 
 import agentSim.agent.IAgent;
+import agentSim.agent.animal.Animal;
 import agentSim.agent.creator.IAgentCreator;
+import agentSim.agent.man.Civil;
 import agentSim.agent.man.Medic;
 import agentSim.counter.AgentCounter;
+import agentSim.customizer.SimulationCustomizer;
 import agentSim.map.IMap;
 import agentSim.map.creator.IMapCreator;
 
@@ -18,15 +21,16 @@ public class Simulation {
     private int maxIter;
     private int currentIteration;
     private AgentCounter agentCounter;
+    private SimulationCustomizer simulationCustomizer;
     private List<IAgent> agentList;
 
     //    Implement IAgentCreator once agents are added to the project structure
-    public Simulation(IMapCreator mapCreator, IAgentCreator agentCreator, long seed, int maxIter) {
+    public Simulation(IMapCreator mapCreator, IAgentCreator agentCreator, SimulationCustomizer simCust, long seed, int maxIter) {
         map = mapCreator.createMap();
         rnd = new Random(seed);
+        simulationCustomizer = simCust;
         initializeSimulation(agentCreator, map, rnd);
         agentCounter = new AgentCounter();
-
         this.currentIteration = 0;
         this.maxIter = maxIter;
     }
@@ -39,10 +43,12 @@ public class Simulation {
             e.printStackTrace();
         }
         //    Initialize map with all of the agents in list
-        for (IAgent agent : agentList)
+        for (IAgent agent : agentList) {
             while (true) {
                 if (map.placeAgent(agent, rnd.nextInt(map.getXDim()), rnd.nextInt(map.getYDim()))) break;
             }
+            setAgentsMoveDistance(agent, simulationCustomizer.getCivilSpeed(), simulationCustomizer.getMedicSpeed(), simulationCustomizer.getAnimalSpeed());
+        }
     }
 
     public void runSimulationStep() {
@@ -107,6 +113,18 @@ public class Simulation {
     public void moveAgents() {
         for (IAgent agent : agentList) {
             agent.move();
+        }
+    }
+
+    public void setAgentsMoveDistance(IAgent agent, int civilSpeed, int medicSpeed, int animalSpeed) {
+        if (agent instanceof Civil) {
+            ((Civil) agent).setCivilSpeed(civilSpeed);
+        }
+        if (agent instanceof Medic) {
+            ((Medic) agent).setMedicSpeed(medicSpeed);
+        }
+        if (agent instanceof Animal) {
+            ((Animal) agent).setAnimalSpeed(animalSpeed);
         }
     }
 

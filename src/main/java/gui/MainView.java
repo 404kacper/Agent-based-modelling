@@ -3,6 +3,7 @@ package gui;
 import agentSim.Simulation;
 import agentSim.agent.IAgent;
 import agentSim.map.IMap;
+import gui.controlers.Data;
 import gui.viewModel.MapViewModel;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -80,7 +81,7 @@ public class MainView extends VBox {
         this.getChildren().addAll(toolBarBox, canvasBox ,chartBox, infoBar);
 
         this.affine = new Affine();
-        this.affine.appendScale(400/10f, 400/10f);
+        this.affine.appendScale(400/ (double)Data.mapWidth, 400/(double)Data.mapHeight);
     }
 
     private void onMapChanged(IMap map) {

@@ -5,6 +5,8 @@ import agentSim.map.IMap;
 
 public class Animal extends Agent {
 
+    private int animalSpeed;
+
     public Animal(IMap map, int health, int infDuration, int resDuration, double deathProb) {
         super(map, health, infDuration, resDuration, deathProb);
     }
@@ -23,7 +25,11 @@ public class Animal extends Agent {
 //    Specific move implementation for Animal agents
     @Override
     public void move(){
-        move(2);
+        move(animalSpeed);
+    }
+
+    public void setAnimalSpeed(int animalSpeed) {
+        this.animalSpeed = animalSpeed;
     }
 
     @Override

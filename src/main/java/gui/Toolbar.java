@@ -1,11 +1,9 @@
 package gui;
 
 import agentSim.Simulation;
-import agentSim.map.IMap;
 import gui.controlers.SceneController;
 import gui.viewModel.MapViewModel;
 import javafx.event.ActionEvent;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
@@ -36,7 +34,7 @@ public class Toolbar extends ToolBar {
         Button inputSwitch = new Button("go to input");
         SceneController sc = new SceneController();
         inputSwitch.setOnAction(event ->  {
-            sc.switchToScene1(event);
+            sc.switchToInputScene(event);
             handleStop(event);
         });
 

@@ -21,6 +21,8 @@ public abstract class Agent extends AAgent implements IColors {
     protected int resistanceDuration;
     protected double deathProb;
 
+    private int civilMoveSpeed;
+
     public Agent(IMap map, int health, int infDuration, int resDuration, double deathProb) {
         super(map);
 //        !!! Current seed isn't the same as the one being passed in Simulation class
@@ -101,17 +103,6 @@ public abstract class Agent extends AAgent implements IColors {
                 break;
             }
         } while (true);
-
-//            Old function for moving the agent
-//        do {
-//            int position_x = rnd.nextInt(map.getXDim());
-//            int position_y = rnd.nextInt(map.getYDim());
-//            if (map.getAgent(position_x, position_y) == null) {
-//                map.placeAgent(this, position_x, position_y);
-//                break;
-//            }
-//        } while(true);
-
     }
 
     public void infect(int fieldOfView, int duration, double agentDependantProb) {
@@ -273,6 +264,15 @@ public abstract class Agent extends AAgent implements IColors {
 
     public double getDeathProb() {
         return deathProb;
+    }
+
+
+    public int getCivilMoveSpeed() {
+        return civilMoveSpeed;
+    }
+
+    public void setCivilMoveSpeed(int civilMoveSpeed) {
+        this.civilMoveSpeed = civilMoveSpeed;
     }
 
 

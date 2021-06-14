@@ -5,8 +5,11 @@ import agentSim.map.IMap;
 
 public class Civil extends Agent {
 
+    private int civilSpeed;
+
     public Civil(IMap map, int health, int infDuration, int resDuration, double deathProb) {
         super(map, health, infDuration, resDuration, deathProb);
+        civilSpeed = 0;
     }
 
 //    Specific recover implementation for Civil agents
@@ -23,8 +26,13 @@ public class Civil extends Agent {
 
 //    Specific move implementation for Civil agents
     public void move(){
-        move(1);
+        move(civilSpeed);
     }
+
+    public void setCivilSpeed(int civilSpeed) {
+        this.civilSpeed = civilSpeed;
+    }
+
     @Override
     public String toString() {
         return switch (healthCondition) {

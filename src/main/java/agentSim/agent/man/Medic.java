@@ -7,8 +7,11 @@ import com.google.common.collect.Multimap;
 
 public class Medic extends Agent {
 
+    private int medicSpeed;
+
     public Medic(IMap map, int health, int infDuration, int resDuration, double deathProb) {
         super(map, health, infDuration, resDuration, deathProb);
+        medicSpeed = 0;
     }
 
 //    Specific recover implementation for Medic agents
@@ -27,7 +30,11 @@ public class Medic extends Agent {
 //    Specific move implementation for Medic agents
     @Override
     public void move(){
-        move(1);
+        move(medicSpeed);
+    }
+
+    public void setMedicSpeed(int medicSpeed) {
+        this.medicSpeed = medicSpeed;
     }
 
     public void vaccinate(int fieldOfView, int duration) {

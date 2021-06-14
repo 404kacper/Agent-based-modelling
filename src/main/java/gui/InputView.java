@@ -3,7 +3,6 @@ package gui;
 import gui.controlers.Data;
 import gui.controlers.SceneController;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
@@ -33,7 +32,7 @@ public class InputView extends VBox {
     public InputView() {
         createInputFields();
 
-        sceneButton = new Button("Go to simulation");
+        sceneButton = new Button("Go to simulation customization");
         validateNumericalInput(maxIterInput);
         validateNumericalInput(civilInput);
         validateNumericalInput(animalInput);
@@ -46,7 +45,7 @@ public class InputView extends VBox {
         SceneController sc = new SceneController();
         sceneButton.setOnAction(e -> {
             passData();
-            sc.switchToSceneSimulationScene(e);
+            sc.switchToSliderScene(e);
         });
 
 

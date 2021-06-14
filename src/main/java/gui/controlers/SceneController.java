@@ -3,7 +3,9 @@ package gui.controlers;
 import agentSim.Simulation;
 import agentSim.agent.creator.AgentCreator;
 import agentSim.agent.creator.IAgentCreator;
+import agentSim.customizer.SimulationCustomizer;
 import agentSim.map.creator.MapCreator;
+import gui.CustomizationView;
 import gui.InputView;
 import gui.MainView;
 import gui.viewModel.MapViewModel;
@@ -16,15 +18,25 @@ public class SceneController {
     private Stage stage;
     private Scene scene;
 
-    public void switchToScene1(ActionEvent event) {
+    public void switchToInputScene(ActionEvent event) {
         InputView inputView = new InputView();
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(inputView);
+        stage.setX(900);
+        stage.setY(400);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void switchToSceneSimulationScene(ActionEvent event) {
+    public void switchToSliderScene(ActionEvent event) {
+        CustomizationView customizationView = new CustomizationView();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(customizationView);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToSimulationScene(ActionEvent event) {
         Integer maxIter = Integer.parseInt(Data.maxIterInputText);
         Integer animalCount = Integer.parseInt(Data.animalInputText);
         Integer civilCount = Integer.parseInt(Data.civilInputText);
@@ -33,11 +45,25 @@ public class SceneController {
         Integer immuneCount = Integer.parseInt(Data.immuneInputText);
         Integer healthyCount = Integer.parseInt(Data.healthyInputText);
 
+        int mapWidth = Data.mapWidth;
+        int mapHeight = Data.mapHeight;
+        int civilSpeed = Data.civilSpeed;
+        int animalSpeed = Data.animalSpeed;
+        int medicSpeed = Data.medicSpeed;
+
         MapViewModel mapViewModel = new MapViewModel();
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        MapCreator mapCreator = new MapCreator(10, 10);
-        IAgentCreator currentAgents = new AgentCreator(healthyCount,illCount,immuneCount,civilCount,animalCount,medicCount);
-        Simulation simulation = new Simulation(mapCreator,currentAgents,0, maxIter);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        MapCreator mapCreator = new MapCreator(mapWidth, mapHeight);
+
+        IAgentCreator currentAgents = new AgentCreator(healthyCount, illCount, immuneCount, civilCount, animalCount, medicCount);
+
+        SimulationCustomizer customizer = new SimulationCustomizer();
+
+        customizer.setSpeedValues(civilSpeed, animalSpeed, medicSpeed);
+
+        Simulation simulation = new Simulation(mapCreator, currentAgents, customizer, 0, maxIter);
+
         MainView mainView = new MainView(mapViewModel, simulation);
         Scene scene = new Scene(mainView);
 //        Set initial state of simulation map
