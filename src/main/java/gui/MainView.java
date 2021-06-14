@@ -97,7 +97,6 @@ public class MainView extends VBox {
         this.infoBar.setCounterFormat(animalCount,civilCount, medicCount, illCount, immuneCount, healthyCount);
 
         this.animalSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), animalCount));
-        animalSeries.getNode().setStyle("-fx-stroke: blue");
         this.civilSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), civilCount));
         this.medicSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), medicCount));
 
