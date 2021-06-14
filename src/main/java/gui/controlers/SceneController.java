@@ -55,7 +55,6 @@ public class SceneController {
         int vaccinationFov = Data.vaccinationFov;
         int infectionFov = Data.infectionFov;
 
-
         MapViewModel mapViewModel = new MapViewModel();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 

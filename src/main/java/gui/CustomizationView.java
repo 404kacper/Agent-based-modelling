@@ -90,7 +90,7 @@ public class CustomizationView extends VBox {
         SceneController sc = new SceneController();
         sceneButton.setOnAction(e -> {
             passData();
-            sc.switchToSimulationScene(e);
+            sc.switchToInputScene(e);
         });
 
         this.getChildren().addAll(mapHeightLabel, mapWidthSlider, mapWidthLabel, mapHeightSlider, animalSpeedLabel, animalSpeedSlider, civilSpeedLabel, civilSpeedSlider, medicSpeedLabel, medicSpeedSlider, infectionDurationLabel, infectionDurationSlider, resistanceDurationLabel, resistanceDurationSlider, vaccinationFovLabel, vaccinationFovSlider, infectionFovLabel, infectionFovSlider, sceneButton);
@@ -114,6 +114,5 @@ public class CustomizationView extends VBox {
         Data.resistanceDuration = (int) resistanceDurationSlider.getValue();
         Data.vaccinationFov = (int) vaccinationFovSlider.getValue();
         Data.infectionFov = (int) infectionFovSlider.getValue();
-
     }
 }

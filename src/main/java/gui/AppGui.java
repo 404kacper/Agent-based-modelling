@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 public class AppGui extends Application {
 
-    Scene sceneInput, sceneSimulation;
+    Scene initialScene;
 
 //    Gui must be ran with gradle run task
 
@@ -25,9 +25,9 @@ public class AppGui extends Application {
     @Override
     public void start(Stage stage) {
         // Initial scene
-        InputView inputView = new InputView();
-        sceneInput = new Scene(inputView);
-        stage.setScene(sceneInput);
+        CustomizationView customizationView = new CustomizationView();
+        initialScene = new Scene(customizationView);
+        stage.setScene(initialScene);
         stage.show();
 
         customizeStage(stage);

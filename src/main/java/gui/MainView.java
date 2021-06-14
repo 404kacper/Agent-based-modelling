@@ -33,7 +33,6 @@ public class MainView extends VBox {
     private LineChart<Number, Number> populationChart;
     private LineChart<Number, Number> stateChart;
 
-
     private XYChart.Series<Number, Number> animalSeries;
     private XYChart.Series<Number, Number> civilSeries;
     private XYChart.Series<Number, Number> medicSeries;
@@ -67,6 +66,7 @@ public class MainView extends VBox {
 
         this.infoBar = new InfoBar();
         this.infoBar.setCursorPosition(0,0);
+        // Initial values to display in agents counter
         this.infoBar.setCounterFormat(0,0, 0, 0, 0, 0);
 
         this.setSpacing(50);
@@ -227,10 +227,5 @@ public class MainView extends VBox {
         stateChart.getData().add(healthySeries);
         stateChart.getData().add(illSeries);
         stateChart.getData().add(immuneSeries);
-    }
-
-
-    public Simulation getSim() {
-        return sim;
     }
 }

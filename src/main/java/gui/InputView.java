@@ -1,5 +1,6 @@
 package gui;
 
+import gui.alerts.AlertBox;
 import gui.controlers.Data;
 import gui.controlers.SceneController;
 import javafx.beans.binding.Bindings;
@@ -44,12 +45,51 @@ public class InputView extends VBox {
         disableSimulationButton();
         SceneController sc = new SceneController();
         sceneButton.setOnAction(e -> {
-            passData();
-            sc.switchToSliderScene(e);
+            if (validatePressed()) {
+                if(validateLogically()) {
+                    passData();
+                    sc.switchToSimulationScene(e);
+                } else {
+                    AlertBox.display("Invalid input", "Sum of individual agents must be smaller than map size");
+                }
+            } else {
+                AlertBox.display("Invalid input", "Make sure the number of states is equal to the population size");
+            }
         });
 
 
         this.getChildren().addAll(labelIter, maxIterInput, labelCivil, civilInput, labelAnimal, animalInput, medicLabel, medicInput, labelHealthy, healthyInput, labelIll, illInput, labelImmune, immuneInput, sceneButton);
+    }
+
+    public boolean validatePressed() {
+        boolean statesEqualPopulations = false;
+        int populationSize = Integer.parseInt(animalInput.getText());
+        populationSize += Integer.parseInt(civilInput.getText());
+        populationSize += Integer.parseInt(medicInput.getText());
+        int statesSize = Integer.parseInt(immuneInput.getText());
+        statesSize += Integer.parseInt(illInput.getText());
+        statesSize += Integer.parseInt(healthyInput.getText());
+
+        if (populationSize == statesSize) {
+            statesEqualPopulations = true;
+        }
+        return statesEqualPopulations;
+    }
+
+    public boolean validateLogically() {
+        boolean populationSmallerThanMapSize = false;
+        int mapWidth = Data.mapWidth;
+        int mapHeight = Data.mapHeight;
+
+        int populationSize = Integer.parseInt(animalInput.getText());
+        populationSize += Integer.parseInt(civilInput.getText());
+        populationSize += Integer.parseInt(medicInput.getText());
+
+        if (mapHeight*mapWidth >= populationSize) {
+            populationSmallerThanMapSize = true;
+        }
+
+        return populationSmallerThanMapSize;
     }
 
     public void validateNumericalInput(TextField textField) {
@@ -65,8 +105,6 @@ public class InputView extends VBox {
     }
 
     public void createInputFields() {
-        // Form
-
         // Iterations
         labelIter = new Label("Enter number of iterations");
 
