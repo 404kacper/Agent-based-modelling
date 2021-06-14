@@ -1,10 +1,13 @@
 package gui;
 
+import gui.alerts.AlertBox;
 import gui.controlers.Data;
 import gui.controlers.SceneController;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class CustomizationView extends VBox {
@@ -38,21 +41,27 @@ public class CustomizationView extends VBox {
     Label infectionFovLabel;
 
     public CustomizationView() {
+        HBox buttonAlignment = new HBox();
         sceneButton = new Button("Go to simulation");
+        buttonAlignment.setAlignment(Pos.CENTER);
+        buttonAlignment.getChildren().addAll(sceneButton);
 
         // Map size
         mapWidthLabel = new Label("Set map width");
-        mapWidthSlider = new Slider(0, 10, 10);
+        mapWidthSlider = new Slider(0, 100, 10);
 
         mapHeightLabel = new Label("Set map height");
-        mapHeightSlider = new Slider(0, 10, 10);
+        mapHeightSlider = new Slider(0, 100, 10);
 
         sliderCustomizeToInt(mapWidthSlider);
         sliderCustomizeToInt(mapHeightSlider);
-
+        mapWidthSlider.setBlockIncrement(10);
+        mapWidthSlider.setMajorTickUnit(10);
+        mapHeightSlider.setBlockIncrement(10);
+        mapHeightSlider.setMajorTickUnit(10);
 
         //  Move speed
-        int speedLimit = (int) Math.ceil(mapHeightSlider.getValue() / 3);
+        int speedLimit = (int) Math.ceil(mapHeightSlider.getMax() / 20);
 
         animalSpeedLabel = new Label("Set animal move speed");
         animalSpeedSlider = new Slider(0, speedLimit, 1);
@@ -69,10 +78,10 @@ public class CustomizationView extends VBox {
 
         // Interaction durations
         infectionDurationLabel = new Label("Set how long infections last");
-        infectionDurationSlider = new Slider(0, 10, 1);
+        infectionDurationSlider = new Slider(0, 10, 2);
 
         resistanceDurationLabel = new Label("Set how long resistance lasts");
-        resistanceDurationSlider = new Slider(0, 10, 1);
+        resistanceDurationSlider = new Slider(0, 10, 2);
 
         sliderCustomizeToInt(infectionDurationSlider);
         sliderCustomizeToInt(resistanceDurationSlider);
@@ -89,11 +98,25 @@ public class CustomizationView extends VBox {
 
         SceneController sc = new SceneController();
         sceneButton.setOnAction(e -> {
-            passData();
-            sc.switchToInputScene(e);
+            if (validatePressed()) {
+                passData();
+                sc.switchToInputScene(e);
+            } else {
+                AlertBox.display("Invalid input", "Simulation accepts only quadratic arrays, make sure width is equal to height");
+            }
         });
 
-        this.getChildren().addAll(mapHeightLabel, mapWidthSlider, mapWidthLabel, mapHeightSlider, animalSpeedLabel, animalSpeedSlider, civilSpeedLabel, civilSpeedSlider, medicSpeedLabel, medicSpeedSlider, infectionDurationLabel, infectionDurationSlider, resistanceDurationLabel, resistanceDurationSlider, vaccinationFovLabel, vaccinationFovSlider, infectionFovLabel, infectionFovSlider, sceneButton);
+        this.getChildren().addAll(mapHeightLabel, mapWidthSlider, mapWidthLabel, mapHeightSlider, animalSpeedLabel, animalSpeedSlider, civilSpeedLabel, civilSpeedSlider, medicSpeedLabel, medicSpeedSlider, infectionDurationLabel, infectionDurationSlider, resistanceDurationLabel, resistanceDurationSlider, vaccinationFovLabel, vaccinationFovSlider, infectionFovLabel, infectionFovSlider, buttonAlignment);
+    }
+
+    private boolean validatePressed() {
+        boolean mapWidthEqualsHeight = false;
+        int width = (int) mapWidthSlider.getValue();
+        int height = (int) mapHeightSlider.getValue();
+        if (width == height) {
+            mapWidthEqualsHeight = true;
+        }
+        return mapWidthEqualsHeight;
     }
 
     private void sliderCustomizeToInt(Slider slider) {

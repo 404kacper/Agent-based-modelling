@@ -34,7 +34,7 @@ public class Toolbar extends ToolBar {
         Button inputSwitch = new Button("go to input");
         SceneController sc = new SceneController();
         inputSwitch.setOnAction(event ->  {
-            sc.switchToInputScene(event);
+            sc.switchToSliderScene(event);
             handleStop(event);
         });
 

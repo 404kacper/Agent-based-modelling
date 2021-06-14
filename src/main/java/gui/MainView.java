@@ -2,6 +2,9 @@ package gui;
 
 import agentSim.Simulation;
 import agentSim.agent.IAgent;
+import agentSim.agent.animal.Animal;
+import agentSim.agent.man.Civil;
+import agentSim.agent.man.Medic;
 import agentSim.map.IMap;
 import gui.controlers.Data;
 import gui.viewModel.MapViewModel;
@@ -16,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.NonInvertibleTransformException;
 
@@ -50,7 +54,7 @@ public class MainView extends VBox {
 
         HBox chartBox = new HBox(3);
 
-        HBox canvasBox = new HBox(0);
+        HBox canvasBox = new HBox(100);
 
         HBox toolBarBox = new HBox(1);
 
@@ -91,7 +95,9 @@ public class MainView extends VBox {
         int immuneCount = sim.getAgentCounter().getImmNo();
         int healthyCount = sim.getAgentCounter().getHealthyNo();
         this.infoBar.setCounterFormat(animalCount,civilCount, medicCount, illCount, immuneCount, healthyCount);
+
         this.animalSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), animalCount));
+        animalSeries.getNode().setStyle("-fx-stroke: blue");
         this.civilSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), civilCount));
         this.medicSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), medicCount));
 
@@ -130,11 +136,11 @@ public class MainView extends VBox {
         this.drawSimulation(map);
         g.setLineWidth(0.05f);
         for (int x = 0; x <= map.getXDim(); x++) {
-            g.strokeLine(x, 0,x,10);
+            g.strokeLine(x, 0,x,Data.mapWidth);
         }
 
         for (int y = 0; y <= map.getYDim(); y++) {
-            g.strokeLine(0,y, 10,y);
+            g.strokeLine(0,y, Data.mapHeight,y);
         }
     }
 
@@ -159,14 +165,18 @@ public class MainView extends VBox {
                             g.setFill(Color.BLUE);
                             break;
                     }
-//                    Arrays retrieve data according to rows and columns
-                    g.fillRect(y,x, 1,1);
+                    if (currAgent instanceof Animal) {
+                        g.fillOval(y,x,1,1);
+                    } else if (currAgent instanceof Civil) {
+                        g.fillArc(y, x, 1, 1, 45, 240, ArcType.OPEN);
+                    }  else if (currAgent instanceof Medic) {
+                        g.fillRoundRect(y,x,1,1,0.5,0.5);
+                    }
                 }
             }
         }
 
     }
-
 
     private void constructPopulationChart() {
         //defining the axes

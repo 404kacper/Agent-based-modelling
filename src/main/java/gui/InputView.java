@@ -6,9 +6,11 @@ import gui.controlers.SceneController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class InputView extends VBox {
@@ -42,6 +44,10 @@ public class InputView extends VBox {
         validateNumericalInput(healthyInput);
         validateNumericalInput(immuneInput);
 
+        HBox alignButtonToCenter = new HBox(0);
+        alignButtonToCenter.setAlignment(Pos.CENTER);
+        alignButtonToCenter.getChildren().addAll(sceneButton);
+
         disableSimulationButton();
         SceneController sc = new SceneController();
         sceneButton.setOnAction(e -> {
@@ -58,7 +64,7 @@ public class InputView extends VBox {
         });
 
 
-        this.getChildren().addAll(labelIter, maxIterInput, labelCivil, civilInput, labelAnimal, animalInput, medicLabel, medicInput, labelHealthy, healthyInput, labelIll, illInput, labelImmune, immuneInput, sceneButton);
+        this.getChildren().addAll(labelIter, maxIterInput, labelCivil, civilInput, labelAnimal, animalInput, medicLabel, medicInput, labelHealthy, healthyInput, labelIll, illInput, labelImmune, immuneInput, alignButtonToCenter);
     }
 
     public boolean validatePressed() {

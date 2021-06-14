@@ -77,7 +77,7 @@ public class Simulation {
             IAgent agent = listIterator.next();
             double genProb = ThreadLocalRandom.current().nextDouble();
 //                Initial iteration is omitted to allow agents to interact with each other
-            if (iterations != maxIter) {
+            if (iterations != 0) {
                 if (genProb <= agent.getDeathProb()) {
                     if (agent.recover()) {
                         map.removeAgent(agent);

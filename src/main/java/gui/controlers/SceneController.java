@@ -21,9 +21,9 @@ public class SceneController {
     public void switchToInputScene(ActionEvent event) {
         InputView inputView = new InputView();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(inputView);
-        stage.setX(900);
-        stage.setY(400);
+        scene = new Scene(inputView, 300, 350);
+        stage.setX(850);
+        stage.setY(200);
         stage.setScene(scene);
         stage.show();
     }
@@ -31,8 +31,10 @@ public class SceneController {
     public void switchToSliderScene(ActionEvent event) {
         CustomizationView customizationView = new CustomizationView();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(customizationView);
+        scene = new Scene(customizationView, 400, 500);
         stage.setScene(scene);
+        stage.setX(850);
+        stage.setY(200);
         stage.show();
     }
 
@@ -73,10 +75,12 @@ public class SceneController {
 
         MainView mainView = new MainView(mapViewModel, simulation);
         Scene scene = new Scene(mainView);
+        scene.getStylesheets().add("/styling/chartStyling.css");
+//        scene.getStylesheets().add(this.getClass().getResource("/chartStyling.css").toExternalForm());
 //        Set initial state of simulation map
         mapViewModel.setMapModel(simulation.getSimulationMap());
 
-        stage.setX(200);
+        stage.setX(500);
         stage.setY(0);
         stage.setScene(scene);
         stage.show();

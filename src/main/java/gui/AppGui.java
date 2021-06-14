@@ -13,11 +13,6 @@ public class AppGui extends Application {
 
 //    Gui must be ran with gradle run task
 
-    //TODO nexSteps:
-    // - validate that number of states == number of agents
-    // - possibly extend the customization by giving user the opportunity to define more parameters
-    // - eg. infectionDuration, resistanceDuration, fieldOfView, moveDistance etc.
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -26,7 +21,7 @@ public class AppGui extends Application {
     public void start(Stage stage) {
         // Initial scene
         CustomizationView customizationView = new CustomizationView();
-        initialScene = new Scene(customizationView);
+        initialScene = new Scene(customizationView, 400, 500);
         stage.setScene(initialScene);
         stage.show();
 
