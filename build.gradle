@@ -41,4 +41,4 @@ test {
         events "passed", "skipped", "failed"
     }
 }
-version '1.0.1'
+version '1.0.3'

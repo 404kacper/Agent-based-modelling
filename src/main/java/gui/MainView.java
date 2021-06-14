@@ -5,13 +5,14 @@ import agentSim.agent.IAgent;
 import agentSim.map.IMap;
 import gui.viewModel.MapViewModel;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -31,10 +32,16 @@ public class MainView extends VBox {
     private MapViewModel mapViewModel;
 
     private LineChart<Number, Number> populationChart;
+    private LineChart<Number, Number> stateChart;
+
 
     private XYChart.Series<Number, Number> animalSeries;
     private XYChart.Series<Number, Number> civilSeries;
     private XYChart.Series<Number, Number> medicSeries;
+
+    private XYChart.Series<Number, Number> healthySeries;
+    private XYChart.Series<Number, Number> illSeries;
+    private XYChart.Series<Number, Number> immuneSeries;
 
 
     public MainView(MapViewModel mapViewModel , Simulation sim) {
@@ -43,57 +50,37 @@ public class MainView extends VBox {
 
         this.mapViewModel.listenToMap(this::onMapChanged);
 
+        HBox chartBox = new HBox(3);
+
+        HBox canvasBox = new HBox(0);
+
+        HBox toolBarBox = new HBox(1);
+
+
         this.canvas = new Canvas(400,400);
 
         this.canvas.setOnMouseMoved(this::handleMoved);
 
         Toolbar toolbar = new Toolbar(sim, mapViewModel);
 
-        constructNumericalChart();
+        constructPopulationChart();
+        constructStateChart();
 
         this.infoBar = new InfoBar();
         this.infoBar.setCursorPosition(0,0);
         this.infoBar.setCounterFormat(0,0, 0, 0, 0, 0);
 
-        Pane spacer = new Pane();
-        spacer.setMinSize(0,0);
-        spacer.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        VBox.setVgrow(spacer, Priority.ALWAYS);
+        this.setSpacing(50);
+        chartBox.getChildren().addAll(populationChart, stateChart);
+        canvasBox.setAlignment(Pos.CENTER);
+        canvasBox.getChildren().addAll(canvas);
+        toolBarBox.setAlignment(Pos.CENTER);
+        toolBarBox.getChildren().addAll(toolbar);
 
-        this.getChildren().addAll(toolbar, populationChart, this.canvas, spacer, infoBar);
+        this.getChildren().addAll(toolBarBox, canvasBox ,chartBox, infoBar);
 
         this.affine = new Affine();
         this.affine.appendScale(400/10f, 400/10f);
-    }
-
-    private void constructNumericalChart() {
-        //defining the axes
-        final NumberAxis xAxis = new NumberAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Iteration");
-        xAxis.setAnimated(false); // axis animations are removed
-        yAxis.setLabel("Agent count");
-        yAxis.setAnimated(false); // axis animations are removed
-
-        //creating the line chart with two axis created above
-        populationChart = new LineChart<>(xAxis, yAxis);
-        populationChart.setTitle("Agent populations");
-        populationChart.setAnimated(false); // disable animations
-
-        //defining a series to display data
-        animalSeries = new XYChart.Series<>();
-        animalSeries.setName("Animal count");
-
-        civilSeries = new XYChart.Series<>();
-        civilSeries.setName("Civil count");
-
-        medicSeries = new XYChart.Series<>();
-        medicSeries.setName("Medic count");
-
-        // add series to chart
-        populationChart.getData().add(animalSeries);
-        populationChart.getData().add(civilSeries);
-        populationChart.getData().add(medicSeries);
     }
 
     private void onMapChanged(IMap map) {
@@ -108,6 +95,10 @@ public class MainView extends VBox {
         this.animalSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), animalCount));
         this.civilSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), civilCount));
         this.medicSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), medicCount));
+
+        this.healthySeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), healthyCount));
+        this.illSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), illCount));
+        this.immuneSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), immuneCount));
     }
 
     private void handleMoved(MouseEvent mouseEvent) {
@@ -175,6 +166,68 @@ public class MainView extends VBox {
             }
         }
 
+    }
+
+
+    private void constructPopulationChart() {
+        //defining the axes
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Iteration");
+        xAxis.setAnimated(false); // axis animations are removed
+        yAxis.setLabel("Agent count");
+        yAxis.setAnimated(false); // axis animations are removed
+
+        //creating the line chart with two axis created above
+        populationChart = new LineChart<>(xAxis, yAxis);
+        populationChart.setTitle("Agent populations");
+        populationChart.setAnimated(false); // disable animations
+
+        //defining a series to display data
+        animalSeries = new XYChart.Series<>();
+        animalSeries.setName("Animal count");
+
+        civilSeries = new XYChart.Series<>();
+        civilSeries.setName("Civil count");
+
+        medicSeries = new XYChart.Series<>();
+        medicSeries.setName("Medic count");
+
+        // add series to chart
+        populationChart.getData().add(animalSeries);
+        populationChart.getData().add(civilSeries);
+        populationChart.getData().add(medicSeries);
+    }
+
+
+    private void constructStateChart() {
+        //defining the axes
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Iteration");
+        xAxis.setAnimated(false); // axis animations are removed
+        yAxis.setLabel("State count");
+        yAxis.setAnimated(false); // axis animations are removed
+
+        //creating the line chart with two axis created above
+        stateChart = new LineChart<>(xAxis, yAxis);
+        stateChart.setTitle("State populations");
+        stateChart.setAnimated(false); // disable animations
+
+        //defining a series to display data
+        healthySeries = new XYChart.Series<>();
+        healthySeries.setName("Healthy count");
+
+        illSeries = new XYChart.Series<>();
+        illSeries.setName("Ill count");
+
+        immuneSeries = new XYChart.Series<>();
+        immuneSeries.setName("Immune count");
+
+        // add series to chart
+        stateChart.getData().add(healthySeries);
+        stateChart.getData().add(illSeries);
+        stateChart.getData().add(immuneSeries);
     }
 
 

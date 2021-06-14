@@ -1,16 +1,9 @@
 package gui;
 
-import agentSim.Simulation;
-import agentSim.agent.creator.AgentCreator;
-import agentSim.agent.creator.IAgentCreator;
-import agentSim.map.creator.MapCreator;
-import gui.viewModel.MapViewModel;
+
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
@@ -22,7 +15,6 @@ public class AppGui extends Application {
 
     //TODO nexSteps:
     // - validate that number of states == number of agents
-    // - add graphs
     // - possibly extend the customization by giving user the opportunity to define more parameters
     // - eg. infectionDuration, resistanceDuration, fieldOfView, moveDistance etc.
 

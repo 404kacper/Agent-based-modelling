@@ -43,6 +43,8 @@ public class SceneController {
 //        Set initial state of simulation map
         mapViewModel.setMapModel(simulation.getSimulationMap());
 
+        stage.setX(200);
+        stage.setY(0);
         stage.setScene(scene);
         stage.show();
     }
