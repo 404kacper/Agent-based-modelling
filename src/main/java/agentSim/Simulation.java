@@ -52,7 +52,7 @@ public class Simulation {
     }
 
     public void runSimulationStep() {
-        System.out.println("Before : \n" + map);
+//        System.out.println("Before : \n" + map);
         if (currentIteration < this.maxIter) {
             agentCounter.restCount();
             recoverAgents(currentIteration);
@@ -60,7 +60,7 @@ public class Simulation {
             moveAgents();
             countAgents();
             ++currentIteration;
-            System.out.println("After : \n" + map);
+//            System.out.println("After : \n" + map);
         }
     }
 

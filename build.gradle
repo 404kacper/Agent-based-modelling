@@ -11,7 +11,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'gui.AppGui'
+        attributes 'Main-Class': 'gui.GradleMain'
     }
     from {
         exclude '**/module-info.class'
@@ -19,7 +19,7 @@ jar {
     }
 }
 
-mainClassName= "gui.AppGui"
+mainClassName= "gui.GradleMain"
 
 javafx {
     version = "16"
@@ -41,4 +41,4 @@ test {
         events "passed", "skipped", "failed"
     }
 }
-version '1.0.3'
+version '1.0.4'

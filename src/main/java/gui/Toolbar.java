@@ -51,7 +51,6 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleStep(ActionEvent actionEvent) {
-        System.out.println("step pressed");
         this.simulator.doStep();
     }
 

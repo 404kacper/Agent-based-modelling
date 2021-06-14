@@ -54,7 +54,6 @@ public class Medic extends Agent {
                     toBeVaccinated.setHealth(2);
 //                        Set resistance duration for vaccinated agents
                     toBeVaccinated.setResistanceDuration(resDurationAfterVaccination);
-                    System.out.println("Vaccinated agent for: " + resDurationAfterVaccination);
                 }
             } else {
                 row = value;
