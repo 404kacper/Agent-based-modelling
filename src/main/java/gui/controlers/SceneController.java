@@ -39,7 +39,7 @@ public class SceneController {
         IAgentCreator currentAgents = new AgentCreator(healthyCount,illCount,immuneCount,civilCount,animalCount,medicCount);
         Simulation simulation = new Simulation(mapCreator,currentAgents,0, maxIter);
         MainView mainView = new MainView(mapViewModel, simulation);
-        Scene scene = new Scene(mainView, 640, 480);
+        Scene scene = new Scene(mainView);
 //        Set initial state of simulation map
         mapViewModel.setMapModel(simulation.getSimulationMap());
 

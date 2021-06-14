@@ -27,7 +27,7 @@ public class Simulation {
         initializeSimulation(agentCreator, map, rnd);
         agentCounter = new AgentCounter();
 
-        this.currentIteration = maxIter;
+        this.currentIteration = 0;
         this.maxIter = maxIter;
     }
 
@@ -47,13 +47,13 @@ public class Simulation {
 
     public void runSimulationStep() {
         System.out.println("Before : \n" + map);
-        if (currentIteration > 0) {
+        if (currentIteration < this.maxIter) {
             agentCounter.restCount();
             recoverAgents(currentIteration);
             interact();
             moveAgents();
             countAgents();
-            --currentIteration;
+            ++currentIteration;
             System.out.println("After : \n" + map);
         }
     }
@@ -116,5 +116,9 @@ public class Simulation {
 
     public AgentCounter getAgentCounter() {
         return agentCounter;
+    }
+
+    public int getCurrentIteration() {
+        return currentIteration;
     }
 }
