@@ -18,6 +18,12 @@ public class CustomizationView extends VBox {
     Slider civilSpeedSlider;
     Slider medicSpeedSlider;
 
+    Slider resistanceDurationSlider;
+    Slider infectionDurationSlider;
+
+    Slider vaccinationFovSlider;
+    Slider infectionFovSlider;
+
     Label mapWidthLabel;
     Label mapHeightLabel;
 
@@ -25,15 +31,27 @@ public class CustomizationView extends VBox {
     Label civilSpeedLabel;
     Label medicSpeedLabel;
 
+    Label resistanceDurationLabel;
+    Label infectionDurationLabel;
+
+    Label vaccinationFovLabel;
+    Label infectionFovLabel;
+
     public CustomizationView() {
         sceneButton = new Button("Go to simulation");
 
+        // Map size
         mapWidthLabel = new Label("Set map width");
         mapWidthSlider = new Slider(0, 10, 10);
 
         mapHeightLabel = new Label("Set map height");
         mapHeightSlider = new Slider(0, 10, 10);
 
+        sliderCustomizeToInt(mapWidthSlider);
+        sliderCustomizeToInt(mapHeightSlider);
+
+
+        //  Move speed
         int speedLimit = (int) Math.ceil(mapHeightSlider.getValue() / 3);
 
         animalSpeedLabel = new Label("Set animal move speed");
@@ -42,15 +60,32 @@ public class CustomizationView extends VBox {
         civilSpeedLabel = new Label("Set civil move speed");
         civilSpeedSlider = new Slider(0, speedLimit, 1);
 
-        medicSpeedLabel = new Label("Set civil move speed");
+        medicSpeedLabel = new Label("Set medic move speed");
         medicSpeedSlider = new Slider(0, speedLimit, 1);
-
-        sliderCustomizeToInt(mapWidthSlider);
-        sliderCustomizeToInt(mapHeightSlider);
 
         sliderCustomizeToInt(animalSpeedSlider);
         sliderCustomizeToInt(civilSpeedSlider);
         sliderCustomizeToInt(medicSpeedSlider);
+
+        // Interaction durations
+        infectionDurationLabel = new Label("Set how long infections last");
+        infectionDurationSlider = new Slider(0, 10, 1);
+
+        resistanceDurationLabel = new Label("Set how long resistance lasts");
+        resistanceDurationSlider = new Slider(0, 10, 1);
+
+        sliderCustomizeToInt(infectionDurationSlider);
+        sliderCustomizeToInt(resistanceDurationSlider);
+
+        // Fields of view
+        vaccinationFovLabel = new Label("Set how far medics vaccinate");
+        vaccinationFovSlider = new Slider(0, 10, 1);
+
+        infectionFovLabel = new Label("Set how far agents infect");
+        infectionFovSlider = new Slider(0, 10, 1);
+
+        sliderCustomizeToInt(vaccinationFovSlider);
+        sliderCustomizeToInt(infectionFovSlider);
 
         SceneController sc = new SceneController();
         sceneButton.setOnAction(e -> {
@@ -58,7 +93,7 @@ public class CustomizationView extends VBox {
             sc.switchToSimulationScene(e);
         });
 
-        this.getChildren().addAll(mapHeightLabel, mapWidthSlider, mapWidthLabel, mapHeightSlider, animalSpeedLabel, animalSpeedSlider, civilSpeedLabel, civilSpeedSlider, medicSpeedLabel, medicSpeedSlider, sceneButton);
+        this.getChildren().addAll(mapHeightLabel, mapWidthSlider, mapWidthLabel, mapHeightSlider, animalSpeedLabel, animalSpeedSlider, civilSpeedLabel, civilSpeedSlider, medicSpeedLabel, medicSpeedSlider, infectionDurationLabel, infectionDurationSlider, resistanceDurationLabel, resistanceDurationSlider, vaccinationFovLabel, vaccinationFovSlider, infectionFovLabel, infectionFovSlider, sceneButton);
     }
 
     private void sliderCustomizeToInt(Slider slider) {
@@ -75,5 +110,10 @@ public class CustomizationView extends VBox {
         Data.animalSpeed = (int) animalSpeedSlider.getValue();
         Data.civilSpeed = (int) civilSpeedSlider.getValue();
         Data.medicSpeed = (int) medicSpeedSlider.getValue();
+        Data.infectionDuration = (int) infectionDurationSlider.getValue();
+        Data.resistanceDuration = (int) resistanceDurationSlider.getValue();
+        Data.vaccinationFov = (int) vaccinationFovSlider.getValue();
+        Data.infectionFov = (int) infectionFovSlider.getValue();
+
     }
 }

@@ -12,8 +12,14 @@ public class Data {
 
     public static int mapWidth = 0;
     public static int mapHeight = 0;
+
     public static int civilSpeed = 0;
-    public static int animalSpeed = 2;
+    public static int animalSpeed = 0;
     public static int medicSpeed = 0;
 
+    public static int infectionDuration = 0;
+    public static int resistanceDuration = 0;
+
+    public static int vaccinationFov = 0;
+    public static int infectionFov = 0;
 }

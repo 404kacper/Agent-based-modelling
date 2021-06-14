@@ -50,17 +50,25 @@ public class SceneController {
         int civilSpeed = Data.civilSpeed;
         int animalSpeed = Data.animalSpeed;
         int medicSpeed = Data.medicSpeed;
+        int infectionDuration = Data.infectionDuration;
+        int resistanceDuration = Data.resistanceDuration;
+        int vaccinationFov = Data.vaccinationFov;
+        int infectionFov = Data.infectionFov;
+
 
         MapViewModel mapViewModel = new MapViewModel();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         MapCreator mapCreator = new MapCreator(mapWidth, mapHeight);
 
-        IAgentCreator currentAgents = new AgentCreator(healthyCount, illCount, immuneCount, civilCount, animalCount, medicCount);
-
         SimulationCustomizer customizer = new SimulationCustomizer();
 
         customizer.setSpeedValues(civilSpeed, animalSpeed, medicSpeed);
+        customizer.setInteractionValues(infectionDuration, resistanceDuration);
+        customizer.setVaccinateFov(vaccinationFov);
+        customizer.setInfectionFov(infectionFov);
+
+        IAgentCreator currentAgents = new AgentCreator(healthyCount, illCount, immuneCount, civilCount, animalCount, medicCount, customizer);
 
         Simulation simulation = new Simulation(mapCreator, currentAgents, customizer, 0, maxIter);
 

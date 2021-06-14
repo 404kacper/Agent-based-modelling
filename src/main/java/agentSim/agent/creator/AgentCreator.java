@@ -4,6 +4,7 @@ import agentSim.agent.IAgent;
 import agentSim.agent.animal.Animal;
 import agentSim.agent.man.Civil;
 import agentSim.agent.man.Medic;
+import agentSim.customizer.SimulationCustomizer;
 import agentSim.map.IMap;
 
 import java.util.*;
@@ -15,14 +16,26 @@ public class AgentCreator implements IAgentCreator {
     protected int noCivil;
     protected int noAnimals;
     protected int noMedics;
+    protected SimulationCustomizer simCustomizer;
 
-    public AgentCreator(int noHealthy, int noIll, int noImmune, int noCivil, int noAnimals, int noMedics){
+    public AgentCreator(int noHealthy, int noIll, int noImmune, int noCivil, int noAnimals, int noMedics) {
       this.noHealthy = noHealthy;
       this.noIll = noIll;
       this.noImmune = noImmune;
       this.noCivil = noCivil;
       this.noAnimals = noAnimals;
       this.noMedics = noMedics;
+    }
+
+//    Constructor specifically for gui and it's customization
+    public AgentCreator(int noHealthy, int noIll, int noImmune, int noCivil, int noAnimals, int noMedics, SimulationCustomizer simCust) {
+        this.noHealthy = noHealthy;
+        this.noIll = noIll;
+        this.noImmune = noImmune;
+        this.noCivil = noCivil;
+        this.noAnimals = noAnimals;
+        this.noMedics = noMedics;
+        this.simCustomizer = simCust;
     }
 
     @Override
@@ -46,20 +59,75 @@ public class AgentCreator implements IAgentCreator {
         Arrays.fill(agentStatus, noHealthy , noHealthy+noIll, 1);
         Arrays.fill(agentStatus, noHealthy+noIll , noHealthy+noIll+remImmune, 2);
 
-//        Add agents aside from medics
-        int j = 0;
-        for (int i = 0; i<noAnimals; i++, j++) {
-            agentList.add(new Animal(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0, 0.5));
-        }
-        for (int i = 0; i<noCivil; i++, j++) {
-            agentList.add(new Civil(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0, 0.5));
-        }
+//        Condition for the first constructor
+        if (simCustomizer == null) {
+            int j = 0;
+            for (int i = 0; i<noAnimals; i++, j++) {
+                agentList.add(new Animal(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0, 0.5));
+            }
+            for (int i = 0; i<noCivil; i++, j++) {
+                agentList.add(new Civil(map, agentStatus[j], agentStatus[j]==1 ? 3:0, agentStatus[j]==2 ? 3:0, 0.5));
+            }
 
-//        Add medics last
-        for (int i = 0; i <noMedics; i++) {
-            agentList.add(new Medic(map, 2, 0, Integer.MAX_VALUE, 0));
+            for (int i = 0; i <noMedics; i++) {
+                agentList.add(new Medic(map, 2, 0, Integer.MAX_VALUE, 0));
+            }
+        } else {
+//            Condition for the second constructor
+            int resDuration = simCustomizer.getResistanceDuration();
+            int infDuration = simCustomizer.getInfectionDuration();
+            int vaccinationFov = simCustomizer.getVaccinateFov();
+            int infectFov = simCustomizer.getInfectionFov();
+
+            int j = 0;
+            for (int i = 0; i<noAnimals; i++, j++) {
+                IAgent animal = new Animal(map, agentStatus[j], agentStatus[j]==1 ? infDuration:0, agentStatus[j]==2 ? resDuration:0, 0.5);
+                setAgentsInteractionDurations(animal, resDuration, infDuration);
+                setFieldsOfView(animal, infectFov);
+                agentList.add(animal);
+            }
+            for (int i = 0; i<noCivil; i++, j++) {
+                IAgent civil = new Civil(map, agentStatus[j], agentStatus[j]==1 ? infDuration:0, agentStatus[j]==2 ? resDuration:0, 0.5);
+                setAgentsInteractionDurations(civil, resDuration, infDuration);
+                setFieldsOfView(civil, infectFov);
+                agentList.add(civil);
+            }
+
+            for (int i = 0; i <noMedics; i++) {
+                IAgent medic = new Medic(map, 2, 0, Integer.MAX_VALUE, 0);
+                setAgentsInteractionDurations(medic, resDuration, infDuration);
+                setFieldsOfView(medic, vaccinationFov);
+                agentList.add(medic);
+            }
+
         }
 
         return agentList;
     }
+
+    public void setAgentsInteractionDurations(IAgent agent, int resDur, int infDur) {
+        if (agent instanceof Civil) {
+            ((Civil) agent).setInfectionDurationAfterInfection(infDur);
+            ((Civil) agent).setResistanceDurationAfterRecovery(resDur);
+        }
+        if (agent instanceof Animal) {
+            ((Animal) agent).setInfectionDurationAfterInfection(infDur);
+            ((Animal) agent).setResistanceDurationAfterRecovery(resDur);
+        }
+        if (agent instanceof  Medic) {
+            ((Medic) agent).setResDurationAfterVaccination(resDur);
+        }
+    }
+    public void setFieldsOfView(IAgent agent, int fov) {
+        if (agent instanceof  Medic) {
+            ((Medic) agent).setVaccinateFov(fov);
+        }
+        if (agent instanceof  Civil) {
+            ((Civil) agent).setInfectFov(fov);
+        }
+        if (agent instanceof  Animal) {
+            ((Animal) agent).setInfectFov(fov);
+        }
+    }
+
 }

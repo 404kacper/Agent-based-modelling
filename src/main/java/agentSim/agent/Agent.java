@@ -21,8 +21,6 @@ public abstract class Agent extends AAgent implements IColors {
     protected int resistanceDuration;
     protected double deathProb;
 
-    private int civilMoveSpeed;
-
     public Agent(IMap map, int health, int infDuration, int resDuration, double deathProb) {
         super(map);
 //        !!! Current seed isn't the same as the one being passed in Simulation class
@@ -48,10 +46,10 @@ public abstract class Agent extends AAgent implements IColors {
         int colLimit = map.getYDim() - 1;
 
         do {
-//        Exclusive range - number between 0-7 and +1 to fulfill condition of 8 neighbour directions
+//        Exclusive range - number between 0-8 and +1 to fulfill condition of 8 neighbour directions
 //            Currently the numbers are an even distribution however it can be easily changed
 //            with swapping the generated num variable to double and adjusting case conditions to match desired probabilities
-            int num = rnd.nextInt(9) + 1;
+            int num = (int) ((Math.random() * (9))) + 1;
             switch (num) {
 //            Move down
                 case 1:
@@ -264,15 +262,6 @@ public abstract class Agent extends AAgent implements IColors {
 
     public double getDeathProb() {
         return deathProb;
-    }
-
-
-    public int getCivilMoveSpeed() {
-        return civilMoveSpeed;
-    }
-
-    public void setCivilMoveSpeed(int civilMoveSpeed) {
-        this.civilMoveSpeed = civilMoveSpeed;
     }
 
 

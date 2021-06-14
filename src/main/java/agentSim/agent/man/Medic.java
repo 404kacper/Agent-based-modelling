@@ -8,10 +8,13 @@ import com.google.common.collect.Multimap;
 public class Medic extends Agent {
 
     private int medicSpeed;
+    private int resDurationAfterVaccination;
+    private int vaccinateFov;
 
     public Medic(IMap map, int health, int infDuration, int resDuration, double deathProb) {
         super(map, health, infDuration, resDuration, deathProb);
-        medicSpeed = 0;
+        medicSpeed = 1;
+        resDurationAfterVaccination = resDuration;
     }
 
 //    Specific recover implementation for Medic agents
@@ -33,12 +36,8 @@ public class Medic extends Agent {
         move(medicSpeed);
     }
 
-    public void setMedicSpeed(int medicSpeed) {
-        this.medicSpeed = medicSpeed;
-    }
-
-    public void vaccinate(int fieldOfView, int duration) {
-        Multimap<IAgent, Integer> neighbours = this.getNeighbours(fieldOfView);
+    public void vaccinate() {
+        Multimap<IAgent, Integer> neighbours = this.getNeighbours(vaccinateFov);
         int row = 0;
         int col;
         int i = 0;
@@ -54,7 +53,8 @@ public class Medic extends Agent {
                 if (toBeVaccinated.getHealth() == 0) {
                     toBeVaccinated.setHealth(2);
 //                        Set resistance duration for vaccinated agents
-                    toBeVaccinated.setResistanceDuration(duration);
+                    toBeVaccinated.setResistanceDuration(resDurationAfterVaccination);
+                    System.out.println("Vaccinated agent for: " + resDurationAfterVaccination);
                 }
             } else {
                 row = value;
@@ -62,6 +62,19 @@ public class Medic extends Agent {
             i++;
         }
     }
+
+    public void setVaccinateFov(int vaccinateFov) {
+        this.vaccinateFov = vaccinateFov;
+    }
+
+    public void setMedicSpeed(int medicSpeed) {
+        this.medicSpeed = medicSpeed;
+    }
+
+    public void setResDurationAfterVaccination(int resDurationAfterVaccination) {
+        this.resDurationAfterVaccination = resDurationAfterVaccination;
+    }
+
 
     @Override
     public String toString() {

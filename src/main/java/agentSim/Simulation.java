@@ -105,7 +105,7 @@ public class Simulation {
             }
 //                Execute vaccinate only for medics
             if (agent instanceof Medic) {
-                ((Medic) agent).vaccinate(1, 2);
+                ((Medic) agent).vaccinate();
             }
         }
     }
