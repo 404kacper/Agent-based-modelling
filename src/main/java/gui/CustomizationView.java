@@ -64,7 +64,7 @@ public class CustomizationView extends VBox {
         int speedLimit = (int) Math.ceil(mapHeightSlider.getMax() / 20);
 
         animalSpeedLabel = new Label("Set animal move speed");
-        animalSpeedSlider = new Slider(0, speedLimit, 1);
+        animalSpeedSlider = new Slider(0, speedLimit, 2);
 
         civilSpeedLabel = new Label("Set civil move speed");
         civilSpeedSlider = new Slider(0, speedLimit, 1);
@@ -78,7 +78,7 @@ public class CustomizationView extends VBox {
 
         // Interaction durations
         infectionDurationLabel = new Label("Set how long infections last");
-        infectionDurationSlider = new Slider(0, 10, 2);
+        infectionDurationSlider = new Slider(0, 10, 4);
 
         resistanceDurationLabel = new Label("Set how long resistance lasts");
         resistanceDurationSlider = new Slider(0, 10, 2);
@@ -91,7 +91,7 @@ public class CustomizationView extends VBox {
         vaccinationFovSlider = new Slider(0, 10, 1);
 
         infectionFovLabel = new Label("Set how far agents infect");
-        infectionFovSlider = new Slider(0, 10, 1);
+        infectionFovSlider = new Slider(0, 10, 2);
 
         sliderCustomizeToInt(vaccinationFovSlider);
         sliderCustomizeToInt(infectionFovSlider);

@@ -32,8 +32,6 @@ public abstract class Agent extends AAgent implements IColors {
 //        Same as above but for resistant agents
         this.resistanceDuration = resDuration;
         this.deathProb = deathProb;
-        //    Uncomment this to get completely random series of probabilities for infections
-//        seedInfections = System.currentTimeMillis();
     }
 
     public void move(int distance) {
