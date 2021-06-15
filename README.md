@@ -88,7 +88,7 @@ To get a local copy up and running follow these simple steps.
 
 ### Unit Tests
 
-1. To run test **while** in ABM-app directory run
+1. To run tests **while** in ABM-app directory
 
    ```sh
    ./gradlew clean test
@@ -104,7 +104,7 @@ The simulation is initialized by two windows responsible for adjusting and setti
 
 <img src="src/main/resources/readme/sliders.png" width="300px">
 
-Is responsible for setting the simulation parameters such: **field of view** for each agent, their **speed** or **map size**.
+Is responsible for setting the simulation parameters such as: **field of view** for each agent, their **speed** or **map size**.
 
 Second window is responsible for fetching user defined input for: **populations**, agent **states** and number of **iterations**.
 
