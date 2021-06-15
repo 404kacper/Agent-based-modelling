@@ -35,7 +35,7 @@ public class InputView extends VBox {
     public InputView() {
         createInputFields();
 
-        sceneButton = new Button("Go to simulation customization");
+        sceneButton = new Button("Go to simulation");
         validateNumericalInput(maxIterInput);
         validateNumericalInput(civilInput);
         validateNumericalInput(animalInput);

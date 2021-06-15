@@ -94,6 +94,7 @@ public class MainView extends VBox {
         int illCount = sim.getAgentCounter().getIllNo();
         int immuneCount = sim.getAgentCounter().getImmNo();
         int healthyCount = sim.getAgentCounter().getHealthyNo();
+
         this.infoBar.setCounterFormat(animalCount,civilCount, medicCount, illCount, immuneCount, healthyCount);
 
         this.animalSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), animalCount));
@@ -186,10 +187,12 @@ public class MainView extends VBox {
         yAxis.setLabel("Agent count");
         yAxis.setAnimated(false); // axis animations are removed
 
+
         //creating the line chart with two axis created above
         populationChart = new LineChart<>(xAxis, yAxis);
         populationChart.setTitle("Agent populations");
         populationChart.setAnimated(false); // disable animations
+        populationChart.setCreateSymbols(false);
 
         //defining a series to display data
         animalSeries = new XYChart.Series<>();
@@ -221,6 +224,7 @@ public class MainView extends VBox {
         stateChart = new LineChart<>(xAxis, yAxis);
         stateChart.setTitle("State populations");
         stateChart.setAnimated(false); // disable animations
+        stateChart.setCreateSymbols(false);
 
         //defining a series to display data
         healthySeries = new XYChart.Series<>();

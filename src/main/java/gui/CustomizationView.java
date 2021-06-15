@@ -42,7 +42,7 @@ public class CustomizationView extends VBox {
 
     public CustomizationView() {
         HBox buttonAlignment = new HBox();
-        sceneButton = new Button("Go to simulation");
+        sceneButton = new Button("Go to next step");
         buttonAlignment.setAlignment(Pos.CENTER);
         buttonAlignment.getChildren().addAll(sceneButton);
 
@@ -55,10 +55,10 @@ public class CustomizationView extends VBox {
 
         sliderCustomizeToInt(mapWidthSlider);
         sliderCustomizeToInt(mapHeightSlider);
-        mapWidthSlider.setBlockIncrement(10);
-        mapWidthSlider.setMajorTickUnit(10);
-        mapHeightSlider.setBlockIncrement(10);
-        mapHeightSlider.setMajorTickUnit(10);
+        mapWidthSlider.setBlockIncrement(5);
+        mapWidthSlider.setMajorTickUnit(5);
+        mapHeightSlider.setBlockIncrement(5);
+        mapHeightSlider.setMajorTickUnit(5);
 
         //  Move speed
         int speedLimit = (int) Math.ceil(mapHeightSlider.getMax() / 20);
