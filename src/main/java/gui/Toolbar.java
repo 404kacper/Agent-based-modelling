@@ -31,7 +31,7 @@ public class Toolbar extends ToolBar {
         Button start = new Button("start");
         start.setOnAction(this::handleStart);
 
-        Button inputSwitch = new Button("go to input");
+        Button inputSwitch = new Button("Create new simulation");
         SceneController sc = new SceneController();
         inputSwitch.setOnAction(event ->  {
             sc.switchToSliderScene(event);

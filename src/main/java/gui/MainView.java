@@ -94,12 +94,10 @@ public class MainView extends VBox {
         int illCount = sim.getAgentCounter().getIllNo();
         int immuneCount = sim.getAgentCounter().getImmNo();
         int healthyCount = sim.getAgentCounter().getHealthyNo();
-        String animalColor = String.format("%d, %d, %d", 102, 0, 0);
 
         this.infoBar.setCounterFormat(animalCount,civilCount, medicCount, illCount, immuneCount, healthyCount);
 
         this.animalSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), animalCount));
-        animalSeries.getNode().setStyle("-fx-stroke: rgba("+animalColor+", 1.0);");
         this.civilSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), civilCount));
         this.medicSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), medicCount));
 
@@ -170,7 +168,7 @@ public class MainView extends VBox {
                     if (currAgent instanceof Animal) {
                         g.fillOval(y,x,1,1);
                     } else if (currAgent instanceof Civil) {
-                        g.fillArc(y, x, 1, 1, 60, 240, ArcType.OPEN);
+                        g.fillArc(y, x, 1, 1, 45, 240, ArcType.OPEN);
                     }  else if (currAgent instanceof Medic) {
                         g.fillRoundRect(y,x,1,1,0.5,0.5);
                     }

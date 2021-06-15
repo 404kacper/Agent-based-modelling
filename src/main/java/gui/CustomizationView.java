@@ -42,7 +42,7 @@ public class CustomizationView extends VBox {
 
     public CustomizationView() {
         HBox buttonAlignment = new HBox();
-        sceneButton = new Button("Go to simulation");
+        sceneButton = new Button("Go to next step");
         buttonAlignment.setAlignment(Pos.CENTER);
         buttonAlignment.getChildren().addAll(sceneButton);
 

@@ -40,15 +40,15 @@ This application models a simple spread of disease and offers the ability to adj
 
 ### Legend
 
-Agents can be divided into **states** and **roles** and they are represented graphically by: 
+Agents can be divided into **states** and **roles** which are represented graphically by the following symbols: 
 
-#### Agent roles
+##### Agent roles
 
 <img src="src/main/resources/readme/animal.png" width="300px">
 <img src="src/main/resources/readme/civil.png" width="300px">
 <img src="src/main/resources/readme/medic.png" width="300px">
 
-#### Agent states
+##### Agent states
 
 <img src="src/main/resources/readme/healthy.png" width="300px">
 <img src="src/main/resources/readme/infected.png" width="300px">
@@ -88,6 +88,17 @@ To get a local copy up and running follow these simple steps.
 
 ## Usage
 
+The simulation is initialized by two windows responsible for adjusting and setting the initial parameters, the first window:
+
+<img src="src/main/resources/readme/sliders.png" width="300px">
+
+Is responsible for setting the simulation parameters such: **field of view** for each agent, their **speed** or **map size**.
+
+Second window is responsible for fetching user defined input for: **populations**, agent **states** and number of **iterations**.
+
+<img src="src/main/resources/readme/input.png" width="300px">
+
+Third and the last window is the simulation window that presents data of each step.
 
 <!-- ROADMAP -->
 
