@@ -23,6 +23,9 @@
       <ul>
         <li><a href="#installation">Installation</a></li>
       </ul>
+      <ul>
+        <li><a href="#tests">Unit Tests</a></li>
+      </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -83,7 +86,7 @@ To get a local copy up and running follow these simple steps.
    ./gradlew run
    ```
 
-### Tests
+### Unit Tests
 
 1. To run test **while** in ABM-app directory run
 
