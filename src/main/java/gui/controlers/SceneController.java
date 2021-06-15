@@ -75,6 +75,7 @@ public class SceneController {
 
         MainView mainView = new MainView(mapViewModel, simulation);
         Scene scene = new Scene(mainView);
+        scene.getStylesheets().add(this.getClass().getResource("/styling/chartStyling.css").toExternalForm());
 //        Set initial state of simulation map
         mapViewModel.setMapModel(simulation.getSimulationMap());
 

@@ -94,9 +94,12 @@ public class MainView extends VBox {
         int illCount = sim.getAgentCounter().getIllNo();
         int immuneCount = sim.getAgentCounter().getImmNo();
         int healthyCount = sim.getAgentCounter().getHealthyNo();
+        String animalColor = String.format("%d, %d, %d", 102, 0, 0);
+
         this.infoBar.setCounterFormat(animalCount,civilCount, medicCount, illCount, immuneCount, healthyCount);
 
         this.animalSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), animalCount));
+        animalSeries.getNode().setStyle("-fx-stroke: rgba("+animalColor+", 1.0);");
         this.civilSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), civilCount));
         this.medicSeries.getData().add(new XYChart.Data<>(sim.getCurrentIteration(), medicCount));
 
@@ -167,7 +170,7 @@ public class MainView extends VBox {
                     if (currAgent instanceof Animal) {
                         g.fillOval(y,x,1,1);
                     } else if (currAgent instanceof Civil) {
-                        g.fillArc(y, x, 1, 1, 45, 240, ArcType.OPEN);
+                        g.fillArc(y, x, 1, 1, 60, 240, ArcType.OPEN);
                     }  else if (currAgent instanceof Medic) {
                         g.fillRoundRect(y,x,1,1,0.5,0.5);
                     }
@@ -186,10 +189,12 @@ public class MainView extends VBox {
         yAxis.setLabel("Agent count");
         yAxis.setAnimated(false); // axis animations are removed
 
+
         //creating the line chart with two axis created above
         populationChart = new LineChart<>(xAxis, yAxis);
         populationChart.setTitle("Agent populations");
         populationChart.setAnimated(false); // disable animations
+        populationChart.setCreateSymbols(false);
 
         //defining a series to display data
         animalSeries = new XYChart.Series<>();
@@ -221,6 +226,7 @@ public class MainView extends VBox {
         stateChart = new LineChart<>(xAxis, yAxis);
         stateChart.setTitle("State populations");
         stateChart.setAnimated(false); // disable animations
+        stateChart.setCreateSymbols(false);
 
         //defining a series to display data
         healthySeries = new XYChart.Series<>();
