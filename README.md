@@ -44,15 +44,15 @@ Agents can be divided into **states** and **roles** and they are represented gra
 
 #### Agent roles
 
-<img src="src/main/resources/readme/animal.png" width="400px">
-<img src="src/main/resources/readme/civil.png" width="400px">
-<img src="src/main/resources/readme/medic.png" width="400px">
+<img src="src/main/resources/readme/animal.png" width="300px">
+<img src="src/main/resources/readme/civil.png" width="300px">
+<img src="src/main/resources/readme/medic.png" width="300px">
 
 #### Agent states
 
-<img src="src/main/resources/readme/healthy.png" width="400px">
-<img src="src/main/resources/readme/infected.png" width="400px">
-<img src="src/main/resources/readme/immune.png" width="400px">
+<img src="src/main/resources/readme/healthy.png" width="300px">
+<img src="src/main/resources/readme/infected.png" width="300px">
+<img src="src/main/resources/readme/immune.png" width="300px">
 
 
 ### Built With
