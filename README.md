@@ -83,6 +83,15 @@ To get a local copy up and running follow these simple steps.
    ./gradlew run
    ```
 
+### Tests
+
+1. To run test **while** in ABM-app directory run
+
+   ```sh
+   ./gradlew clean test
+   ```
+
+
 
 <!-- USAGE EXAMPLES -->
 
