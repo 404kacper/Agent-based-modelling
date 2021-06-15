@@ -24,7 +24,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
       <ul>
-        <li><a href="#tests">Unit Tests</a></li>
+        <li><a href="#unit-tests">Unit Tests</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
